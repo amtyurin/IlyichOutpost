@@ -1,2 +1,1 @@
-Test project
-
+First project, just for studying.
