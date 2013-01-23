@@ -106,6 +106,13 @@ bool MainFieldScene::init()
 		PassingMap::SetCellState(11,11,STATE_CELL_BUILD);
 		PassingMap::ShowDebugGrid((CCScene*)this);
 
+		Waypoint way;
+		way.AddPoint(PassingMap::GetCell(1,1));
+		way.AddPoint(PassingMap::GetCell(2,2));
+		way.AddPoint(PassingMap::GetCell(2,5));
+		way.AddPoint(PassingMap::GetCell(7,5));
+		way.AddPoint(PassingMap::GetCell(9,12));
+		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 
 		this->schedule( schedule_selector(MainFieldScene::gameLogic), 1.0 );
 

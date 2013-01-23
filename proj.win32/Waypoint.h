@@ -22,16 +22,17 @@ struct Cell
 class Waypoint
 {
 	vector<Cell *> way;
+	int position;
 
 public:
 	Waypoint(void);
 	~Waypoint(void);
 
 	void AddPoint(Cell *);
-	void RemovePoint(Cell *);
+	void RemovePoint(const Cell *);
 
-	void GetFirstPoint(Cell *);
-	Cell* GetNextPoint(Cell *);
+	Cell* GetFirstPoint();
+	Cell* GetNextPoint();
 
 };
 

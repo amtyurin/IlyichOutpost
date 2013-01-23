@@ -72,7 +72,7 @@ void PassingMap::ShowDebugGrid(CCScene *scene)
 	scene->addChild(spriteAll, 10);
 }
 
-CellState PassingMap::GetCellSTate(int x, int y)
+CellState PassingMap::GetCellSTate(const int x,const int y)
 {
 	if (x >= 0 && x < MAP_WIDTH_MAX &&
 		y >= 0 && y < MAP_HEIGHT_MAX)
@@ -83,11 +83,41 @@ CellState PassingMap::GetCellSTate(int x, int y)
 		return STATE_CELL_BUSY;
 }
 
-void PassingMap::SetCellState(int x, int y, CellState cState)
+Cell* PassingMap::GetCell(const int x, const int y)
+{
+	if (x >= 0 && x < MAP_WIDTH_MAX &&
+		y >= 0 && y < MAP_HEIGHT_MAX)
+	{
+		return &PassingMap::map[x][y];
+	}
+	else
+		return NULL;
+}
+
+void PassingMap::SetCellState(const int x, const int y, const CellState cState)
 {
 	if (x >= 0 && x < MAP_WIDTH_MAX &&
 		y >= 0 && y < MAP_HEIGHT_MAX)
 	{
 		PassingMap::map[x][y].type = cState;
 	}
+}
+
+void PassingMap::ShowWaypoint(Waypoint *way, CCScene *scene)
+{
+	CCSprite *spriteAll = CCSprite::create();
+
+	for (Cell *cell = way->GetFirstPoint(); cell != NULL; cell = way->GetNextPoint())
+	{
+		CCSprite *cellSprite = CCSprite::create("\\cells\\busy_cell.png");
+		CC_BREAK_IF(! cellSprite);
+
+		cellSprite->setScale(0.6);
+		cellSprite->setPositionX(cell->x);
+        cellSprite->setPositionY(cell->y);
+
+		spriteAll->addChild(cellSprite, 1);			
+	}
+
+	scene->addChild(spriteAll, 20);
 }

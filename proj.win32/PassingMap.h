@@ -26,10 +26,13 @@ public:
 
 	static void ClearMap();
 
-	static CellState GetCellSTate(int x, int y);
-	static void SetCellState(int x, int y, CellState state);
+	static CellState GetCellSTate(const int x, const int y);
+	static Cell* GetCell(const int x, const int y);
+	static void SetCellState(const int x, const int y, const CellState state);
 
 	static void ShowDebugGrid(CCScene *scene);	
+
+	static void ShowWaypoint(Waypoint *way, CCScene *scene);
 
 
 	
