@@ -4,19 +4,9 @@
 
 #include "SimpleAudioEngine.h"
 
+#include "Waypoint.h"
+
 using namespace cocos2d;
-
-enum CellState
-{
-	STATE_CELL_FREE = 0,
-	STATE_CELL_BUSY,
-	STATE_CELL_BUILD
-};
-
-struct Cell
-{
-	CellState type;
-};
 
 class PassingMap
 {
@@ -30,7 +20,7 @@ private:
 	PassingMap(PassingMap const&);              // Don't Implement
     void operator=(PassingMap const&); // Don't implement	
 
-	static Cell map[MAP_HEIGHT_MAX][MAP_WIDTH_MAX];	
+	static Cell map[MAP_WIDTH_MAX][MAP_HEIGHT_MAX];	
 	
 public:
 

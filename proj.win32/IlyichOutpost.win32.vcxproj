@@ -143,6 +143,7 @@
     <ClInclude Include="MainFieldScene.h" />
     <ClInclude Include="PassingMap.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Waypoint.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainFieldScene.cpp" />
     <ClCompile Include="PassingMap.cpp" />
+    <ClCompile Include="Waypoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="glew32.lib" />

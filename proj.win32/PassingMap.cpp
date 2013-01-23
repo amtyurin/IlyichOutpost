@@ -9,16 +9,26 @@ PassingMap::~PassingMap(void)
 {
 }
 
-Cell PassingMap::map[MAP_HEIGHT_MAX][MAP_WIDTH_MAX];
+Cell PassingMap::map[MAP_WIDTH_MAX][MAP_HEIGHT_MAX];
 
 void PassingMap::ClearMap()
 {
-	for (int ax = 0; ax < MAP_HEIGHT_MAX; ax++)
+	int posX = 0;
+	int posY = 0;
+
+	for (int ax = 0; ax < MAP_WIDTH_MAX; ax++)
 	{
-		for (int ay = 0; ay < MAP_WIDTH_MAX; ay++)
+		for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
 		{
-			PassingMap::map[ax][ay].type = STATE_CELL_FREE;
+			map[ax][ay].type = STATE_CELL_FREE;
+			map[ax][ay].x = posX + MAP_CELL_SIZE / 2;
+			map[ax][ay].y = posY + MAP_CELL_SIZE / 2;
+
+			posY += MAP_CELL_SIZE;
 		}
+		
+		posX += MAP_CELL_SIZE;
+ 	    posY = 0;
 	}
 }
 
@@ -26,12 +36,10 @@ void PassingMap::ClearMap()
 void PassingMap::ShowDebugGrid(CCScene *scene)
 {
 	CCSprite *spriteAll = CCSprite::create();
-	int posX = 0;
-	int posY = 0;
 
-	for (int ax = 0; ax < MAP_HEIGHT_MAX; ax++)
+	for (int ax = 0; ax < MAP_WIDTH_MAX; ax++)
 	{
-		for (int ay = 0; ay < MAP_WIDTH_MAX; ay++)
+		for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
 		{
 			char *cell_filename = NULL;
 			switch(PassingMap::map[ax][ay].type)
@@ -54,15 +62,11 @@ void PassingMap::ShowDebugGrid(CCScene *scene)
 			CCSprite *cellSprite = CCSprite::create(cell_filename);
 			CC_BREAK_IF(! cellSprite);
 
-			cellSprite->setPositionX(posX);
-            cellSprite->setPositionY(posY);
+			cellSprite->setPositionX(map[ax][ay].x);
+            cellSprite->setPositionY(map[ax][ay].y);
 
-			spriteAll->addChild(cellSprite, 1);
-
-			posX += MAP_CELL_SIZE;
+			spriteAll->addChild(cellSprite, 1);			
 		}
-		posY += MAP_CELL_SIZE;
- 	    posX = 0;
 	}
 
 	scene->addChild(spriteAll, 10);
@@ -70,8 +74,8 @@ void PassingMap::ShowDebugGrid(CCScene *scene)
 
 CellState PassingMap::GetCellSTate(int x, int y)
 {
-	if (x >= 0 && x < MAP_HEIGHT_MAX &&
-		y >= 0 && y < MAP_WIDTH_MAX)
+	if (x >= 0 && x < MAP_WIDTH_MAX &&
+		y >= 0 && y < MAP_HEIGHT_MAX)
 	{
 		return PassingMap::map[x][y].type;
 	}
@@ -81,8 +85,8 @@ CellState PassingMap::GetCellSTate(int x, int y)
 
 void PassingMap::SetCellState(int x, int y, CellState cState)
 {
-	if (x >= 0 && x < MAP_HEIGHT_MAX &&
-		y >= 0 && y < MAP_WIDTH_MAX)
+	if (x >= 0 && x < MAP_WIDTH_MAX &&
+		y >= 0 && y < MAP_HEIGHT_MAX)
 	{
 		PassingMap::map[x][y].type = cState;
 	}
