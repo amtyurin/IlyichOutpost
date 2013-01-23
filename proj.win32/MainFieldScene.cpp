@@ -87,7 +87,15 @@ bool MainFieldScene::init()
 
         // Add the sprite to MainMenu layer as a child layer.
         this->addChild(pSpriteWire, 1);
-				
+
+		/*CCSprite *pSpriteTower = CCSprite::create("machineGun.png");
+		CC_BREAK_IF(! pSpriteWire);
+		pSpriteTower->setPosition(ccp(18,582));
+		this->addChild(pSpriteTower);
+		for (int i = 0; i<=180; ++i){
+			pSpriteTower->setRotation(i);
+		}
+		*/
 
 
 
