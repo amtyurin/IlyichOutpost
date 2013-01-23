@@ -58,6 +58,9 @@
     <ClInclude Include="MainFieldScene.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="PassingMap.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -70,6 +73,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="MainFieldScene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="PassingMap.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

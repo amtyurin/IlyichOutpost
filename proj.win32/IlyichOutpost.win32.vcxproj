@@ -141,6 +141,7 @@
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MainFieldScene.h" />
+    <ClInclude Include="PassingMap.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +149,7 @@
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainFieldScene.cpp" />
+    <ClCompile Include="PassingMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="glew32.lib" />
