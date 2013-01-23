@@ -3,6 +3,7 @@
 #include "MainMenuScene.h"
 
 #include "PassingMap.h"
+#include "Wave.h"
 
 using namespace cocos2d;
 
@@ -105,8 +106,7 @@ bool MainFieldScene::init()
 		PassingMap::SetCellState(10,10,STATE_CELL_BUILD);
 		PassingMap::SetCellState(11,11,STATE_CELL_BUILD);
 		PassingMap::ShowDebugGrid((CCScene*)this);
-
-		Waypoint way;
+		
 		way.AddPoint(PassingMap::GetCell(1,1));
 		way.AddPoint(PassingMap::GetCell(2,2));
 		way.AddPoint(PassingMap::GetCell(2,5));
@@ -114,6 +114,10 @@ bool MainFieldScene::init()
 		way.AddPoint(PassingMap::GetCell(12,9));
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 
+
+		wave1 = new Wave(20);
+		wave1->Start((CCScene *)this, &way);
+		
 		this->schedule( schedule_selector(MainFieldScene::gameLogic), 1.0 );
 
 
@@ -132,53 +136,9 @@ void MainFieldScene::CreateScene(CCObject* sender)
 
 void MainFieldScene::gameLogic(float dt)
 {
-    this->addTarget();
+    // called every X msec
 }
 
-void MainFieldScene::spriteMoveFinished(CCNode* sender)
-{
-  CCSprite *sprite = (CCSprite *)sender;
-  this->removeChild(sprite, true);
-}
 
-void MainFieldScene::addTarget()
-{
-    CCSprite *target = CCSprite::create("enemy.png", 
-        CCRectMake(0,0,32,32) );
-
-    // Determine where to spawn the target along the Y axis
-    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-    int minY = target->getContentSize().height/2;
-    int maxY = winSize.height
-                         -  target->getContentSize().height/2;
-    int rangeY = maxY - minY;
-    // srand( TimGetTicks() );
-    int actualY = ( rand() % rangeY ) + minY;
-
-    // Create the target slightly off-screen along the right edge,
-    // and along a random position along the Y axis as calculated
-    target->setPosition( 
-        ccp(winSize.width + (target->getContentSize().width/2), 
-        actualY) );
-    this->addChild(target);
-
-    // Determine speed of the target
-    int minDuration = (int)12.0;
-    int maxDuration = (int)25.0;
-    int rangeDuration = maxDuration - minDuration;
-    // srand( TimGetTicks() );
-    int actualDuration = ( rand() % rangeDuration )
-                                        + minDuration;
-
-    // Create the actions
-    CCFiniteTimeAction* actionMove = 
-        CCMoveTo::create( (float)actualDuration, 
-        ccp(0 - target->getContentSize().width/2, actualY) );
-    CCFiniteTimeAction* actionMoveDone = 
-        CCCallFuncN::create( this, 
-        callfuncN_selector(MainFieldScene::spriteMoveFinished));
-    target->runAction( CCSequence::create(actionMove, 
-        actionMoveDone, NULL) );
-}
 
 

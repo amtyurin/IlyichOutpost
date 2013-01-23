@@ -106,8 +106,10 @@ void PassingMap::SetCellState(const int x, const int y, const CellState cState)
 void PassingMap::ShowWaypoint(Waypoint *way, CCScene *scene)
 {
 	CCSprite *spriteAll = CCSprite::create();
+	int i = 0;
+	Cell *cell = way->GetPoint(i);
 
-	for (Cell *cell = way->GetFirstPoint(); cell != NULL; cell = way->GetNextPoint())
+	while(cell)
 	{
 		CCSprite *cellSprite = CCSprite::create("\\cells\\busy_cell.png");
 		CC_BREAK_IF(! cellSprite);
@@ -116,7 +118,10 @@ void PassingMap::ShowWaypoint(Waypoint *way, CCScene *scene)
 		cellSprite->setPositionX(cell->x);
         cellSprite->setPositionY(cell->y);
 
-		spriteAll->addChild(cellSprite, 1);			
+		spriteAll->addChild(cellSprite, 1);
+
+		i++;
+		cell = way->GetPoint(i);
 	}
 
 	scene->addChild(spriteAll, 20);

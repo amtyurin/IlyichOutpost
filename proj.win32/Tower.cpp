@@ -16,6 +16,6 @@ void Tower::setX(float newX){
 	this->position.x = newX;
 }
 
-void Tower::setX(float newY){
+void Tower::setY(float newY){
 	this->position.y = newY;
 }

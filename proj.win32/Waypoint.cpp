@@ -5,7 +5,6 @@
 Waypoint::Waypoint(void)
 {
 	way.resize(0);
-	position = 0;
 }
 
 
@@ -26,23 +25,11 @@ void Waypoint::RemovePoint(const Cell *cell)
 	way.erase(std::remove(way.begin(), way.end(), cell), way.end());
 }
 
-Cell* Waypoint::GetFirstPoint()
+Cell* Waypoint::GetPoint(const int index)
 {
-	if (way.size() > 0)
+	if (index >= 0 && index < way.size())
 	{
-		position = 0;
-		return way[position];
-	}
-	else
-		return NULL;
-}
-
-Cell* Waypoint::GetNextPoint()
-{	
-	if (position + 1< way.size())
-	{		
-		position++;
-		return way[position];
+		return way[index];
 	}
 	else
 		return NULL;

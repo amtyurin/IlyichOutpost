@@ -3,8 +3,14 @@
 
 #include "SimpleAudioEngine.h"
 
+#include "Waypoint.h"
+#include "Wave.h"
+
 class MainFieldScene : public cocos2d::CCLayer
 {
+	Waypoint way;
+	Wave *wave1;
+
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
@@ -20,7 +26,7 @@ public:
 
 	void gameLogic(float dt);
 
-	void addTarget();
-	void spriteMoveFinished(CCNode* sender);
+	void addMob();
+	void EnemyMoveFinished(CCNode* sender);
 };
 
