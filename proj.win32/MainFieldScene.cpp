@@ -111,7 +111,7 @@ bool MainFieldScene::init()
 		way.AddPoint(PassingMap::GetCell(2,2));
 		way.AddPoint(PassingMap::GetCell(2,5));
 		way.AddPoint(PassingMap::GetCell(7,5));
-		way.AddPoint(PassingMap::GetCell(9,12));
+		way.AddPoint(PassingMap::GetCell(12,9));
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 
 		this->schedule( schedule_selector(MainFieldScene::gameLogic), 1.0 );

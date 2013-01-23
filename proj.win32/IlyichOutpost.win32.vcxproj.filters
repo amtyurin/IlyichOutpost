@@ -64,6 +64,15 @@
     <ClInclude Include="Waypoint.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -82,6 +91,15 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="Waypoint.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Wave.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
