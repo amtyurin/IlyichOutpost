@@ -1,10 +1,11 @@
-#include "MainMenuScene.h"
-
 #include "MainFieldScene.h"
+
+#include "MainMenuScene.h"
 
 using namespace cocos2d;
 
-CCScene* MainMenu::scene()
+
+CCScene* MainFieldScene::scene()
 {
     CCScene * scene = NULL;
     do 
@@ -14,7 +15,7 @@ CCScene* MainMenu::scene()
         CC_BREAK_IF(! scene);
 
         // 'layer' is an autorelease object
-        MainMenu *layer = MainMenu::create();
+        MainFieldScene *layer = MainFieldScene::create();
         CC_BREAK_IF(! layer);
 
         // add layer as a child to scene
@@ -26,7 +27,7 @@ CCScene* MainMenu::scene()
 }
 
 // on "init" you need to initialize your instance
-bool MainMenu::init()
+bool MainFieldScene::init()
 {
     bool bRet = false;
     do 
@@ -48,7 +49,7 @@ bool MainMenu::init()
             "CloseNormal.png",
             "CloseSelected.png",
             this,
-            menu_selector(MainMenu::menuCloseCallback));
+            menu_selector(MainMenu::CreateScene));
         CC_BREAK_IF(! pCloseItem);
 
         // Place the menu item bottom-right conner.
@@ -62,42 +63,32 @@ bool MainMenu::init()
         // Add the menu to MainMenu layer as a child layer.
         this->addChild(pMenu, 1);
 
-        // 2. Add a label shows "Hello World".
+		CCSize size = CCDirector::sharedDirector()->getWinSize();
 
-        // Create a label and initialize with string "Hello World".
-        CCLabelTTF* pLabel = CCLabelTTF::create("Welcome to Ilyich Outpost", "Arial", 24);
-        CC_BREAK_IF(! pLabel);
+        // 3. Add add background, show the cocos2d splash image.
+        CCSprite* pSpriteBg = CCSprite::create("background.png");
+        CC_BREAK_IF(! pSpriteBg);
 
-        // Get window size and place the label upper. 
-        CCSize size = CCDirector::sharedDirector()->getWinSize();
-        pLabel->setPosition(ccp(size.width / 2, size.height - 50));
-
-        // Add the label to MainMenu layer as a child layer.
-        this->addChild(pLabel, 1);
-
-        // 3. Add add a splash screen, show the cocos2d splash image.
-        CCSprite* pSpriteMainMenu = CCSprite::create("MainMenu.png");
-        CC_BREAK_IF(! pSpriteMainMenu);
-
-		pSpriteMainMenu->setScaleX(size.width / pSpriteMainMenu->getContentSize().width);
-		pSpriteMainMenu->setScaleY(size.height / pSpriteMainMenu->getContentSize().height);
+		pSpriteBg->setScaleX(size.width / pSpriteBg->getContentSize().width);
+		pSpriteBg->setScaleY(size.height / pSpriteBg->getContentSize().height);
 
         // Place the sprite on the center of the screen
-        pSpriteMainMenu->setPosition(ccp(size.width/2, size.height/2));
+        pSpriteBg->setPosition(ccp(size.width/2, size.height/2));
 
         // Add the sprite to MainMenu layer as a child layer.
-        this->addChild(pSpriteMainMenu, 0);
-				
-		// menu items
-		CCMenuItemImage* startItem;
- 
-		startItem = CCMenuItemImage::create("\\MenuItems\\Start.png", "\\MenuItems\\StartPressed.png",
-										    "\\MenuItems\\StartPressed.png", this, menu_selector(MainFieldScene::CreateScene)); 
+        this->addChild(pSpriteBg, 0);
 
-		CCMenu* menu = CCMenu::create(startItem, NULL);
-		menu->alignItemsVertically();
-		this->addChild(menu);
-		// \menu items
+		// Add wire
+		CCSprite* pSpriteWire = CCSprite::create("wire.png");
+        CC_BREAK_IF(! pSpriteWire);
+		
+        // Place the sprite on the center of the screen
+        pSpriteWire->setPosition(ccp(size.width/2, size.height/2));
+
+        // Add the sprite to MainMenu layer as a child layer.
+        this->addChild(pSpriteWire, 1);
+				
+
 
 
         bRet = true;
@@ -106,16 +97,11 @@ bool MainMenu::init()
     return bRet;
 }
 
-void MainMenu::CreateScene(CCObject* sender)
+void MainFieldScene::CreateScene(CCObject* sender)
 {
-    CCScene* anScene = MainMenu::scene();
+    CCScene* anScene = MainFieldScene::scene();
  
     CCDirector::sharedDirector()->replaceScene(anScene);
 }
 
-void MainMenu::menuCloseCallback(CCObject* pSender)
-{
-    // "close" menu item clicked
-    CCDirector::sharedDirector()->end();
-}
 
