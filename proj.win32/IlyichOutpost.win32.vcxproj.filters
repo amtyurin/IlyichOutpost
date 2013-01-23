@@ -30,6 +30,12 @@
     <None Include="..\Resources\MainMenu.png">
       <Filter>resource</Filter>
     </None>
+    <None Include="..\Resources\wire.png">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="..\Resources\background.png">
+      <Filter>resource</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="IlyichOutpost.rc">
@@ -49,6 +55,9 @@
     <ClInclude Include="..\Classes\MainMenuScene.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="MainFieldScene.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -58,6 +67,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\MainMenuScene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFieldScene.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
