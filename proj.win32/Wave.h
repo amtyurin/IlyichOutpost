@@ -18,5 +18,7 @@ public:
 	bool AddEnemy(CCScene *scene, Waypoint *waypoint, int health, int speed);
 	int GetCurrentWaveNumber();
 	int GetEnemyCount();
+
+	CCPoint GetEnemyPosition(const int index);
 };
 
