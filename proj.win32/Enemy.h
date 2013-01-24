@@ -29,10 +29,10 @@ public:
 	void SetWaypoint(Waypoint *way);
 	void SetSpeed(const int speed);
 	void SetScene(CCScene *scene);
+	CCPoint GetPosition();
 
 	bool MakeDamage(const int health);
 
 	void Start();
-
 };
 

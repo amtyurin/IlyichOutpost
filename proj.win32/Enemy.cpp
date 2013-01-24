@@ -74,7 +74,7 @@ void Enemy::CheckPointReached(Enemy *sender)
 	  currentPoint++;
 
 	  // For testing
-	  MakeDamage(60);
+	  //MakeDamage(60);
   }
   else
   {
@@ -116,4 +116,9 @@ void Enemy::Start()
 	scene->addChild(sprite);
 
 	CheckPointReached(this);
+}
+
+CCPoint Enemy::GetPosition()
+{
+	return sprite->getPosition();
 }
