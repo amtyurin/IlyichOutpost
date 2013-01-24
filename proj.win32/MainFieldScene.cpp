@@ -139,7 +139,15 @@ void MainFieldScene::CreateScene(CCObject* sender)
 
 void MainFieldScene::GameLogic(float dt)
 {
-
+	printf("Function called\n");
+	towerArrayIterator it;
+	for (it = this->towers.begin(); it != this->towers.end(); ++it){
+		for (int i = 0; i < this->wave->GetEnemyCount(); ++i){
+			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
+				it->turnTo(this->wave->GetEnemyPosition(i));
+			}
+		}
+	}
 }
 
 void MainFieldScene::StartWave(float dt)
@@ -149,7 +157,7 @@ void MainFieldScene::StartWave(float dt)
 
 	delete wave;
 	wave = new Wave(waveEnemyCount, waveNumber);
-	this->addTower(1, ccp(200, 100));
+	this->addTower(1, ccp(100, 100));
 
 	this->schedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess), 2.0 );
 }
@@ -167,6 +175,7 @@ void MainFieldScene::WaveGenerateEnemyProcess(float dt)
 Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
 	Tower newTower(towerType, position);
 	this->addChild(newTower.getSprite());
+	this->towers.addTower(newTower);
 	return newTower;
 }
 
