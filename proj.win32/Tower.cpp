@@ -46,6 +46,33 @@ void Tower::setY(float newY){
 	this->position.y = newY;
 }
 
-CCSprite * Tower::getSprite(){
+CCSprite * Tower::getSprite() const{
 	return this->spritePtr;
+}
+
+const bool Tower::operator < (const Tower &tower) const{
+	/*int compareValue = this->position.x * 10000 + this->position.y;
+	int compareValue2 = tower.getX() * 10000 + tower.getY();
+	return compareValue < compareValue2;*/
+	return (this < &tower);
+}
+
+void Tower::turnTo(const CCPoint point){
+	this->spritePtr->setRotationX(point.x);
+	this->spritePtr->setRotationY(point.y);
+}
+
+const bool Tower::operator> (const Tower &tower) const{
+	return !(*this < tower);
+}
+
+const bool Tower::isTargetInRange(CCPoint target) const{
+	double dX = abs(this->position.x-target.x);
+	double dY = abs(this->position.y - target.y);
+	double range = sqrt(pow(dX, 2) + pow(dY, 2));
+	if (range <= this->fireRadius) {
+		return true;
+	}else{
+		return false;
+	}
 }

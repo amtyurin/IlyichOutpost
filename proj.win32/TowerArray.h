@@ -1,16 +1,20 @@
 #pragma once
 #include "cocos2d.h"
 #include "Tower.h"
-using namespace cocos2d;
+#include <set>
+#include <vector>
+#include <algorithm>
+
 
 class TowerArray
 {
 private:
-	CCArray *towerArray;	
+	vector<Tower> towerSet;
 public:
 	TowerArray(void);
 	void addTower(Tower &tower);
 	void removeTower(Tower &tower);
 	~TowerArray(void);
+	vector<Tower>::iterator begin();
+	vector<Tower>::iterator end();
 };
-
