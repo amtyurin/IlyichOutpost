@@ -9,7 +9,10 @@
 class MainFieldScene : public cocos2d::CCLayer
 {
 	Waypoint way;
-	Wave *wave1;
+	Wave *wave;
+
+	int wavesCount;
+	int waveTimout;
 
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -24,6 +27,8 @@ public:
 	// Menu items handlers
 	void CreateScene(CCObject* sender);		
 
-	void addEnemies(float dt);
+	void StartWave(float dt);
+	void WaveGenerateEnemyProcess(float dt);
+	void GameLogic(float dt);
 };
 

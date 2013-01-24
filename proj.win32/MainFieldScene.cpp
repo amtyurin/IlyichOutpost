@@ -114,9 +114,12 @@ bool MainFieldScene::init()
 		way.AddPoint(PassingMap::GetCell(12,9));
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 
+		wavesCount = 5;
+		waveTimout = 5;
+		wave = new Wave(10 / 1.3, 0);
+		this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
 
-		wave1 = new Wave(20);		
-		this->schedule( schedule_selector(MainFieldScene::addEnemies), 1.0 );
+		this->schedule( schedule_selector(MainFieldScene::GameLogic), 0.3 );
 
 
         bRet = true;
@@ -132,13 +135,30 @@ void MainFieldScene::CreateScene(CCObject* sender)
     CCDirector::sharedDirector()->replaceScene(anScene);
 }
 
-void MainFieldScene::addEnemies(float dt)
+void MainFieldScene::GameLogic(float dt)
+{
+
+}
+
+void MainFieldScene::StartWave(float dt)
+{
+	int waveNumber = wave->GetCurrentWaveNumber() + 1;
+	int waveEnemyCount = wave->GetEnemyCount() * 1.3;
+
+	delete wave;
+	wave = new Wave(waveEnemyCount, waveNumber);
+
+	this->schedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess), 2.0 );
+}
+
+void MainFieldScene::WaveGenerateEnemyProcess(float dt)
 {
     // called every X msec
-	bool added = wave1->AddEnemy((CCScene*)this, &way);
+	bool added = wave->AddEnemy((CCScene*)this, &way, 100, 15);
 	if (!added)
-	{
-		this->unschedule( schedule_selector(MainFieldScene::addEnemies) );
+	{		
+		this->unschedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess) );
+		this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
 	}
 }
 

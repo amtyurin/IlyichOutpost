@@ -2,12 +2,11 @@
 
 #include "Enemy.h"
 
-Wave::Wave(int enemyCount)
+Wave::Wave(int enemyCount, int currentWaveNumber)
 {
-	currentWaveNumber = 0;
+	this->currentWaveNumber = currentWaveNumber;
 	this->enemyCount = enemyCount;
 	createdEnemies = 0;
-	timeout = 0;
 }
 
 
@@ -15,14 +14,24 @@ Wave::~Wave(void)
 {
 }
 
-bool Wave::AddEnemy(CCScene *scene, Waypoint *waypoint)
+int Wave::GetCurrentWaveNumber()
+{
+	return currentWaveNumber;
+}
+
+int Wave::GetEnemyCount()
+{
+	return enemyCount;
+}
+
+bool Wave::AddEnemy(CCScene *scene, Waypoint *waypoint, int health, int speed)
 {
 	if (createdEnemies < enemyCount)
 	{
 		Enemy *mob1 = new Enemy("enemy.png");
-		mob1->SetHealth(100);
+		mob1->SetHealth(health);
 		mob1->SetWaypoint(waypoint);
-		mob1->SetSpeed(15);	
+		mob1->SetSpeed(speed);	
 		mob1->SetScene(scene);
 	
 		mob1->Start();
