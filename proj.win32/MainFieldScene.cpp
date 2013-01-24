@@ -122,9 +122,9 @@ bool MainFieldScene::init()
 		this->schedule( schedule_selector(MainFieldScene::GameLogic), 0.3 );
 
 		// sound
-		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
+		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
 
-		this->addTower(1, ccp(200, 100));
+		this->addTower(MACHINE_GUN, ccp(130, 100));
 
         bRet = true;
     } while (0);
@@ -142,7 +142,7 @@ void MainFieldScene::CreateScene(CCObject* sender)
 void MainFieldScene::GameLogic(float dt)
 {
 
-	printf("Function called\n");
+	//printf("Function called\n");
 	towerArrayIterator it;
 	for (it = this->towers.begin(); it != this->towers.end(); ++it){
 		for (int i = 0; i < this->wave->GetEnemyCount(); ++i){

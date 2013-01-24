@@ -13,17 +13,20 @@ damage(_damage), fireSpeed(_fireSpeed), fireRadius(_fireRadius), position(_posit
 }
 
 Tower::Tower(int type, CCPoint _position){
+	//CCLog("Type: %d\n", type);
 	switch (type){
 		case MACHINE_GUN:
 			this->damage = 10;
 			this->fireSpeed = 10;
 			this->fireRadius = 50;
 			this->spritePtr = CCSprite::create("machineGun.png");
+			break;
 		case HEAVY_GUN:
 			this->damage = 20;
 			this->fireSpeed = 5;
 			this->fireRadius = 70;
 			this->spritePtr = CCSprite::create("machineGun.png");
+			break;
 		default:
 			this->damage = 0;
 			this->fireSpeed = 0;
@@ -31,11 +34,12 @@ Tower::Tower(int type, CCPoint _position){
 	}
 	this->position=_position;
 	this->spritePtr->setPosition(_position);
+	//CCLog("FireRadius: %d\n", this->fireRadius);
 }
 
 
 Tower::~Tower(void){
-	
+	//this->spritePtr->release();
 }
 
 void Tower::setX(float newX){
@@ -58,8 +62,25 @@ const bool Tower::operator < (const Tower &tower) const{
 }
 
 void Tower::turnTo(const CCPoint point){
-	this->spritePtr->setRotationX(point.x);
-	this->spritePtr->setRotationY(point.y);
+	double dx = abs(this->position.x - point.x);
+	double dy = abs(this->position.y - point.y);
+	/*if (dy <= 0.0000001){
+		dy = 0.1;
+	}*/
+	double tanOfAngle = (dx/dy);
+	double angle = atan(tanOfAngle)*57.2957795135;
+	CCLog("%f\t%f\t%f\t%f\n", dx, dy, tanOfAngle, angle);
+	if (angle >=0 && angle <=360){
+		this->spritePtr->setRotation(angle);
+	}
+	//CCLog("%f\t%f\n", angle, angleDegrees);
+	/*double dX = abs(this->position.x - point.x);
+	double dY = abs(this->position.y - point.y);
+	double angleSin = (dX/dY);
+	double angle = asin(angleSin);
+	this->spritePtr->setRotation(angle*180/3.14);*/
+	//this->spritePtr->setRotationX(point.x);
+	//this->spritePtr->setRotationY(point.y);
 }
 
 const bool Tower::operator> (const Tower &tower) const{
@@ -67,9 +88,12 @@ const bool Tower::operator> (const Tower &tower) const{
 }
 
 const bool Tower::isTargetInRange(CCPoint target) const{
-	double dX = abs(this->position.x-target.x);
+	//std::cout<<this->position.x<<"\t"<<this->position.y<<std::endl;
+	//std::cout<<target.x<<"\t"<<target.y<<std::endl;
+	double dX = abs(this->position.x - target.x);
 	double dY = abs(this->position.y - target.y);
 	double range = sqrt(pow(dX, 2) + pow(dY, 2));
+	//CCLog("%f\t%d\n", range, this->fireRadius);
 	if (range <= this->fireRadius) {
 		return true;
 	}else{

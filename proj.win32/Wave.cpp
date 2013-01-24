@@ -6,7 +6,7 @@
 
 int Wave::currentWaveNumber = 0;
 int Wave::enemyCount = 0;
-
+#define JOKERNN_DEBUG
 void Wave::CreateEnemies(const EnemyType eType,const int count)
 {
 	for (int i = 0; i < count; i++)
@@ -39,6 +39,9 @@ Wave::Wave(CCScene *scene, Waypoint *waypoint)
 	{
 		case 1:
 			enemyCount = 10;
+#ifdef JOKERNN_DEBUG
+			enemyCount = 1;
+#endif
 			CreateEnemies(ENEMY_SOLDER, enemyCount);
 			break;
 		case 2:
