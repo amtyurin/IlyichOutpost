@@ -2,6 +2,8 @@
 
 #include "Enemy.h"
 
+#include <algorithm>
+
 Wave::Wave(int enemyCount, int currentWaveNumber)
 {
 	this->currentWaveNumber = currentWaveNumber;
@@ -67,7 +69,13 @@ void Wave::MakeDamage(const int index, const int health)
 {
 	if (index >= 0 && index < aliveEnemies.size())
 	{
-		aliveEnemies[index]->MakeDamage(health);
+		bool killed = aliveEnemies[index]->MakeDamage(health);
+		if (killed)
+		{
+			CCLog("Enemy killed %d", index);
+
+			aliveEnemies.erase(std::remove(aliveEnemies.begin(), aliveEnemies.end(), aliveEnemies[index]), aliveEnemies.end());
+		}
 	}
 
 	CCLog("Wrong enemy index %d", index);
