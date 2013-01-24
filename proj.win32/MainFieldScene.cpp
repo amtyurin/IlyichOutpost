@@ -121,6 +121,8 @@ bool MainFieldScene::init()
 
 		this->schedule( schedule_selector(MainFieldScene::GameLogic), 0.3 );
 
+		// sound
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
 
         bRet = true;
     } while (0);
