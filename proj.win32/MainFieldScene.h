@@ -7,12 +7,10 @@
 #include "Wave.h"
 #include "Tower.h"
 #include "TowerArray.h"
-<<<<<<< HEAD
-=======
+
 #include <set>
 
 typedef vector<Tower>::iterator towerArrayIterator;
->>>>>>> dfa3bfe07c0d8b852cc1f984d3542a0113e89adf
 
 class MainFieldScene : public cocos2d::CCLayer
 {

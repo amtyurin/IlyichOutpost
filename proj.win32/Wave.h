@@ -19,8 +19,8 @@ class Wave
 
 	vector<Enemy *> aliveEnemies;
 
-	void CreateEnemies(EnemyType eType, int count);
-	void  AlignEnemyCount(EnemyType eType);
+	void CreateEnemies(const EnemyType eType, const  int count);
+	void  AlignEnemyCount(const EnemyType eType);
 
 public:
 	Wave(CCScene *scene, Waypoint *waypoint);
@@ -28,6 +28,7 @@ public:
 	~Wave(void);
 
 	bool AddEnemy();
+	void RemoveEnemy(Enemy *enemy);
 	int GetCurrentWaveNumber();
 
 	int GetEnemyCount();

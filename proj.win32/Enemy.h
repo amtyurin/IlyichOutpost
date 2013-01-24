@@ -27,6 +27,8 @@ class Enemy : public CCObject
 	int currentPoint;
 	int speed;
 
+	void *wave;
+
 	CCSprite *sprite;
 	CCSprite *spriteHealth;
 	CCScene *scene;
@@ -35,13 +37,13 @@ class Enemy : public CCObject
 	void Destroy(Enemy *sender);
 	
 public:
-	Enemy(EnemyType eType, CCScene *scene, Waypoint *way);
+	Enemy(void *wave, const EnemyType eType, CCScene *scene, Waypoint *way);
 	~Enemy(void);
 
 	void SetSpeed(const int speed);
 	CCPoint GetPosition();
 
-	bool MakeDamage(const int health);
+	void MakeDamage(const int health);
 
 	void Start();
 };

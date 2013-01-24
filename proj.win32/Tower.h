@@ -18,6 +18,7 @@ private:
 	float normRotateY;
 	cocos2d::CCPoint position;
 	cocos2d::CCSprite *spritePtr;
+	cocos2d::CCSprite *spriteRange;
 	Tower(void);
 
 public:

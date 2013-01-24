@@ -109,7 +109,7 @@ bool MainFieldScene::init()
 		
 		way.AddPoint(PassingMap::GetCell(1,1));
 		way.AddPoint(PassingMap::GetCell(2,2));
-		way.AddPoint(PassingMap::GetCell(2,5));
+		way.AddPoint(PassingMap::GetCell(4,4));
 		way.AddPoint(PassingMap::GetCell(7,5));
 		way.AddPoint(PassingMap::GetCell(12,9));
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
@@ -141,7 +141,16 @@ void MainFieldScene::CreateScene(CCObject* sender)
 
 void MainFieldScene::GameLogic(float dt)
 {
-<<<<<<< HEAD
+
+	printf("Function called\n");
+	towerArrayIterator it;
+	for (it = this->towers.begin(); it != this->towers.end(); ++it){
+		for (int i = 0; i < this->wave->GetEnemyCount(); ++i){
+			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
+				it->turnTo(this->wave->GetEnemyPosition(i));
+			}
+		}
+	}
 
 	if (wave->GetEnemyCount() <= 0)
 	{
@@ -154,15 +163,6 @@ void MainFieldScene::GameLogic(float dt)
 		else
 		{
 			CCLog("All waves are passed. You won!");
-=======
-	printf("Function called\n");
-	towerArrayIterator it;
-	for (it = this->towers.begin(); it != this->towers.end(); ++it){
-		for (int i = 0; i < this->wave->GetEnemyCount(); ++i){
-			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
-				it->turnTo(this->wave->GetEnemyPosition(i));
-			}
->>>>>>> dfa3bfe07c0d8b852cc1f984d3542a0113e89adf
 		}
 	}
 }
@@ -173,13 +173,7 @@ void MainFieldScene::StartWave(float dt)
 		delete wave;
 	}
 
-<<<<<<< HEAD
 	wave = new Wave((CCScene *)this, &way);	
-=======
-	delete wave;
-	wave = new Wave(waveEnemyCount, waveNumber);
-	this->addTower(1, ccp(100, 100));
->>>>>>> dfa3bfe07c0d8b852cc1f984d3542a0113e89adf
 
 	this->schedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess), 2.0 );
 }
