@@ -4,14 +4,58 @@
 
 #include <algorithm>
 
-Wave::Wave(int enemyCount, int currentWaveNumber)
+int Wave::currentWaveNumber = 0;
+int Wave::enemyCount = 0;
+
+void Wave::CreateEnemies(EnemyType eType, int count)
 {
-	this->currentWaveNumber = currentWaveNumber;
-	this->enemyCount = enemyCount;
-	createdEnemies = 0;
-	aliveEnemies.resize(0);
+	for (int i = 0; i < count; i++)
+	{
+		Enemy *mob = new Enemy(eType, scene, waypoint);
+		aliveEnemies.push_back(mob);
+	}
 }
 
+void Wave::AlignEnemyCount(EnemyType eType)
+{
+	int diff = enemyCount - aliveEnemies.size();
+	for (int i = 0; i < diff; i++)
+	{
+		Enemy *mob = new Enemy(eType, scene, waypoint);
+		aliveEnemies.push_back(mob);
+	}
+}
+
+Wave::Wave(CCScene *scene, Waypoint *waypoint)
+{
+	createdEnemies = 0;
+	aliveEnemies.resize(0);
+
+	this->scene = scene;
+	this->waypoint = waypoint;
+
+	currentWaveNumber++;
+	switch(Wave::currentWaveNumber)
+	{
+		case 1:
+			enemyCount = 10;
+			CreateEnemies(ENEMY_SOLDER, enemyCount);
+			break;
+		case 2:
+			enemyCount = 20;
+			CreateEnemies(ENEMY_SOLDER, enemyCount / 2);
+			CreateEnemies(ENEMY_HEAVY_SOLDER, enemyCount / 2);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDER);
+			break;
+		case 3:
+			enemyCount = 30;
+			CreateEnemies(ENEMY_SOLDER, enemyCount / 3);
+			CreateEnemies(ENEMY_HEAVY_SOLDER, enemyCount / 3);
+			CreateEnemies(ENEMY_HORSEMAN, enemyCount / 3);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDER);
+			break;
+	}	
+}
 
 Wave::~Wave(void)
 {
@@ -27,19 +71,11 @@ int Wave::GetEnemyCount()
 	return enemyCount;
 }
 
-bool Wave::AddEnemy(CCScene *scene, Waypoint *waypoint, int health, int speed)
+bool Wave::AddEnemy()
 {
 	if (createdEnemies < enemyCount)
-	{
-		Enemy *mob = new Enemy("enemy.png");
-		mob->SetHealthTotal(health);
-		mob->SetWaypoint(waypoint);
-		mob->SetSpeed(speed);	
-		mob->SetScene(scene);
-
-		aliveEnemies.push_back(mob);
-	
-		mob->Start();
+	{				
+		aliveEnemies[createdEnemies]->Start();
 
 		createdEnemies++;
 

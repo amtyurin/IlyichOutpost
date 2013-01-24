@@ -105,7 +105,7 @@ bool MainFieldScene::init()
 		PassingMap::SetCellState(5,6,STATE_CELL_BUSY);
 		PassingMap::SetCellState(10,10,STATE_CELL_BUILD);
 		PassingMap::SetCellState(11,11,STATE_CELL_BUILD);
-		PassingMap::ShowDebugGrid((CCScene*)this);
+		//PassingMap::ShowDebugGrid((CCScene*)this);
 		
 		way.AddPoint(PassingMap::GetCell(1,1));
 		way.AddPoint(PassingMap::GetCell(2,2));
@@ -116,13 +116,15 @@ bool MainFieldScene::init()
 
 		wavesCount = 5;
 		waveTimout = 5;
-		wave = new Wave(10 / 1.3, 0);
+		wave = NULL;
 		this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
 
 		this->schedule( schedule_selector(MainFieldScene::GameLogic), 0.3 );
 
 		// sound
 		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
+
+		this->addTower(1, ccp(200, 100));
 
         bRet = true;
     } while (0);
@@ -140,16 +142,28 @@ void MainFieldScene::CreateScene(CCObject* sender)
 void MainFieldScene::GameLogic(float dt)
 {
 
+	if (wave->GetEnemyCount() <= 0)
+	{
+		if (wave->GetCurrentWaveNumber() <= wavesCount)
+		{	
+			//start new wave after some timout
+			CCLog("STart new wave in %d secs", waveTimout);
+			this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
+		}
+		else
+		{
+			CCLog("All waves are passed. You won!");
+		}
+	}
 }
 
 void MainFieldScene::StartWave(float dt)
 {
-	int waveNumber = wave->GetCurrentWaveNumber() + 1;
-	int waveEnemyCount = wave->GetEnemyCount() * 1.3;
+	if (wave != NULL){
+		delete wave;
+	}
 
-	delete wave;
-	wave = new Wave(waveEnemyCount, waveNumber);
-	this->addTower(1, ccp(200, 100));
+	wave = new Wave((CCScene *)this, &way);	
 
 	this->schedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess), 2.0 );
 }
@@ -157,7 +171,7 @@ void MainFieldScene::StartWave(float dt)
 void MainFieldScene::WaveGenerateEnemyProcess(float dt)
 {
     // called every X msec
-	bool added = wave->AddEnemy((CCScene*)this, &way, 100, 15);
+	bool added = wave->AddEnemy();
 	if (!added)
 	{		
 		this->unschedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess) );		

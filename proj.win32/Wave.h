@@ -10,17 +10,24 @@ using namespace cocos2d;
 
 class Wave
 {	
-	int currentWaveNumber;
-	int enemyCount;
+	static int currentWaveNumber;
+	static int enemyCount;
 	int createdEnemies;
+
+	CCScene *scene; 
+	Waypoint *waypoint;
 
 	vector<Enemy *> aliveEnemies;
 
+	void CreateEnemies(EnemyType eType, int count);
+	void  AlignEnemyCount(EnemyType eType);
+
 public:
-	Wave(int enemyCount, int currentWaveNumber);
+	Wave(CCScene *scene, Waypoint *waypoint);
+	static Wave* NextWave();
 	~Wave(void);
 
-	bool AddEnemy(CCScene *scene, Waypoint *waypoint, int health, int speed);
+	bool AddEnemy();
 	int GetCurrentWaveNumber();
 
 	int GetEnemyCount();

@@ -6,6 +6,19 @@
 
 using namespace cocos2d;
 
+enum EnemyType
+{
+	ENEMY_SOLDER,
+	ENEMY_HEAVY_SOLDER,
+	ENEMY_HORSEMAN,
+	ENEMY_HEAVY_HORSEMAN,
+	ENEMY_MACHINEGUN_CART,
+	ENEMY_HEAVY_MACHINEGUN_CART,
+	ENEMY_ARMORED_CAR,
+	ENEMY_TANK,
+	ENEMY_HEAVY_TANK
+};
+
 class Enemy : public CCObject
 {
 	int healthTotal;
@@ -22,13 +35,10 @@ class Enemy : public CCObject
 	void Destroy(Enemy *sender);
 	
 public:
-	Enemy(char * image);
+	Enemy(EnemyType eType, CCScene *scene, Waypoint *way);
 	~Enemy(void);
 
-	void SetHealthTotal(const int health);
-	void SetWaypoint(Waypoint *way);
 	void SetSpeed(const int speed);
-	void SetScene(CCScene *scene);
 	CCPoint GetPosition();
 
 	bool MakeDamage(const int health);

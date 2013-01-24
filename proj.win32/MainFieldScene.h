@@ -6,6 +6,7 @@
 #include "Waypoint.h"
 #include "Wave.h"
 #include "Tower.h"
+#include "TowerArray.h"
 
 class MainFieldScene : public cocos2d::CCLayer
 {

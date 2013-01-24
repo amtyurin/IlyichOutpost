@@ -2,12 +2,68 @@
 
 #include "PassingMap.h"
 
-Enemy::Enemy(char *image)
+Enemy::Enemy(EnemyType eType, CCScene *scene, Waypoint *way)
 {
-	healthTotal = healthCurrent = 0;
-	waypoint = NULL;
-	speed = 0;
+	this->waypoint = way;
+	this->scene = scene;
 	currentPoint = 0;
+
+	char *image = NULL;
+
+	switch(eType)
+	{
+		case ENEMY_SOLDER:
+			this->healthCurrent = this->healthTotal = 50;
+			speed = 10;
+			image = "enemy.png";
+			break;
+		case ENEMY_HEAVY_SOLDER:
+			this->healthCurrent = this->healthTotal = 100;
+			speed = 10;
+			image = "enemy.png";
+			break;
+		case ENEMY_HORSEMAN:
+			this->healthCurrent = this->healthTotal = 150;
+			speed = 25;
+			image = "enemy.png";
+			break;
+		case ENEMY_HEAVY_HORSEMAN:
+			this->healthCurrent = this->healthTotal = 300;
+			speed = 20;
+			image = "enemy.png";
+			break;
+		case ENEMY_MACHINEGUN_CART:
+			this->healthCurrent = this->healthTotal = 500;
+			speed = 20;
+			image = "enemy.png";
+			break;
+		case ENEMY_HEAVY_MACHINEGUN_CART:
+			this->healthCurrent = this->healthTotal = 750;
+			speed = 15;
+			image = "enemy.png";
+			break;
+		case ENEMY_ARMORED_CAR:
+			this->healthCurrent = this->healthTotal = 1000;
+			speed = 15;
+			image = "enemy.png";
+			break;
+		case ENEMY_TANK:
+			this->healthCurrent = this->healthTotal = 1500;
+			speed = 10;
+			image = "enemy.png";
+			break;
+		case ENEMY_HEAVY_TANK:
+			this->healthCurrent = this->healthTotal = 2000;
+			speed = 7;
+			image = "enemy.png";
+			break;
+		default:
+			CCLog("Wrong enemy type!");
+			this->healthCurrent = this->healthTotal = 50;
+			speed = 10;
+			image = "enemy.png";
+			break;
+	}
 
 	sprite = CCSprite::create(image, CCRectMake(0,0,PassingMap::MAP_CELL_SIZE, PassingMap::MAP_CELL_SIZE) );
 
@@ -26,24 +82,9 @@ Enemy::~Enemy(void)
 {
 }
 
-void Enemy::SetHealthTotal(const int health)
-{
-	this->healthCurrent = this->healthTotal = health;
-}
-
-void Enemy::SetWaypoint(Waypoint *way)
-{
-	this->waypoint = way;
-}
-
 void Enemy::SetSpeed(const int speed)
 {
 	this->speed = speed;
-}
-
-void Enemy::SetScene(CCScene *scene)
-{
-	this->scene = scene;
 }
 
 void Enemy::Destroy(Enemy *sender)
