@@ -147,6 +147,7 @@ void MainFieldScene::StartWave(float dt)
 
 	delete wave;
 	wave = new Wave(waveEnemyCount, waveNumber);
+	this->addTower(1, ccp(200, 100));
 
 	this->schedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess), 2.0 );
 }
@@ -162,6 +163,11 @@ void MainFieldScene::WaveGenerateEnemyProcess(float dt)
 	}
 }
 
+Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
+	Tower newTower(towerType, position);
+	this->addChild(newTower.getSprite());
+	return newTower;
+}
 
 
 

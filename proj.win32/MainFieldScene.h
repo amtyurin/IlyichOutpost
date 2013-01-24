@@ -5,6 +5,7 @@
 
 #include "Waypoint.h"
 #include "Wave.h"
+#include "Tower.h"
 
 class MainFieldScene : public cocos2d::CCLayer
 {
@@ -30,5 +31,5 @@ public:
 	void StartWave(float dt);
 	void WaveGenerateEnemyProcess(float dt);
 	void GameLogic(float dt);
+	Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position);
 };
-
