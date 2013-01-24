@@ -76,6 +76,9 @@
     <ClInclude Include="Enemy.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="TowerArray.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -103,6 +106,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="TowerArray.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
