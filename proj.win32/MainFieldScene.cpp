@@ -160,8 +160,7 @@ void MainFieldScene::WaveGenerateEnemyProcess(float dt)
 	bool added = wave->AddEnemy((CCScene*)this, &way, 100, 15);
 	if (!added)
 	{		
-		this->unschedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess) );
-		this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
+		this->unschedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess) );		
 	}
 }
 

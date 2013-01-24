@@ -8,7 +8,7 @@
 
 using namespace cocos2d;
 
-class Wave : public CCObject
+class Wave
 {	
 	int currentWaveNumber;
 	int enemyCount;
