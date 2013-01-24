@@ -54,6 +54,23 @@ Wave::Wave(CCScene *scene, Waypoint *waypoint)
 			CreateEnemies(ENEMY_HORSEMAN, enemyCount / 3);
 			AlignEnemyCount(ENEMY_HEAVY_SOLDER);
 			break;
+		case 4:
+			enemyCount = 40;
+			CreateEnemies(ENEMY_SOLDER, enemyCount / 4);
+			CreateEnemies(ENEMY_HEAVY_SOLDER, enemyCount / 4);
+			CreateEnemies(ENEMY_HORSEMAN, enemyCount / 4);
+			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyCount / 4);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDER);
+			break;
+		case 5:
+			enemyCount = 50;
+			CreateEnemies(ENEMY_SOLDER, enemyCount / 5);
+			CreateEnemies(ENEMY_HEAVY_SOLDER, enemyCount / 5);
+			CreateEnemies(ENEMY_HORSEMAN, enemyCount / 5);
+			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyCount / 5);
+			CreateEnemies(ENEMY_MACHINEGUN_CART, enemyCount / 5);
+			AlignEnemyCount(ENEMY_HEAVY_TANK);
+			break;
 	}	
 }
 

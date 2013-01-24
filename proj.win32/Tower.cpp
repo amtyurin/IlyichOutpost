@@ -17,12 +17,12 @@ Tower::Tower(int type, CCPoint _position){
 		case MACHINE_GUN:
 			this->damage = 10;
 			this->fireSpeed = 10;
-			this->fireRadius = 50;
+			this->fireRadius = 150;
 			this->spritePtr = CCSprite::create("machineGun.png");
 		case HEAVY_GUN:
 			this->damage = 20;
 			this->fireSpeed = 5;
-			this->fireRadius = 70;
+			this->fireRadius = 170;
 			this->spritePtr = CCSprite::create("machineGun.png");
 		default:
 			this->damage = 0;

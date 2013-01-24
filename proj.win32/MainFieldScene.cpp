@@ -124,7 +124,7 @@ bool MainFieldScene::init()
 		// sound
 		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
 
-		this->addTower(1, ccp(200, 100));
+		this->addTower(1, ccp(100, 100));
 
         bRet = true;
     } while (0);
