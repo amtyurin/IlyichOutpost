@@ -141,6 +141,7 @@ void MainFieldScene::CreateScene(CCObject* sender)
 
 void MainFieldScene::GameLogic(float dt)
 {
+<<<<<<< HEAD
 
 	if (wave->GetEnemyCount() <= 0)
 	{
@@ -153,6 +154,15 @@ void MainFieldScene::GameLogic(float dt)
 		else
 		{
 			CCLog("All waves are passed. You won!");
+=======
+	printf("Function called\n");
+	towerArrayIterator it;
+	for (it = this->towers.begin(); it != this->towers.end(); ++it){
+		for (int i = 0; i < this->wave->GetEnemyCount(); ++i){
+			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
+				it->turnTo(this->wave->GetEnemyPosition(i));
+			}
+>>>>>>> dfa3bfe07c0d8b852cc1f984d3542a0113e89adf
 		}
 	}
 }
@@ -163,7 +173,13 @@ void MainFieldScene::StartWave(float dt)
 		delete wave;
 	}
 
+<<<<<<< HEAD
 	wave = new Wave((CCScene *)this, &way);	
+=======
+	delete wave;
+	wave = new Wave(waveEnemyCount, waveNumber);
+	this->addTower(1, ccp(100, 100));
+>>>>>>> dfa3bfe07c0d8b852cc1f984d3542a0113e89adf
 
 	this->schedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess), 2.0 );
 }
@@ -181,6 +197,7 @@ void MainFieldScene::WaveGenerateEnemyProcess(float dt)
 Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
 	Tower newTower(towerType, position);
 	this->addChild(newTower.getSprite());
+	this->towers.addTower(newTower);
 	return newTower;
 }
 
