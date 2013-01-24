@@ -36,6 +36,9 @@
     <None Include="..\Resources\background.png">
       <Filter>resource</Filter>
     </None>
+    <None Include="..\Resources\health_line.png">
+      <Filter>resource</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="IlyichOutpost.rc">

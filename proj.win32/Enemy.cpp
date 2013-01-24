@@ -4,22 +4,31 @@
 
 Enemy::Enemy(char *image)
 {
-	health = 0;
+	healthTotal = healthCurrent = 0;
 	waypoint = NULL;
 	speed = 0;
 	currentPoint = 0;
 
 	sprite = CCSprite::create(image, CCRectMake(0,0,PassingMap::MAP_CELL_SIZE, PassingMap::MAP_CELL_SIZE) );
-}
 
+	// add health line
+	spriteHealth = CCSprite::create("health_line.png");
+
+	int posX = sprite->getContentSize().width / 2;
+	int posY = sprite->getContentSize().height;
+	spriteHealth->setPositionX(posX);
+	spriteHealth->setPositionY(posY);	
+
+	sprite->addChild(spriteHealth, 1);
+}
 
 Enemy::~Enemy(void)
 {
 }
 
-void Enemy::SetHealth(const int health)
+void Enemy::SetHealthTotal(const int health)
 {
-	this->health = health;
+	this->healthCurrent = this->healthTotal = health;
 }
 
 void Enemy::SetWaypoint(Waypoint *way)
@@ -37,17 +46,14 @@ void Enemy::SetScene(CCScene *scene)
 	this->scene = scene;
 }
 
-int Enemy::GetHealth()
+void Enemy::Destroy(Enemy *sender)
 {
-	return health;
+	sprite->cleanup();
+	sprite->removeAllChildrenWithCleanup(true);
+	scene->removeChild(sprite, true);
 }
 
-int Enemy::GetSpeed()
-{
-	return speed;
-}
-
-void Enemy::MoveFinished(Enemy *sender)
+void Enemy::CheckPointReached(Enemy *sender)
 {
   Cell *curCell = waypoint->GetPoint(currentPoint);
   Cell *nextCell = waypoint->GetPoint(currentPoint + 1);
@@ -62,22 +68,52 @@ void Enemy::MoveFinished(Enemy *sender)
       // Create the actions
       CCFiniteTimeAction* actionMove = CCMoveTo::create( actualDuration, ccp(nextCell->x, nextCell->y) );
 
-      CCFiniteTimeAction* actionMoveDone = CCCallFuncN::create( this, callfuncN_selector(Enemy::MoveFinished));
+      CCFiniteTimeAction* actionMoveDone = CCCallFuncN::create( this, callfuncN_selector(Enemy::CheckPointReached));
       sprite->runAction( CCSequence::create(actionMove, actionMoveDone, NULL) );
 
 	  currentPoint++;
+
+	  // For testing
+	  MakeDamage(60);
   }
   else
   {
 	  CCLog("Enemy reached destination");
-
-	  scene->removeChild(sprite, true);
+	  Destroy(sender);
   }
+}
+
+// true - if killed
+bool Enemy::MakeDamage(const int health)
+{
+	healthCurrent -= health;
+	if (healthCurrent <= 0)
+	{
+		sprite->cleanup();
+
+		spriteHealth->setScaleX(0);
+
+		//CCParticleExplosion *particle = CCParticleExplosion::createWithTotalParticles(100);
+		//particle->setTexture(sprite->getTexture());
+
+		CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3, ccg(1,1), 0.2);
+
+        CCFiniteTimeAction* actionDestroy = CCCallFuncN::create( this, callfuncN_selector(Enemy::Destroy));
+        sprite->runAction( CCSequence::create(actionKill, actionDestroy, NULL) );
+
+		return true;
+	}
+	else
+	{
+		spriteHealth->setScaleX((float)healthCurrent / healthTotal);
+	}
+
+	return false;
 }
 
 void Enemy::Start()
 { 
 	scene->addChild(sprite);
 
-	MoveFinished(this);
+	CheckPointReached(this);
 }

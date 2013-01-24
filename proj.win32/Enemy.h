@@ -8,26 +8,29 @@ using namespace cocos2d;
 
 class Enemy : public CCObject
 {
-	int health;
+	int healthTotal;
+	int healthCurrent;
 	Waypoint *waypoint;
 	int currentPoint;
 	int speed;
 
 	CCSprite *sprite;
+	CCSprite *spriteHealth;
 	CCScene *scene;
-	void MoveFinished(Enemy* sender);
+
+	void CheckPointReached(Enemy* sender);
+	void Destroy(Enemy *sender);
 	
 public:
 	Enemy(char * image);
 	~Enemy(void);
 
-	void SetHealth(const int health);
+	void SetHealthTotal(const int health);
 	void SetWaypoint(Waypoint *way);
 	void SetSpeed(const int speed);
 	void SetScene(CCScene *scene);
 
-	int GetHealth();
-	int GetSpeed();
+	bool MakeDamage(const int health);
 
 	void Start();
 

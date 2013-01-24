@@ -129,6 +129,7 @@
     <None Include="..\Resources\background.png" />
     <None Include="..\Resources\CloseNormal.png" />
     <None Include="..\Resources\CloseSelected.png" />
+    <None Include="..\Resources\health_line.png" />
     <None Include="..\Resources\MainMenu.png" />
     <None Include="..\Resources\wire.png" />
     <None Include="res\IlyichOutpost.ico" />
