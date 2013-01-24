@@ -1,0 +1,57 @@
+﻿Build started 24.01.2013 16:36:09.
+     1>Project "D:\GitRepos\IlyichOutpost\proj.win32\IlyichOutpost.win32.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug.win32\IlyichOutpost.win32.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I. /I..\Classes /ID:\GitRepos\IlyichOutpost\proj.win32\cocos2dx /ID:\GitRepos\IlyichOutpost\proj.win32\cocos2dx\include /ID:\GitRepos\IlyichOutpost\proj.win32\cocos2dx\kazmath\include /ID:\GitRepos\IlyichOutpost\proj.win32\cocos2dx\platform\win32 /ID:\GitRepos\IlyichOutpost\proj.win32\cocos2dx\platform\third_party\win32 /ID:\GitRepos\IlyichOutpost\proj.win32\cocos2dx\platform\third_party\win32\OGLES /ID:\GitRepos\IlyichOutpost\proj.win32\CocosDenshion\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D STRICT /D _CRT_SECURE_NO_WARNINGS /D _SCL_SECURE_NO_WARNINGS_DEBUG /D COCOS2D_DEBUG=1 /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug.win32\\" /Fd"Debug.win32\vc100.pdb" /Gd /TP /wd4267 /wd4251 /wd4244 /analyze- /errorReport:prompt MainFieldScene.cpp Tower.cpp
+         Tower.cpp
+         MainFieldScene.cpp
+     1>d:\gitrepos\ilyichoutpost\proj.win32\mainfieldscene.cpp(122): warning C4305: 'argument' : truncation from 'double' to 'float'
+         Generating Code...
+       ResourceCompile:
+         All outputs are up-to-date.
+       ManifestResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GitRepos\IlyichOutpost\proj.win32\Debug.win32\IlyichOutpost.win32.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\GitRepos\IlyichOutpost\proj.win32\Debug.win32\ libcocos2d.lib opengl32.lib glew32.lib libCocosDenshion.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug.win32\IlyichOutpost.win32.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\GitRepos\IlyichOutpost\proj.win32\Debug.win32\IlyichOutpost.win32.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GitRepos\IlyichOutpost\proj.win32\Debug.win32\IlyichOutpost.win32.lib" /MACHINE:X86 Debug.win32\IlyichOutpost.res
+         Debug.win32\IlyichOutpost.win32.exe.embed.manifest.res
+         Debug.win32\AppDelegate.obj
+         Debug.win32\MainMenuScene.obj
+         Debug.win32\Enemy.obj
+         Debug.win32\main.obj
+         Debug.win32\MainFieldScene.obj
+         Debug.win32\PassingMap.obj
+         Debug.win32\Tower.obj
+         Debug.win32\Wave.obj
+         Debug.win32\Waypoint.obj
+         glew32.lib
+         libcocos2d.lib
+         libCocosDenshion.lib
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug.win32\IlyichOutpost.win32.exe.embed.manifest" /manifest Debug.win32\IlyichOutpost.win32.exe.intermediate.manifest
+         All outputs are up-to-date.
+       LinkEmbedManifest:
+         All outputs are up-to-date.
+         IlyichOutpost.win32.vcxproj -> D:\GitRepos\IlyichOutpost\proj.win32\Debug.win32\IlyichOutpost.win32.exe
+       PostBuildEvent:
+         copy /Y "cocos2dx_dll\*.dll" "D:\GitRepos\IlyichOutpost\proj.win32\Debug.win32\"
+         :VCEnd
+         cocos2dx_dll\glew32.dll
+         cocos2dx_dll\iconv.dll
+         cocos2dx_dll\libcocos2d.dll
+         cocos2dx_dll\libCocosDenshion.dll
+         cocos2dx_dll\libcurl.dll
+         cocos2dx_dll\libtiff.dll
+         cocos2dx_dll\libxml2.dll
+         cocos2dx_dll\mozjs.dll
+         cocos2dx_dll\pthreadVCE2.dll
+         cocos2dx_dll\zlib1.dll
+                10 file(s) copied.
+       FinalizeBuildStatus:
+         Deleting file "Debug.win32\IlyichOutpost.win32.unsuccessfulbuild".
+         Touching "Debug.win32\IlyichOutpost.win32.lastbuildstate".
+     1>Done Building Project "D:\GitRepos\IlyichOutpost\proj.win32\IlyichOutpost.win32.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.76

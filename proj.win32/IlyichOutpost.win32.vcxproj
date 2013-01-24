@@ -146,6 +146,7 @@
     <ClInclude Include="PassingMap.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Tower.h" />
+    <ClInclude Include="TowerArray.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Waypoint.h" />
   </ItemGroup>
@@ -157,6 +158,7 @@
     <ClCompile Include="MainFieldScene.cpp" />
     <ClCompile Include="PassingMap.cpp" />
     <ClCompile Include="Tower.cpp" />
+    <ClCompile Include="TowerArray.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Waypoint.cpp" />
   </ItemGroup>

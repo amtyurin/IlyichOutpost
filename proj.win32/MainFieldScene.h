@@ -5,6 +5,7 @@
 
 #include "Waypoint.h"
 #include "Wave.h"
+#include "Tower.h"
 
 class MainFieldScene : public cocos2d::CCLayer
 {
@@ -13,6 +14,7 @@ class MainFieldScene : public cocos2d::CCLayer
 
 	int wavesCount;
 	int waveTimout;
+	TowerArray towers;
 
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -30,5 +32,5 @@ public:
 	void StartWave(float dt);
 	void WaveGenerateEnemyProcess(float dt);
 	void GameLogic(float dt);
+	Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position);
 };
-
