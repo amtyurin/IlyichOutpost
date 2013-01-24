@@ -12,16 +12,10 @@ class Wave : public CCObject
 	int createdEnemies;
 	int timeout;
 
-	CCTimer timer;
-
-	CCScene *scene;
-	Waypoint *waypoint;
-	void AddEnemy(float dt);
-
 public:
 	Wave(int enemyCount);
 	~Wave(void);
 
-	void Start(CCScene *scene, Waypoint *waypoint);
+	bool AddEnemy(CCScene *scene, Waypoint *waypoint);
 };
 

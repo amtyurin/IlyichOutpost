@@ -24,9 +24,6 @@ public:
 	// Menu items handlers
 	void CreateScene(CCObject* sender);		
 
-	void gameLogic(float dt);
-
-	void addMob();
-	void EnemyMoveFinished(CCNode* sender);
+	void addEnemies(float dt);
 };
 

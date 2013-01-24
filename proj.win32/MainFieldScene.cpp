@@ -115,10 +115,8 @@ bool MainFieldScene::init()
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 
 
-		wave1 = new Wave(20);
-		wave1->Start((CCScene *)this, &way);
-		
-		this->schedule( schedule_selector(MainFieldScene::gameLogic), 1.0 );
+		wave1 = new Wave(20);		
+		this->schedule( schedule_selector(MainFieldScene::addEnemies), 1.0 );
 
 
         bRet = true;
@@ -134,9 +132,14 @@ void MainFieldScene::CreateScene(CCObject* sender)
     CCDirector::sharedDirector()->replaceScene(anScene);
 }
 
-void MainFieldScene::gameLogic(float dt)
+void MainFieldScene::addEnemies(float dt)
 {
     // called every X msec
+	bool added = wave1->AddEnemy((CCScene*)this, &way);
+	if (!added)
+	{
+		this->unschedule( schedule_selector(MainFieldScene::addEnemies) );
+	}
 }
 
 
