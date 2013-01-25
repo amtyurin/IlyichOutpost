@@ -117,14 +117,14 @@ bool MainFieldScene::init()
 		wavesCount = 5;
 		waveTimout = 5;
 		wave = NULL;
-		this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
+		this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), 0 );
 
 		this->schedule( schedule_selector(MainFieldScene::GameLogic), 0.3f );
 
 		// sound
 		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
 
-		this->addTower(MACHINE_GUN, ccp(130, 100));
+		this->addTower(MACHINE_GUN, ccp(230, 200));
 
 		int posFromBorder = 20;
 		panelGeneral =  new PanelGeneral((CCScene*)this, ccp(size.width/2, size.height - posFromBorder),CCSize(size.width/2, 2 * posFromBorder));

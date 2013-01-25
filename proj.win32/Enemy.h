@@ -8,8 +8,8 @@ using namespace cocos2d;
 
 enum EnemyType
 {
-	ENEMY_SOLDER,
-	ENEMY_HEAVY_SOLDER,
+	ENEMY_SOLDIER,
+	ENEMY_HEAVY_SOLDIER,
 	ENEMY_HORSEMAN,
 	ENEMY_HEAVY_HORSEMAN,
 	ENEMY_MACHINEGUN_CART,
@@ -33,8 +33,8 @@ class Enemy : public CCObject
 	CCSprite *spriteHealth;
 	CCScene *scene;
 
-	void CheckPointReached(Enemy* sender);
-	void Destroy(Enemy *sender);
+	void CheckPointReached();
+	void Destroy();
 	
 public:
 	Enemy(void *wave, const EnemyType eType, CCScene *scene, Waypoint *way);

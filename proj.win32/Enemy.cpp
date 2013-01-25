@@ -14,71 +14,80 @@ Enemy::Enemy(void *wave, const EnemyType eType, CCScene *scene, Waypoint *way)
 
 	switch(eType)
 	{
-		case ENEMY_SOLDER:
+		case ENEMY_SOLDIER:
 			this->healthCurrent = this->healthTotal = 50;
 			this->speed = 10;
-			image = "enemy.png";
+			image = "\\Enemy\\soldier.png";
 			break;
-		case ENEMY_HEAVY_SOLDER:
+		case ENEMY_HEAVY_SOLDIER:
 			this->healthCurrent = this->healthTotal = 100;
 			this->speed = 10;
-			image = "enemy.png";
+			image = "\\Enemy\\heavy_soldier.png";
 			break;
 		case ENEMY_HORSEMAN:
 			this->healthCurrent = this->healthTotal = 150;
 			this->speed = 25;
-			image = "enemy.png";
+			image = "\\Enemy\\horseman.png";
 			break;
 		case ENEMY_HEAVY_HORSEMAN:
 			this->healthCurrent = this->healthTotal = 300;
 			this->speed = 20;
-			image = "enemy.png";
+			image = "\\Enemy\\soldier.png";
 			break;
 		case ENEMY_MACHINEGUN_CART:
 			this->healthCurrent = this->healthTotal = 500;
 			this->speed = 20;
-			image = "enemy.png";
+			image = "\\Enemy\\soldier.png";
 			break;
 		case ENEMY_HEAVY_MACHINEGUN_CART:
 			this->healthCurrent = this->healthTotal = 750;
 			this->speed = 15;
-			image = "enemy.png";
+			image = "\\Enemy\\soldier.png";
 			break;
 		case ENEMY_ARMORED_CAR:
 			this->healthCurrent = this->healthTotal = 1000;
 			this->speed = 15;
-			image = "enemy.png";
+			image = "\\Enemy\\soldier.png";
 			break;
 		case ENEMY_TANK:
 			this->healthCurrent = this->healthTotal = 1500;
 			this->speed = 10;
-			image = "enemy.png";
+			image = "\\Enemy\\soldier.png";
 			break;
 		case ENEMY_HEAVY_TANK:
 			this->healthCurrent = this->healthTotal = 2000;
 			this->speed = 7;
-			image = "enemy.png";
+			image = "\\Enemy\\soldier.png";
 			break;
 		default:
 			CCLog("Wrong enemy type!");
 			this->healthCurrent = this->healthTotal = 50;
 			this->speed = 10;
-			image = "enemy.png";
+			image = "\\Enemy\\soldier.png";
 			break;
 	}
 
-	this->sprite = CCSprite::create(image, CCRectMake(0,0,PassingMap::MAP_CELL_SIZE, PassingMap::MAP_CELL_SIZE) );
+	CCSprite *spriteEnemyLocal = CCSprite::create(image);
+	float scaleX = PassingMap::MAP_CELL_SIZE / spriteEnemyLocal->getContentSize().width;
+	float scaleY = PassingMap::MAP_CELL_SIZE / spriteEnemyLocal->getContentSize().height;
+	spriteEnemyLocal->setScaleX(scaleX);
+	spriteEnemyLocal->setScaleY(scaleY);
+	spriteEnemyLocal->setPosition(ccp(PassingMap::MAP_CELL_SIZE / 2, PassingMap::MAP_CELL_SIZE / 2));
+
+	this->sprite = CCSprite::create();
+	this->sprite->addChild(spriteEnemyLocal, 1);
+	this->sprite->setContentSize(CCSize(PassingMap::MAP_CELL_SIZE, PassingMap::MAP_CELL_SIZE));
 	this->sprite->setPosition(ccp(-100, -100));
 
 	// add health line
-	this->spriteHealth = CCSprite::create("health_line.png");
+	this->spriteHealth = CCSprite::create("\\Enemy\\health_line.png");
 
 	int posX = this->sprite->getContentSize().width / 2;
 	int posY = this->sprite->getContentSize().height;
 	this->spriteHealth->setPositionX(posX);
 	this->spriteHealth->setPositionY(posY);	
 
-	this->sprite->addChild(this->spriteHealth, 1);
+	this->sprite->addChild(this->spriteHealth, 2);
 
 	this->scene->addChild(this->sprite);
 }
@@ -92,16 +101,18 @@ void Enemy::SetSpeed(const int speed)
 	this->speed = speed;
 }
 
-void Enemy::Destroy(Enemy *sender)
+void Enemy::Destroy()
 {
 	((Wave *)(this->wave))->RemoveEnemy(this);
 
 	this->sprite->cleanup();
 	this->sprite->removeAllChildrenWithCleanup(true);
 	this->scene->removeChild(this->sprite, true);
+
+	CCLog("Enemy is destroyed");
 }
 
-void Enemy::CheckPointReached(Enemy *sender)
+void Enemy::CheckPointReached()
 {
   Cell *curCell = waypoint->GetPoint(currentPoint);
   Cell *nextCell = waypoint->GetPoint(currentPoint + 1);
@@ -116,7 +127,7 @@ void Enemy::CheckPointReached(Enemy *sender)
       // Create the actions
       CCFiniteTimeAction* actionMove = CCMoveTo::create( actualDuration, ccp(nextCell->x, nextCell->y) );
 
-      CCFiniteTimeAction* actionMoveDone = CCCallFuncN::create( this, callfuncN_selector(Enemy::CheckPointReached));
+      CCFiniteTimeAction* actionMoveDone = CCCallFunc::create( this, callfunc_selector(Enemy::CheckPointReached));
       this->sprite->runAction( CCSequence::create(actionMove, actionMoveDone, NULL) );
 
 	  this->currentPoint++;
@@ -127,7 +138,7 @@ void Enemy::CheckPointReached(Enemy *sender)
   else
   {
 	  CCLog("Enemy reached destination");
-	  Destroy(sender);
+	  Destroy();
   }
 }
 
@@ -144,10 +155,11 @@ void Enemy::MakeDamage(const int health)
 		//CCParticleExplosion *particle = CCParticleExplosion::createWithTotalParticles(100);
 		//particle->setTexture(sprite->getTexture());
 
-		CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3, ccg(1,1), 0.2);
+		//CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3, ccg(1,1), 0.1);
 
-        CCFiniteTimeAction* actionDestroy = CCCallFuncN::create( this, callfuncN_selector(Enemy::Destroy));
-        this->sprite->runAction( CCSequence::create(actionKill, actionDestroy, NULL) );
+        //CCFiniteTimeAction* actionDestroy = CCCallFuncN::create( this, callfuncN_selector(Enemy::Destroy));
+        //this->sprite->runAction( CCSequence::create(actionKill, actionDestroy, NULL) );
+		Destroy();
 	}
 	else
 	{
@@ -157,7 +169,7 @@ void Enemy::MakeDamage(const int health)
 
 void Enemy::Start()
 { 
-	CheckPointReached(this);
+	CheckPointReached();
 }
 
 CCPoint Enemy::GetPosition()

@@ -11,7 +11,7 @@ using namespace cocos2d;
 class Wave
 {	
 	static int currentWaveNumber;
-	static int enemyCount;
+	int enemyInitialCount;
 	int createdEnemies;
 
 	CCScene *scene; 

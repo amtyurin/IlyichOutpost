@@ -5,8 +5,7 @@
 #include <algorithm>
 
 int Wave::currentWaveNumber = 0;
-int Wave::enemyCount = 0;
-#define JOKERNN_DEBUG
+
 void Wave::CreateEnemies(const EnemyType eType,const int count)
 {
 	for (int i = 0; i < count; i++)
@@ -18,7 +17,7 @@ void Wave::CreateEnemies(const EnemyType eType,const int count)
 
 void Wave::AlignEnemyCount(const EnemyType eType)
 {
-	int diff = enemyCount - aliveEnemies.size();
+	int diff = enemyInitialCount - aliveEnemies.size();
 	for (int i = 0; i < diff; i++)
 	{
 		Enemy *mob = new Enemy(this, eType, scene, waypoint);
@@ -28,6 +27,7 @@ void Wave::AlignEnemyCount(const EnemyType eType)
 
 Wave::Wave(CCScene *scene, Waypoint *waypoint)
 {
+	enemyInitialCount = 0;
 	createdEnemies = 0;
 	aliveEnemies.resize(0);
 
@@ -38,40 +38,37 @@ Wave::Wave(CCScene *scene, Waypoint *waypoint)
 	switch(Wave::currentWaveNumber)
 	{
 		case 1:
-			enemyCount = 10;
-#ifdef JOKERNN_DEBUG
-			enemyCount = 1;
-#endif
-			CreateEnemies(ENEMY_SOLDER, enemyCount);
+			enemyInitialCount = 10;
+			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount);
 			break;
 		case 2:
-			enemyCount = 20;
-			CreateEnemies(ENEMY_SOLDER, enemyCount / 2);
-			CreateEnemies(ENEMY_HEAVY_SOLDER, enemyCount / 2);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDER);
+			enemyInitialCount = 20;
+			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 2);
+			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 2);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDIER);
 			break;
 		case 3:
-			enemyCount = 30;
-			CreateEnemies(ENEMY_SOLDER, enemyCount / 3);
-			CreateEnemies(ENEMY_HEAVY_SOLDER, enemyCount / 3);
-			CreateEnemies(ENEMY_HORSEMAN, enemyCount / 3);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDER);
+			enemyInitialCount = 30;
+			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 3);
+			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 3);
+			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 3);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDIER);
 			break;
 		case 4:
-			enemyCount = 40;
-			CreateEnemies(ENEMY_SOLDER, enemyCount / 4);
-			CreateEnemies(ENEMY_HEAVY_SOLDER, enemyCount / 4);
-			CreateEnemies(ENEMY_HORSEMAN, enemyCount / 4);
-			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyCount / 4);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDER);
+			enemyInitialCount = 40;
+			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 4);
+			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 4);
+			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 4);
+			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyInitialCount / 4);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDIER);
 			break;
 		case 5:
-			enemyCount = 50;
-			CreateEnemies(ENEMY_SOLDER, enemyCount / 5);
-			CreateEnemies(ENEMY_HEAVY_SOLDER, enemyCount / 5);
-			CreateEnemies(ENEMY_HORSEMAN, enemyCount / 5);
-			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyCount / 5);
-			CreateEnemies(ENEMY_MACHINEGUN_CART, enemyCount / 5);
+			enemyInitialCount = 50;
+			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 5);
+			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 5);
+			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 5);
+			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyInitialCount / 5);
+			CreateEnemies(ENEMY_MACHINEGUN_CART, enemyInitialCount / 5);
 			AlignEnemyCount(ENEMY_HEAVY_TANK);
 			break;
 	}	
@@ -88,12 +85,12 @@ int Wave::GetCurrentWaveNumber()
 
 int Wave::GetEnemyCount()
 {
-	return enemyCount;
+	return aliveEnemies.size();
 }
 
 bool Wave::AddEnemy()
 {
-	if (createdEnemies < enemyCount)
+	if (createdEnemies < enemyInitialCount)
 	{				
 		aliveEnemies[createdEnemies]->Start();
 
@@ -110,7 +107,6 @@ bool Wave::AddEnemy()
 }
 void Wave::RemoveEnemy(Enemy *enemy)
 {
-	enemyCount--;
 	aliveEnemies.erase(std::remove(aliveEnemies.begin(), aliveEnemies.end(), enemy), aliveEnemies.end());
 }
 
@@ -121,7 +117,7 @@ CCPoint Wave::GetEnemyPosition(const int index)
 		return aliveEnemies[index]->GetPosition();
 	}
 
-	CCLog("Wrong enemy index %d", index);
+	CCLog("GetEnemyPosition: Wrong enemy index %d, count %d", index,aliveEnemies.size() );
 
 	return ccp(0,0);
 }
@@ -131,7 +127,8 @@ void Wave::MakeDamage(const int index, const int health)
 	if (index >= 0 && index < aliveEnemies.size())
 	{
 		aliveEnemies[index]->MakeDamage(health);
+		return;
 	}
 
-	CCLog("Wrong enemy index %d", index);
+	CCLog("MakeDamage: Wrong enemy index %d, count %d", index,aliveEnemies.size() );
 }
