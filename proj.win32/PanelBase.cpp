@@ -67,8 +67,8 @@ void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const in
 		float scaleX = sizeX / sprite->getContentSize().width;
 		float scaleY = sizeY / sprite->getContentSize().height;
 
-		sprite->setScaleX(scaleX * 0.9);
-		sprite->setScaleY(scaleY * 0.9);
+		sprite->setScaleX(scaleX * 0.8);
+		sprite->setScaleY(scaleY * 0.8);
 		sprite->setPositionX(sizeX / 2 + cellX * sizeX);
 		sprite->setPositionY(sizeY / 2 + cellY * sizeY);
 
