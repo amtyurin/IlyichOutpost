@@ -4,7 +4,7 @@ class PanelGeneral :
 	public PanelBase
 {
 public:
-	PanelGeneral(void);
+	PanelGeneral(CCScene *scene, const CCPoint ccp, const CCSize size);
 	virtual ~PanelGeneral(void);
 };
 

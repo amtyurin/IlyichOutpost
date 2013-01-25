@@ -8,6 +8,9 @@
 #include "Tower.h"
 #include "TowerArray.h"
 
+#include "PanelGeneral.h"
+#include "PanelTowers.h"
+
 #include <set>
 
 typedef vector<Tower>::iterator towerArrayIterator;
@@ -20,6 +23,9 @@ class MainFieldScene : public cocos2d::CCLayer
 	int wavesCount;
 	int waveTimout;
 	TowerArray towers;
+
+	PanelGeneral *panelGeneral;
+	PanelTowers *panelTower;
 
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone

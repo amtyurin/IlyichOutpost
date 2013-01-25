@@ -4,7 +4,7 @@ class PanelTowers :
 	public PanelBase
 {
 public:
-	PanelTowers(void);
+	PanelTowers(CCScene *scene, const CCPoint ccp, const CCSize size);
 	virtual ~PanelTowers(void);
 };
 
