@@ -92,8 +92,11 @@ bool Wave::AddEnemy()
 {
 	if (createdEnemies < enemyInitialCount)
 	{				
-		aliveEnemies[createdEnemies]->Start();
-
+		CCLog("%d\t%d\n", createdEnemies, aliveEnemies.size());
+		CCLog("%d\n", currentWaveNumber);
+		if (createdEnemies < aliveEnemies.size()){
+			aliveEnemies[createdEnemies]->Start();
+		}
 		createdEnemies++;
 
 		return true;
@@ -125,6 +128,7 @@ void Wave::MakeDamage(const int index, const int health)
 		bool killed = aliveEnemies[index]->MakeDamage(health);
 		if (killed)	{
 			aliveEnemies.erase(std::remove(aliveEnemies.begin(), aliveEnemies.end(), aliveEnemies[index]), aliveEnemies.end());
+			createdEnemies--;
 		}
 		return;
 	}
