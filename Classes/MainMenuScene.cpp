@@ -54,13 +54,7 @@ bool MainMenu::init()
         // Place the menu item bottom-right conner.
         pCloseItem->setPosition(ccp(CCDirector::sharedDirector()->getWinSize().width - 20, 20));
 
-        // Create a menu with the "close" menu item, it's an auto release object.
-        CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
-        pMenu->setPosition(CCPointZero);
-        CC_BREAK_IF(! pMenu);
 
-        // Add the menu to MainMenu layer as a child layer.
-        this->addChild(pMenu, 1);
 
         // 2. Add a label shows "Hello World".
 
@@ -97,11 +91,28 @@ bool MainMenu::init()
 		CCMenu* menu = CCMenu::create(startItem, NULL);
 		menu->alignItemsVertically();
 		this->addChild(menu);
+
+		CCMenuItemImage *muteButton;
+		muteButton = CCMenuItemImage::create("\\MenuItems\\Sound.png", 
+			"\\MenuItems\\Sound.png", 
+			"\\MenuItems\\Sound.png", 
+			this, 
+			menu_selector(MainMenu::muteSound));
+		muteButton->setPosition(ccp(CCDirector::sharedDirector()->getWinSize().width - 60, 20));
+
+		// Create a menu with the "close" menu item, it's an auto release object.
+        CCMenu* pMenu = CCMenu::create(pCloseItem, muteButton, NULL);
+        pMenu->setPosition(CCPointZero);
+        CC_BREAK_IF(! pMenu);
+
+        // Add the menu to MainMenu layer as a child layer.
+        this->addChild(pMenu, 1);
+
+		
 		// \menu items
 
 		// sound
 		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\MainMenu.mp3", true);    
-
         bRet = true;
     } while (0);
 
@@ -121,3 +132,8 @@ void MainMenu::menuCloseCallback(CCObject* pSender)
     CCDirector::sharedDirector()->end();
 }
 
+
+void MainMenu::muteSound(CCObject *sender){
+	//CCLog("MutingSound");
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+}

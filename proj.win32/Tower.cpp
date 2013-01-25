@@ -62,16 +62,23 @@ const bool Tower::operator < (const Tower &tower) const{
 }
 
 void Tower::turnTo(const CCPoint point){
-	double dx = abs(this->position.x - point.x);
-	double dy = abs(this->position.y - point.y);
-	/*if (dy <= 0.0000001){
-		dy = 0.1;
-	}*/
+	double dx = this->position.x - point.x;
+	double dy = this->position.y - point.y;
+	int circleHalf;
+	if (dy < 0){
+		circleHalf = LOWER_HALF;
+	}else{
+		circleHalf = UPPER_HALF;
+	}
+	
 	double tanOfAngle = (dx/dy);
 	double angle = atan(tanOfAngle)*57.2957795135;
+	if (circleHalf == LOWER_HALF){
+		angle+=180;
+	}
 	CCLog("%f\t%f\t%f\t%f\n", dx, dy, tanOfAngle, angle);
-	if (angle >=0 && angle <=360){
-		this->spritePtr->setRotation(angle);
+	if (angle >= 0 && angle <= 360){
+		this->spritePtr->setRotation(angle+180);
 	}
 	//CCLog("%f\t%f\n", angle, angleDegrees);
 	/*double dX = abs(this->position.x - point.x);

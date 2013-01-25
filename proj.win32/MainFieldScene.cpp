@@ -154,6 +154,7 @@ void MainFieldScene::GameLogic(float dt)
 		for (int i = 0; i < this->wave->GetEnemyCount(); ++i){
 			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
 				it->turnTo(this->wave->GetEnemyPosition(i));
+				this->wave->MakeDamage(i, it->getDamage());
 			}
 		}
 	}

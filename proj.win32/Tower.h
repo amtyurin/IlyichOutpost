@@ -8,6 +8,11 @@ enum TowerTypes{
 	HEAVY_GUN=2
 };
 
+enum CircleHalf{  //for turns processing
+	UPPER_HALF = 0,
+	LOWER_HALF
+};
+
 class Tower
 {
 private:
@@ -29,6 +34,7 @@ public:
 	const float getY() const { return position.y;};
 	void setX(const float newX);
 	void setY(const float newY);
+	const float getDamage() const { return damage;};
 	cocos2d::CCSprite *getSprite() const;
 	void turnTo(const cocos2d::CCPoint position);
 	const bool operator < (const Tower &tower) const;

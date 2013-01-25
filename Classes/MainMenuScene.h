@@ -23,6 +23,7 @@ public:
 
 	// Menu items handlers
 	void CreateScene(CCObject* sender);
+	void muteSound(CCObject *sender);
 };
 
 #endif  // __MainMenu_SCENE_H__
