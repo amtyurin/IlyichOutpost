@@ -13,8 +13,17 @@
       <UniqueIdentifier>{da4e1e89-08a3-48cf-b59e-a0ee08329d2c}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;png;manifest</Extensions>
     </Filter>
-    <Filter Include="MainCore">
-      <UniqueIdentifier>{9c71aaf7-ca43-44a6-8008-0804ebb495d9}</UniqueIdentifier>
+    <Filter Include="Panel">
+      <UniqueIdentifier>{d0f0ec2f-6287-46e0-af69-e45e81a8f733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{a02d79a4-e051-406f-b46e-3d1a5635a403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tower">
+      <UniqueIdentifier>{b992db47-d65b-454d-9ef4-a995cb7c6f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{954ff3e3-f403-4dcd-b530-93147153749c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,29 +64,38 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MainMenuScene.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFieldScene.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="PassingMap.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="Waypoint.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="Tower.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="Wave.h">
-      <Filter>include</Filter>
+    <ClInclude Include="PanelBase.h">
+      <Filter>Panel</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>include</Filter>
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Waypoint.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PassingMap.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="TowerArray.h">
-      <Filter>include</Filter>
+      <Filter>Tower</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>Tower</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainMenuScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFieldScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelGeneral.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelTowers.h">
+      <Filter>Panel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -87,29 +105,38 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MainMenuScene.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFieldScene.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="PassingMap.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="Waypoint.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="Tower.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="Wave.cpp">
-      <Filter>source</Filter>
+    <ClCompile Include="PanelBase.cpp">
+      <Filter>Panel</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>source</Filter>
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="PassingMap.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Wave.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Waypoint.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>Tower</Filter>
     </ClCompile>
     <ClCompile Include="TowerArray.cpp">
-      <Filter>source</Filter>
+      <Filter>Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFieldScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainMenuScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelGeneral.cpp">
+      <Filter>Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelTowers.cpp">
+      <Filter>Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
