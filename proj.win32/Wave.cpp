@@ -105,10 +105,6 @@ bool Wave::AddEnemy()
 		return false;
 	}
 }
-void Wave::RemoveEnemy(Enemy *enemy)
-{
-	aliveEnemies.erase(std::remove(aliveEnemies.begin(), aliveEnemies.end(), enemy), aliveEnemies.end());
-}
 
 CCPoint Wave::GetEnemyPosition(const int index)
 {
@@ -126,7 +122,10 @@ void Wave::MakeDamage(const int index, const int health)
 {
 	if (index >= 0 && index < aliveEnemies.size())
 	{
-		aliveEnemies[index]->MakeDamage(health);
+		bool killed = aliveEnemies[index]->MakeDamage(health);
+		if (killed)	{
+			aliveEnemies.erase(std::remove(aliveEnemies.begin(), aliveEnemies.end(), aliveEnemies[index]), aliveEnemies.end());
+		}
 		return;
 	}
 

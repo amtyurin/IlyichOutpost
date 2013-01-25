@@ -43,7 +43,7 @@ public:
 	void SetSpeed(const int speed);
 	CCPoint GetPosition();
 
-	void MakeDamage(const int health);
+	bool MakeDamage(const int health);
 
 	void Start();
 };

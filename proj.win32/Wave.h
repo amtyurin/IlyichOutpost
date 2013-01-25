@@ -28,7 +28,6 @@ public:
 	~Wave(void);
 
 	bool AddEnemy();
-	void RemoveEnemy(Enemy *enemy);
 	int GetCurrentWaveNumber();
 
 	int GetEnemyCount();

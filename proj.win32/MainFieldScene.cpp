@@ -114,12 +114,11 @@ bool MainFieldScene::init()
 		way.AddPoint(PassingMap::GetCell(12,9));
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 
+		wave = NULL;		
 		wavesCount = 5;
 		waveTimout = 5;
-		wave = NULL;
-		this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), 0 );
-
-		this->schedule( schedule_selector(MainFieldScene::GameLogic), 0.3f );
+		gameLogicTimeout = 0.1f;
+		enemyRespawnTime = 2;
 
 		// sound
 		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
@@ -131,6 +130,7 @@ bool MainFieldScene::init()
 		posFromBorder = 50;
 		panelTower = new PanelTowers((CCScene*)this, ccp(size.width - posFromBorder, size.height/2), CCSize(2 * posFromBorder, size.height * 2 / 3));
 
+		this->schedule( schedule_selector(MainFieldScene::GameLogic), gameLogicTimeout );
 
         bRet = true;
     } while (0);
@@ -147,52 +147,59 @@ void MainFieldScene::CreateScene(CCObject* sender)
 
 void MainFieldScene::GameLogic(float dt)
 {
+	static float passedTimeTotal = 0;	
+	passedTimeTotal += dt;
+
+	static float passedTimeAddEnemy = 0;
+	passedTimeAddEnemy += dt;
+
+	CCLog("GameLogic time %f",passedTimeTotal);	
+
+	if (this->wave == NULL){
+		this->wave = new Wave((CCScene *)this, &way);
+	}		
+
+	if (passedTimeAddEnemy >= enemyRespawnTime){
+		this->wave->AddEnemy();
+		passedTimeAddEnemy = 0;
+	}
 
 	//printf("Function called\n");
 	towerArrayIterator it;
-	for (it = this->towers.begin(); it != this->towers.end(); ++it){
-		for (int i = 0; i < this->wave->GetEnemyCount(); ++i){
+	for (it = this->towers.begin(); it != this->towers.end(); it++){
+		CCLog("t");
+		for (int i = 0; i < this->wave->GetEnemyCount(); i++){
 			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
+				CCLog("isTargetInRange i %d ,count  %d ",i, this->wave->GetEnemyCount());	
 				it->turnTo(this->wave->GetEnemyPosition(i));
 				this->wave->MakeDamage(i, it->getDamage());
+				CCLog("2isTargetInRange i %d ,count  %d ",i, this->wave->GetEnemyCount());	
 			}
 		}
 	}
 
-	if (wave->GetEnemyCount() <= 0)
+	if (this->wave->GetEnemyCount() <= 0)
 	{
-		if (wave->GetCurrentWaveNumber() <= wavesCount)
+		if (this->wave->GetCurrentWaveNumber() <= this->wavesCount)
 		{	
 			//start new wave after some timout
-			CCLog("STart new wave in %d secs", waveTimout);
-			this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
+			CCLog("STart new wave in %d secs", this->waveTimout);
+
+			delete this->wave;
+			this->wave = NULL;
+			return;
 		}
 		else
 		{
 			CCLog("All waves are passed. You won!");
+			//this->scheduleOnce( schedule_selector(MainMenu::CreateScene), 2 );
+			this->unschedule( schedule_selector(MainFieldScene::GameLogic));
+
+			delete this->wave;
+			this->wave = NULL;
+			return;
 		}
-	}
-}
-
-void MainFieldScene::StartWave(float dt)
-{
-	if (wave != NULL){
-		delete wave;
-	}
-
-	wave = new Wave((CCScene *)this, &way);	
-
-	this->schedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess), 2.0 );
-}
-
-void MainFieldScene::WaveGenerateEnemyProcess(float dt)
-{
-    // called every X msec
-	bool added = wave->AddEnemy();
-	if (!added)
-	{		
-		this->unschedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess) );		
-	}
+	}	
 }
 
 Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){

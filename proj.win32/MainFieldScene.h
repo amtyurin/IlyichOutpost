@@ -22,6 +22,8 @@ class MainFieldScene : public cocos2d::CCLayer
 
 	int wavesCount;
 	int waveTimout;
+	float gameLogicTimeout;
+	int enemyRespawnTime;
 	TowerArray towers;
 
 	PanelGeneral *panelGeneral;

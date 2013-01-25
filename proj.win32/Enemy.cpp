@@ -103,8 +103,6 @@ void Enemy::SetSpeed(const int speed)
 
 void Enemy::Destroy()
 {
-	((Wave *)(this->wave))->RemoveEnemy(this);
-
 	this->sprite->cleanup();
 	this->sprite->removeAllChildrenWithCleanup(true);
 	this->scene->removeChild(this->sprite, true);
@@ -137,33 +135,34 @@ void Enemy::CheckPointReached()
   }
   else
   {
-	  CCLog("Enemy reached destination");
-	  Destroy();
+	  CCLog("Enemy reached base");
   }
 }
 
 // true - if killed
-void Enemy::MakeDamage(const int health)
+bool Enemy::MakeDamage(const int health)
 {
 	this->healthCurrent -= health;
 	if (healthCurrent <= 0)
 	{
-		this->sprite->cleanup();
-
 		this->spriteHealth->setScaleX(0);
+
+		this->sprite->cleanup();
 
 		//CCParticleExplosion *particle = CCParticleExplosion::createWithTotalParticles(100);
 		//particle->setTexture(sprite->getTexture());
 
-		//CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3, ccg(1,1), 0.1);
+		CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3, ccg(1,1), 0.1);
 
-        //CCFiniteTimeAction* actionDestroy = CCCallFuncN::create( this, callfuncN_selector(Enemy::Destroy));
-        //this->sprite->runAction( CCSequence::create(actionKill, actionDestroy, NULL) );
-		Destroy();
+        CCFiniteTimeAction* actionDestroy = CCCallFunc::create( this, callfunc_selector(Enemy::Destroy));
+        this->sprite->runAction( CCSequence::create(actionKill, actionDestroy, NULL) );
+
+		return true;
 	}
 	else
 	{
 		this->spriteHealth->setScaleX((float)this->healthCurrent / this->healthTotal);
+		return false;
 	}
 }
 
