@@ -151,8 +151,8 @@ void MainFieldScene::GameLogic(float dt)
 	passedTimeTotal += dt;
 
 	char curTime[10];
-	sprintf(curTime, "%d:%d:%d", (int)(passedTimeTotal / 60 / 60), (int)(passedTimeTotal / 60), (int)passedTimeTotal);
-	panelGeneral->DisplayText(curTime, "Arial", 16, 2, 0, 0,0);
+	sprintf(curTime, "%d:%d:%d", (int)(passedTimeTotal / 60 / 60) % 24, (int)(passedTimeTotal / 60) % 60, (int)passedTimeTotal % 60);
+	panelGeneral->DisplayText(2, curTime, "Arial", 20, 2, 0, 0,0);
 
 	static float passedTimeStartEnemy = 0;
 	passedTimeStartEnemy += dt;
@@ -164,7 +164,7 @@ void MainFieldScene::GameLogic(float dt)
 		
 		char waveNum[10];
 		sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
-		panelGeneral->DisplayText(waveNum, "Arial", 16, 1, 0, 0,0);
+		panelGeneral->DisplayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
 	}		
 
 	if (passedTimeStartEnemy >= enemyRespawnTime){
