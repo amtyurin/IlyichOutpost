@@ -17,5 +17,6 @@ public:
 	void SetCellBorderImage(const char* image);
 	void SetCellContentImage(const char* image, const int cellX, const int cellY);
 	void SetCellContentSprite(CCSprite *sprite, const int cellX, const int cellY);
+	void DisplayText(const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY);
 };
 

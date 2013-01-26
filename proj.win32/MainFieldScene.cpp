@@ -127,7 +127,7 @@ bool MainFieldScene::init()
 
 		int posFromBorder = 20;
 		panelGeneral =  new PanelGeneral((CCScene*)this, ccp(size.width/2, size.height - posFromBorder),CCSize(size.width/2, 2 * posFromBorder));
-		posFromBorder = 50;
+		posFromBorder = 45;
 		panelTower = new PanelTowers((CCScene*)this, ccp(size.width - posFromBorder, size.height/2), CCSize(2 * posFromBorder, size.height * 2 / 3));
 
 		this->schedule( schedule_selector(MainFieldScene::GameLogic), gameLogicTimeout );
@@ -150,30 +150,35 @@ void MainFieldScene::GameLogic(float dt)
 	static float passedTimeTotal = 0;	
 	passedTimeTotal += dt;
 
-	static float passedTimeAddEnemy = 0;
-	passedTimeAddEnemy += dt;
+	char curTime[10];
+	sprintf(curTime, "%d:%d:%d", (int)(passedTimeTotal / 60 / 60), (int)(passedTimeTotal / 60), (int)passedTimeTotal);
+	panelGeneral->DisplayText(curTime, "Arial", 16, 2, 0, 0,0);
+
+	static float passedTimeStartEnemy = 0;
+	passedTimeStartEnemy += dt;
 
 	CCLog("GameLogic time %f",passedTimeTotal);	
 
 	if (this->wave == NULL){
 		this->wave = new Wave((CCScene *)this, &way);
+		
+		char waveNum[10];
+		sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
+		panelGeneral->DisplayText(waveNum, "Arial", 16, 1, 0, 0,0);
 	}		
 
-	if (passedTimeAddEnemy >= enemyRespawnTime){
-		this->wave->AddEnemy();
-		passedTimeAddEnemy = 0;
+	if (passedTimeStartEnemy >= enemyRespawnTime){
+		this->wave->StartEnemy();
+		passedTimeStartEnemy = 0;
 	}
 
 	//printf("Function called\n");
 	towerArrayIterator it;
 	for (it = this->towers.begin(); it != this->towers.end(); it++){
-		CCLog("t");
 		for (int i = 0; i < this->wave->GetEnemyCount(); i++){
 			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
-				CCLog("isTargetInRange i %d ,count  %d ",i, this->wave->GetEnemyCount());	
 				it->turnTo(this->wave->GetEnemyPosition(i));
 				this->wave->MakeDamage(i, it->getDamage());
-				CCLog("2isTargetInRange i %d ,count  %d ",i, this->wave->GetEnemyCount());	
 			}
 		}
 	}

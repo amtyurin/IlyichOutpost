@@ -59,8 +59,7 @@ void PanelBase::SetCellContentImage(const char* image, const int cellX, const in
 void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const int cellY)
 {
 	if (cellX >= 0 && cellX < cellsX &&
-		cellY >= 0 && cellY < cellsY)
-	{
+		cellY >= 0 && cellY < cellsY){
 		int sizeX = panelSprite->getContentSize().width / this->cellsX;
 		int sizeY = panelSprite->getContentSize().height / this->cellsY;
 
@@ -73,7 +72,24 @@ void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const in
 		sprite->setPositionY(sizeY / 2 + cellY * sizeY);
 
 		panelSprite->addChild(sprite, 1);
+		return;
+	}
 
+	CCLog("Wrong cell index %d %d", cellX, cellY);
+}
+
+void PanelBase::DisplayText(const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY)
+{
+	if (cellX >= 0 && cellX < cellsX &&
+		cellY >= 0 && cellY < cellsY){
+		int sizeX = panelSprite->getContentSize().width / this->cellsX;
+		int sizeY = panelSprite->getContentSize().height / this->cellsY;
+
+		CCLabelTTF* pLabel = CCLabelTTF::create(text, font, size);
+		pLabel->setPositionX(sizeX / 2 + cellX * sizeX + locX);
+		pLabel->setPositionY(sizeY / 2 + cellY * sizeY + locY);
+
+		panelSprite->addChild(pLabel, 2);
 		return;
 	}
 

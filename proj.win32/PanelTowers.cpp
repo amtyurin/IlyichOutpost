@@ -7,6 +7,7 @@ PanelTowers::PanelTowers(CCScene *scene, const CCPoint ccp, const CCSize size)
 	this->SetCellBorderImage("panel_border_common.png");
 
 	this->SetCellContentImage("machineGun.png", 0,0);
+	this->SetCellContentImage("machineGun.png", 0,1);
 }
 
 

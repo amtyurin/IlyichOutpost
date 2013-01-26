@@ -15,7 +15,7 @@ void Wave::CreateEnemies(const EnemyType eType,const int count)
 	}
 }
 
-void Wave::AlignEnemyCount(const EnemyType eType)
+void Wave::AlignEnemyCount(const EnemyType eType, const int enemyInitialCount)
 {
 	int diff = enemyInitialCount - aliveEnemies.size();
 	for (int i = 0; i < diff; i++)
@@ -27,14 +27,14 @@ void Wave::AlignEnemyCount(const EnemyType eType)
 
 Wave::Wave(CCScene *scene, Waypoint *waypoint)
 {
-	enemyInitialCount = 0;
-	createdEnemies = 0;
+	runningEnemies = 0;
 	aliveEnemies.resize(0);
 
 	this->scene = scene;
 	this->waypoint = waypoint;
 
 	currentWaveNumber++;
+	int enemyInitialCount = 0;
 	switch(Wave::currentWaveNumber)
 	{
 		case 1:
@@ -45,14 +45,14 @@ Wave::Wave(CCScene *scene, Waypoint *waypoint)
 			enemyInitialCount = 20;
 			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 2);
 			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 2);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDIER);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDIER,enemyInitialCount);
 			break;
 		case 3:
 			enemyInitialCount = 30;
 			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 3);
 			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 3);
 			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 3);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDIER);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDIER,enemyInitialCount);
 			break;
 		case 4:
 			enemyInitialCount = 40;
@@ -60,7 +60,7 @@ Wave::Wave(CCScene *scene, Waypoint *waypoint)
 			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 4);
 			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 4);
 			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyInitialCount / 4);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDIER);
+			AlignEnemyCount(ENEMY_HEAVY_SOLDIER,enemyInitialCount);
 			break;
 		case 5:
 			enemyInitialCount = 50;
@@ -69,7 +69,7 @@ Wave::Wave(CCScene *scene, Waypoint *waypoint)
 			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 5);
 			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyInitialCount / 5);
 			CreateEnemies(ENEMY_MACHINEGUN_CART, enemyInitialCount / 5);
-			AlignEnemyCount(ENEMY_HEAVY_TANK);
+			AlignEnemyCount(ENEMY_HEAVY_TANK,enemyInitialCount);
 			break;
 	}	
 }
@@ -88,23 +88,15 @@ int Wave::GetEnemyCount()
 	return aliveEnemies.size();
 }
 
-bool Wave::AddEnemy()
+bool Wave::StartEnemy()
 {
-	if (createdEnemies < enemyInitialCount)
-	{				
-		CCLog("%d\t%d\n", createdEnemies, aliveEnemies.size());
-		CCLog("%d\n", currentWaveNumber);
-		if (createdEnemies < aliveEnemies.size()){
-			aliveEnemies[createdEnemies]->Start();
-		}
-		createdEnemies++;
-
+	if (runningEnemies < aliveEnemies.size()){	
+		aliveEnemies[runningEnemies]->Start();		
+		runningEnemies++;
 		return true;
 	}
-	else
-	{
+	else{
 		CCLog("All enemies were created");
-
 		return false;
 	}
 }
@@ -128,7 +120,7 @@ void Wave::MakeDamage(const int index, const int health)
 		bool killed = aliveEnemies[index]->MakeDamage(health);
 		if (killed)	{
 			aliveEnemies.erase(std::remove(aliveEnemies.begin(), aliveEnemies.end(), aliveEnemies[index]), aliveEnemies.end());
-			createdEnemies--;
+			runningEnemies--;
 		}
 		return;
 	}
