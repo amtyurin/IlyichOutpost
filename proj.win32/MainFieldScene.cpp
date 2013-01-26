@@ -157,54 +157,73 @@ void MainFieldScene::GameLogic(float dt)
 	static float passedTimeStartEnemy = 0;
 	passedTimeStartEnemy += dt;
 
-	CCLog("GameLogic time %f",passedTimeTotal);	
+	static float passedTimeTillNewWave = 0;
+	passedTimeTillNewWave += dt;
 
-	if (this->wave == NULL){
-		this->wave = new Wave((CCScene *)this, &way);
+	if (passedTimeTillNewWave >= waveTimout){
+		CCLog("New wave started");	
+
+		DisplayText(1,NULL,"Arial",50,0,0);
+
+		if (this->wave == NULL){
+			this->wave = new Wave((CCScene *)this, &way);
 		
-		char waveNum[10];
-		sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
-		panelGeneral->DisplayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
-	}		
+			char waveNum[10];
+			sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
+			panelGeneral->DisplayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
+		}		
 
-	if (passedTimeStartEnemy >= enemyRespawnTime){
-		this->wave->StartEnemy();
-		passedTimeStartEnemy = 0;
+		if (passedTimeStartEnemy >= enemyRespawnTime){
+			this->wave->StartEnemy();
+			passedTimeStartEnemy = 0;
+		}
+	}
+	else {
+		CCLog("New wave in %f", waveTimout - passedTimeTillNewWave);	
+		char text[100];
+		sprintf(text,"New wave in\n  %d sec\n\n", (int)(waveTimout - passedTimeTillNewWave));
+		DisplayText(1,text,"Arial",50,0,0);
 	}
 
-	//printf("Function called\n");
-	towerArrayIterator it;
-	for (it = this->towers.begin(); it != this->towers.end(); it++){
-		for (int i = 0; i < this->wave->GetEnemyCount(); i++){
-			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
-				it->turnTo(this->wave->GetEnemyPosition(i));
-				this->wave->MakeDamage(i, it->getDamage());
+	if (this->wave != NULL){
+
+		//printf("Function called\n");
+		towerArrayIterator it;
+		for (it = this->towers.begin(); it != this->towers.end(); it++){
+			for (int i = 0; i < this->wave->GetEnemyCount(); i++){
+				if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
+					it->turnTo(this->wave->GetEnemyPosition(i));
+					this->wave->MakeDamage(i, it->getDamage());
+				}
 			}
 		}
-	}
 
-	if (this->wave->GetEnemyCount() <= 0)
-	{
-		if (this->wave->GetCurrentWaveNumber() <= this->wavesCount)
-		{	
-			//start new wave after some timout
-			CCLog("STart new wave in %d secs", this->waveTimout);
-
-			delete this->wave;
-			this->wave = NULL;
-			return;
-		}
-		else
+		if (this->wave->GetEnemyCount() <= 0)
 		{
-			CCLog("All waves are passed. You won!");
-			//this->scheduleOnce( schedule_selector(MainMenu::CreateScene), 2 );
-			this->unschedule( schedule_selector(MainFieldScene::GameLogic));
+			if (this->wave->GetCurrentWaveNumber() <= this->wavesCount)
+			{	
+				//start new wave after some timout
+				CCLog("STart new wave in %d secs", this->waveTimout);
+				passedTimeTillNewWave = 0;
 
-			delete this->wave;
-			this->wave = NULL;
-			return;
-		}
-	}	
+				delete this->wave;
+				this->wave = NULL;
+				return;
+			}
+			else
+			{
+				CCLog("All waves are passed. You won!");
+				//this->scheduleOnce( schedule_selector(MainMenu::CreateScene), 2 );
+				this->unschedule( schedule_selector(MainFieldScene::GameLogic));
+
+				panelGeneral->DisplayText(4, "You won!", "Arial", 18, 1, 0, 0,0);
+
+				delete this->wave;
+				this->wave = NULL;
+				return;
+			}
+		}	
+	}
 }
 
 Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
@@ -212,4 +231,20 @@ Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
 	this->addChild(newTower.getSprite());
 	this->towers.addTower(newTower);
 	return newTower;
+}
+
+void MainFieldScene::DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY)
+{
+	this->removeChildByTag(tag);
+
+	if (text == NULL)
+		return;
+
+	CCSize sizeWin = CCDirector::sharedDirector()->getWinSize();
+
+	CCLabelTTF* pLabel = CCLabelTTF::create(text, font, size);
+	pLabel->setPositionX(sizeWin.width / 2 + locX);
+	pLabel->setPositionY(sizeWin.height / 2 + locY);
+	
+	this->addChild(pLabel, 2, tag);
 }
