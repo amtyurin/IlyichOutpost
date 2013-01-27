@@ -161,7 +161,7 @@ void MainFieldScene::GameLogic(float dt)
 	passedTimeTillNewWave += dt;
 
 	if (passedTimeTillNewWave >= waveTimout){
-		CCLog("New wave started");	
+	CCLog("New wave started");	//spams in logs
 
 		DisplayText(1,NULL,"Arial",50,0,0);
 
@@ -190,12 +190,7 @@ void MainFieldScene::GameLogic(float dt)
 		//printf("Function called\n");
 		towerArrayIterator it;
 		for (it = this->towers.begin(); it != this->towers.end(); it++){
-			for (int i = 0; i < this->wave->GetEnemyCount(); i++){
-				if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
-					it->turnTo(this->wave->GetEnemyPosition(i));
-					this->wave->MakeDamage(i, it->getDamage());
-				}
-			}
+			(*it)->processEnemies(this->wave);
 		}
 
 		if (this->wave->GetEnemyCount() <= 0)
@@ -226,16 +221,15 @@ void MainFieldScene::GameLogic(float dt)
 	}
 }
 
-Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
-	Tower newTower(towerType, position);
-	this->addChild(newTower.getSprite());
-	this->towers.addTower(newTower);
+Tower *MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
+	Tower *newTower = towers.createTower(towerType, position);
+	this->addChild(newTower->getSprite());
 	return newTower;
 }
 
 void MainFieldScene::DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY)
 {
-	this->removeChildByTag(tag);
+	this->removeChildByTag(tag); //Spams child not found in logs
 
 	if (text == NULL)
 		return;

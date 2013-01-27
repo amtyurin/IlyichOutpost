@@ -173,5 +173,5 @@ void Enemy::Start()
 
 CCPoint Enemy::GetPosition()
 {
-	return this->sprite->getPosition();
+		return this->sprite->getPosition();
 }

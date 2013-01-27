@@ -36,6 +36,7 @@ Tower::Tower(int type, CCPoint _position){
 	}
 	this->position=_position;
 	this->spritePtr->setPosition(_position);
+	this->reloadTime = 0;
 	//CCLog("FireRadius: %d\n", this->fireRadius);
 }
 
@@ -63,7 +64,8 @@ const bool Tower::operator < (const Tower &tower) const{
 	return (this < &tower);
 }
 
-void Tower::turnTo(const CCPoint point){
+void Tower::turnTo(const CCPoint point) const{
+	//CCLog ("TurnTo called");
 	double dx = this->position.x - point.x;
 	double dy = this->position.y - point.y;
 	int circleHalf;
@@ -75,21 +77,12 @@ void Tower::turnTo(const CCPoint point){
 	
 	double tanOfAngle = (dx/dy);
 	double angle = atan(tanOfAngle)*57.2957795135;
-	if (circleHalf == LOWER_HALF){
+	if (circleHalf == UPPER_HALF){
 		angle+=180;
 	}
-	CCLog("%f\t%f\t%f\t%f\n", dx, dy, tanOfAngle, angle);
 	if (angle >= 0 && angle <= 360){
-		this->spritePtr->setRotation(angle+180);
+		this->spritePtr->setRotation(angle);
 	}
-	//CCLog("%f\t%f\n", angle, angleDegrees);
-	/*double dX = abs(this->position.x - point.x);
-	double dY = abs(this->position.y - point.y);
-	double angleSin = (dX/dY);
-	double angle = asin(angleSin);
-	this->spritePtr->setRotation(angle*180/3.14);*/
-	//this->spritePtr->setRotationX(point.x);
-	//this->spritePtr->setRotationY(point.y);
 }
 
 const bool Tower::operator> (const Tower &tower) const{
@@ -104,6 +97,39 @@ const bool Tower::isTargetInRange(CCPoint target) const{
 	double range = sqrt(pow(dX, 2) + pow(dY, 2));
 	//CCLog("%f\t%d\n", range, this->fireRadius);
 	if (range <= this->fireRadius) {
+		return true;
+	}else{
+		return false;
+	}
+}
+
+void Tower::processEnemies(Wave *wave){
+	for (int i = 0; i < wave->GetEnemyCount(); i++){
+		if (this->isTargetInRange(wave->GetEnemyPosition(i))){
+			this->turnTo(wave->GetEnemyPosition(i));
+			this->fire(wave, i);
+			break;
+		}
+	}
+}
+
+void Tower::fire(Wave *wave, int index){
+	if (this->isAbleToFire()){
+#ifdef DEBUG_LOGS
+		CCLog("Making damage");
+#endif
+		wave->MakeDamage(index, this->damage);
+		this->reloadTime = GAME_SPEED / this->fireSpeed;
+	}else{
+#ifdef DEBUG_LOGS
+		CCLog("Reloading");
+#endif
+		this->reloadTime--;
+	}
+}
+
+const bool Tower::isAbleToFire() const{
+	if (this->reloadTime == 0){
 		return true;
 	}else{
 		return false;

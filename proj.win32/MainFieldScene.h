@@ -13,7 +13,7 @@
 
 #include <set>
 
-typedef vector<Tower>::iterator towerArrayIterator;
+typedef vector<Tower*>::iterator towerArrayIterator;
 
 class MainFieldScene : public cocos2d::CCLayer
 {
@@ -47,5 +47,5 @@ public:
 	void StartWave(float dt);
 	void WaveGenerateEnemyProcess(float dt);
 	void GameLogic(float dt);
-	Tower addTower(int towerType, cocos2d::CCPoint position);
+	Tower *addTower(int towerType, cocos2d::CCPoint position);
 };

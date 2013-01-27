@@ -32,5 +32,6 @@ public:
 	int GetEnemyCount();
 	CCPoint GetEnemyPosition(const int index);
 	void MakeDamage(const int index, const int health);
+	Enemy *getEnemyByIndex(const int index) const;
 };
 

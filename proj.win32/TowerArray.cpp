@@ -8,19 +8,21 @@ TowerArray::TowerArray(void)
 {
 }
 
-void TowerArray::addTower(Tower &tower){
+void TowerArray::addTower(Tower *tower){
 	this->towerSet.push_back(tower);
 }
 
-void TowerArray::removeTower(Tower &tower){
-	//this->towerSet.erase(tower);
+Tower *TowerArray::createTower(int type, CCPoint position){
+	Tower *newTower = new Tower(type, position);
+	towerSet.push_back(newTower);
+	return newTower;
 }
 
-vector<Tower>::iterator TowerArray::begin() {
+vector<Tower*>::iterator TowerArray::begin() {
 	return towerSet.begin();
 }
 
-vector<Tower>::iterator TowerArray::end(){
+vector<Tower*>::iterator TowerArray::end(){
 	return towerSet.end();
 }
 
