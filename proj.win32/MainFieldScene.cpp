@@ -120,6 +120,11 @@ bool MainFieldScene::init()
 		gameLogicTimeout = 0.1f;
 		enemyRespawnTime = 2;
 
+		moneyManager = new MoneyManager();
+		moneyManager->AddMoney(100);
+
+		towers = new TowerArray(moneyManager);
+
 		// sound
 		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
 
@@ -150,9 +155,11 @@ void MainFieldScene::GameLogic(float dt)
 	static float passedTimeTotal = 0;	
 	passedTimeTotal += dt;
 
-	char curTime[10];
-	sprintf(curTime, "%d:%d:%d", (int)(passedTimeTotal / 60 / 60) % 24, (int)(passedTimeTotal / 60) % 60, (int)passedTimeTotal % 60);
-	panelGeneral->DisplayText(2, curTime, "Arial", 20, 2, 0, 0,0);
+	{// display time
+		char curTime[TEXT_SIZE];
+		sprintf(curTime, "%d:%d:%d", (int)(passedTimeTotal / 60 / 60) % 24, (int)(passedTimeTotal / 60) % 60, (int)passedTimeTotal % 60);
+		panelGeneral->DisplayText(2, curTime, "Arial", 20, 2, 0, 0,0);
+	}
 
 	static float passedTimeStartEnemy = 0;
 	passedTimeStartEnemy += dt;
@@ -160,17 +167,20 @@ void MainFieldScene::GameLogic(float dt)
 	static float passedTimeTillNewWave = 0;
 	passedTimeTillNewWave += dt;
 
-	if (passedTimeTillNewWave >= waveTimout){
-	CCLog("New wave started");	//spams in logs
+	if (passedTimeTillNewWave >= waveTimout){		
 
 		DisplayText(1,NULL,"Arial",50,0,0);
 
 		if (this->wave == NULL){
-			this->wave = new Wave((CCScene *)this, &way);
+			this->wave = new Wave((CCScene *)this, &way, moneyManager);
+
+			CCLog("New wave started");
 		
-			char waveNum[10];
-			sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
-			panelGeneral->DisplayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
+			{ // display wave number
+				char waveNum[TEXT_SIZE];
+				sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
+				panelGeneral->DisplayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
+			}
 		}		
 
 		if (passedTimeStartEnemy >= enemyRespawnTime){
@@ -179,17 +189,24 @@ void MainFieldScene::GameLogic(float dt)
 		}
 	}
 	else {
-		CCLog("New wave in %f", waveTimout - passedTimeTillNewWave);	
-		char text[100];
-		sprintf(text,"New wave in\n  %d sec\n\n", (int)(waveTimout - passedTimeTillNewWave));
-		DisplayText(1,text,"Arial",50,0,0);
+		CCLog("New wave in %f", waveTimout - passedTimeTillNewWave);
+		{ // display wave number
+			char text[TEXT_SIZE];
+			sprintf(text,"New wave in\n  %d sec\n\n", (int)(waveTimout - passedTimeTillNewWave));
+			DisplayText(1,text,"Arial",50,0,0);
+		}
+	}
+
+	{ // display money
+		char text[TEXT_SIZE];
+		sprintf(text,"%d", moneyManager->GetMoneyBalance());
+		panelGeneral->DisplayText(1, text,"Arial",20,0,0,5,0);
 	}
 
 	if (this->wave != NULL){
 
-		//printf("Function called\n");
 		towerArrayIterator it;
-		for (it = this->towers.begin(); it != this->towers.end(); it++){
+		for (it = this->towers->begin(); it != this->towers->end(); it++){
 			(*it)->processEnemies(this->wave);
 		}
 
@@ -222,14 +239,19 @@ void MainFieldScene::GameLogic(float dt)
 }
 
 Tower *MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
-	Tower *newTower = towers.createTower(towerType, position);
+	Tower *newTower = towers->createTower(towerType, position);
 	this->addChild(newTower->getSprite());
 	return newTower;
 }
 
 void MainFieldScene::DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY)
 {
-	this->removeChildByTag(tag); //Spams child not found in logs
+	static bool textDisplayed = false;
+	
+	if (textDisplayed){
+		this->removeChildByTag(tag); 
+		textDisplayed = false;
+	}
 
 	if (text == NULL)
 		return;
@@ -241,4 +263,6 @@ void MainFieldScene::DisplayText(const int tag, const char *text, const char *fo
 	pLabel->setPositionY(sizeWin.height / 2 + locY);
 	
 	this->addChild(pLabel, 2, tag);
+
+	textDisplayed = true;;
 }

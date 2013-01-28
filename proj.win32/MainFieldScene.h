@@ -11,6 +11,8 @@
 #include "PanelGeneral.h"
 #include "PanelTowers.h"
 
+#include "MoneyManager.h"
+
 #include <set>
 
 typedef vector<Tower*>::iterator towerArrayIterator;
@@ -24,10 +26,12 @@ class MainFieldScene : public cocos2d::CCLayer
 	int waveTimout;
 	float gameLogicTimeout;
 	int enemyRespawnTime;
-	TowerArray towers;
+	TowerArray *towers;
 
 	PanelGeneral *panelGeneral;
 	PanelTowers *panelTower;
+
+	MoneyManager *moneyManager;
 
 	void DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY);
 

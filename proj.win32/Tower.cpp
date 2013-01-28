@@ -2,18 +2,23 @@
 
 using namespace cocos2d;
 
-Tower::Tower(void)
-{
-}
+Tower::Tower(MoneyManager *_moneyManager, int _damage, int _fireSpeed, int _fireRadius, CCPoint _position):
+UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
+	this->moneyManager = _moneyManager;
+	this->damage = _damage; 
+	this->fireSpeed = _fireSpeed; 
+	this->fireRadius = _fireRadius; 
+	this->position = _position;
 
-Tower::Tower(int _damage, int _fireSpeed, int _fireRadius, CCPoint _position): 
-damage(_damage), fireSpeed(_fireSpeed), fireRadius(_fireRadius), position(_position){
 	spritePtr = CCSprite::create("machineGun.png");
 	spritePtr->setPosition(this->position);
 }
 
-Tower::Tower(int type, CCPoint _position){
+Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) : 
+		UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
 	//CCLog("Type: %d\n", type);
+	this->moneyManager = moneyManager;
+
 	switch (type){
 		case MACHINE_GUN:
 			this->damage = 10;
@@ -34,6 +39,8 @@ Tower::Tower(int type, CCPoint _position){
 			this->fireSpeed = 0;
 			this->fireRadius = 0;
 	}
+	this->SetUpgPriceForNextLevel(this->damage + this->fireRadius);
+
 	this->position=_position;
 	this->spritePtr->setPosition(_position);
 	this->reloadTime = 0;
@@ -129,9 +136,18 @@ void Tower::fire(Wave *wave, int index){
 }
 
 const bool Tower::isAbleToFire() const{
-	if (this->reloadTime == 0){
-		return true;
-	}else{
-		return false;
-	}
+	return (this->reloadTime <= 0);
+}
+
+void Tower::Upgrade()
+{
+#ifdef DEBUG_LOGS
+	CCLog("Perform upgrade");
+#endif
+	UpgradeBase::Upgrade();	
+
+	fireSpeed *= UPGRADE_LEVEL;
+	fireRadius *= UPGRADE_LEVEL;
+	damage *= UPGRADE_LEVEL;
+	reloadTime *= UPGRADE_LEVEL;
 }

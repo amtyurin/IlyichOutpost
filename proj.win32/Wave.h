@@ -3,6 +3,7 @@
 
 #include "Waypoint.h"
 #include "Enemy.h"
+#include "MoneyManager.h"
 
 #include <vector>
 
@@ -16,13 +17,15 @@ class Wave
 	CCScene *scene; 
 	Waypoint *waypoint;
 
+	MoneyManager *moneyManager;
+
 	vector<Enemy *> aliveEnemies;
 
 	void CreateEnemies(const EnemyType eType, const  int count);
 	void  AlignEnemyCount(const EnemyType eType, const int enemyInitialCount);
 
 public:
-	Wave(CCScene *scene, Waypoint *waypoint);
+	Wave(CCScene *scene, Waypoint *waypoint, MoneyManager *moneyManager);
 	static Wave* NextWave();
 	~Wave(void);
 
@@ -32,6 +35,5 @@ public:
 	int GetEnemyCount();
 	CCPoint GetEnemyPosition(const int index);
 	void MakeDamage(const int index, const int health);
-	Enemy *getEnemyByIndex(const int index) const;
 };
 

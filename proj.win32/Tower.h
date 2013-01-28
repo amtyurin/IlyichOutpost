@@ -4,12 +4,15 @@
 #include <math.h>
 #include "Wave.h"
 #include "Enemy.h"
+#include "UpgradeBase.h"
 
 #define GAME_SPEED 10
 
+#define UPGRADES_COUNT_TOWER 5
+
 enum TowerTypes{
-	MACHINE_GUN=1,
-	HEAVY_GUN=2
+	MACHINE_GUN = 1,
+	HEAVY_GUN = 2
 };
 
 enum CircleHalf{  //for turns processing
@@ -17,7 +20,7 @@ enum CircleHalf{  //for turns processing
 	LOWER_HALF
 };
 
-class Tower
+class Tower : public UpgradeBase
 {
 private:
 	int fireSpeed;
@@ -26,15 +29,18 @@ private:
 	int reloadTime;
 	float normRotateX;
 	float normRotateY;
+
+	MoneyManager *moneyManager;
+
 	cocos2d::CCPoint position;
 	cocos2d::CCSprite *spritePtr;
 	cocos2d::CCSprite *spriteRange;
-	Tower(void);
+
 	void fire(Wave *wave, int index);
 
 public:
-	Tower(int type, cocos2d::CCPoint _position);
-	Tower(int _damage, int _fireSpeed, int _fireRadius, cocos2d::CCPoint _position);
+	Tower(MoneyManager *moneyManager, int type, cocos2d::CCPoint _position);
+	Tower(MoneyManager *moneyManager, int _damage, int _fireSpeed, int _fireRadius, cocos2d::CCPoint _position);
 	~Tower(void);
 	const float getX() const { return position.x;};
 	const float getY() const { return position.y;};
@@ -48,5 +54,7 @@ public:
 	const bool isTargetInRange(CCPoint target) const;
 	void processEnemies(Wave *wave);
 	const bool isAbleToFire() const;
+
+	virtual void Upgrade();
 };
 

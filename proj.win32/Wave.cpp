@@ -10,8 +10,8 @@ void Wave::CreateEnemies(const EnemyType eType,const int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		Enemy *mob = new Enemy(this, eType, scene, waypoint);
-		aliveEnemies.push_back(mob);
+		Enemy *mob = new Enemy(moneyManager, eType, scene, waypoint);
+		this->aliveEnemies.push_back(mob);
 	}
 }
 
@@ -20,18 +20,19 @@ void Wave::AlignEnemyCount(const EnemyType eType, const int enemyInitialCount)
 	int diff = enemyInitialCount - aliveEnemies.size();
 	for (int i = 0; i < diff; i++)
 	{
-		Enemy *mob = new Enemy(this, eType, scene, waypoint);
-		aliveEnemies.push_back(mob);
+		Enemy *mob = new Enemy(moneyManager, eType, scene, waypoint);
+		this->aliveEnemies.push_back(mob);
 	}
 }
 
-Wave::Wave(CCScene *scene, Waypoint *waypoint)
+Wave::Wave(CCScene *scene, Waypoint *waypoint, MoneyManager *moneyManager)
 {
-	runningEnemies = 0;
-	aliveEnemies.resize(0);
+	this->runningEnemies = 0;
+	this->aliveEnemies.resize(0);
 
 	this->scene = scene;
 	this->waypoint = waypoint;
+	this->moneyManager = moneyManager;
 
 	currentWaveNumber++;
 	int enemyInitialCount = 0;
@@ -80,19 +81,19 @@ Wave::~Wave(void)
 
 int Wave::GetCurrentWaveNumber()
 {
-	return currentWaveNumber;
+	return this->currentWaveNumber;
 }
 
 int Wave::GetEnemyCount()
 {
-	return aliveEnemies.size();
+	return this->aliveEnemies.size();
 }
 
 bool Wave::StartEnemy()
 {
-	if (runningEnemies < aliveEnemies.size()){	
-		aliveEnemies[runningEnemies]->Start();		
-		runningEnemies++;
+	if (this->runningEnemies < this->aliveEnemies.size()){	
+		this->aliveEnemies[runningEnemies]->Start();		
+		this->runningEnemies++;
 		return true;
 	}
 	else{
@@ -103,9 +104,9 @@ bool Wave::StartEnemy()
 
 CCPoint Wave::GetEnemyPosition(const int index)
 {
-	if (index >= 0 && index < aliveEnemies.size())
+	if (index >= 0 && index < this->aliveEnemies.size())
 	{
-		return aliveEnemies[index]->GetPosition();
+		return this->aliveEnemies[index]->GetPosition();
 	}
 
 	CCLog("GetEnemyPosition: Wrong enemy index %d, count %d", index,aliveEnemies.size() );
@@ -115,9 +116,9 @@ CCPoint Wave::GetEnemyPosition(const int index)
 
 void Wave::MakeDamage(const int index, const int health)
 {
-	if (index >= 0 && index < aliveEnemies.size())
+	if (index >= 0 && index < this->aliveEnemies.size())
 	{
-		bool killed = aliveEnemies[index]->MakeDamage(health);
+		bool killed = this->aliveEnemies[index]->MakeDamage(health);
 		if (killed)	{
 			aliveEnemies.erase(std::remove(aliveEnemies.begin(), aliveEnemies.end(), aliveEnemies[index]), aliveEnemies.end());
 			runningEnemies--;
@@ -126,8 +127,4 @@ void Wave::MakeDamage(const int index, const int health)
 	}
 
 	CCLog("MakeDamage: Wrong enemy index %d, count %d", index,aliveEnemies.size() );
-}
-
-Enemy *Wave::getEnemyByIndex(const int index) const{
-	return aliveEnemies[index];
 }

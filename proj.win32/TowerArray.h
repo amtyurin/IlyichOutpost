@@ -4,14 +4,17 @@
 #include <set>
 #include <vector>
 #include <algorithm>
+#include "MoneyManager.h"
 
 
 class TowerArray
 {
+	MoneyManager *moneyManager;
 private:
 	vector<Tower*> towerSet;
 public:
-	TowerArray(void);
+	TowerArray(MoneyManager *moneyManager);
+
 	void addTower(Tower *tower);
 	Tower *createTower(int type, cocos2d::CCPoint _position);
 	void removeTower(Tower &tower);

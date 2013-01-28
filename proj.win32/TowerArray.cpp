@@ -4,8 +4,9 @@
 using std::set;
 using namespace cocos2d;
 
-TowerArray::TowerArray(void)
+TowerArray::TowerArray(MoneyManager *moneyManager)
 {
+	this->moneyManager = moneyManager;
 }
 
 void TowerArray::addTower(Tower *tower){
@@ -13,7 +14,7 @@ void TowerArray::addTower(Tower *tower){
 }
 
 Tower *TowerArray::createTower(int type, CCPoint position){
-	Tower *newTower = new Tower(type, position);
+	Tower *newTower = new Tower(moneyManager, type, position);
 	towerSet.push_back(newTower);
 	return newTower;
 }

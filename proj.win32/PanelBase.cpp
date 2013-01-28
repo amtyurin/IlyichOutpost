@@ -10,6 +10,8 @@ PanelBase::PanelBase(CCScene *scene, const int cellsX, const int cellsY, const C
 	this->cellsX = cellsX;
 	this->cellsY = cellsY;
 
+	textDisplayed = false;
+
 	panelSprite->setPosition(ccp);
 	panelSprite->setContentSize(size);
 }
@@ -51,9 +53,12 @@ void PanelBase::SetCellBorderImage(const char* image)
 
 void PanelBase::SetCellContentImage(const char* image, const int cellX, const int cellY)
 {
-	CCSprite * sprite = CCSprite::create(image);
+	if (cellX >= 0 && cellX < cellsX &&
+		cellY >= 0 && cellY < cellsY){
+		CCSprite * sprite = CCSprite::create(image);
 
-	SetCellContentSprite(sprite, cellX, cellY);
+		SetCellContentSprite(sprite, cellX, cellY);
+	}
 }
 
 void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const int cellY)
@@ -82,17 +87,24 @@ void PanelBase::DisplayText(const int tag, const char *text, const char *font, c
 {
 	if (cellX >= 0 && cellX < cellsX &&
 		cellY >= 0 && cellY < cellsY){
-		int sizeX = panelSprite->getContentSize().width / this->cellsX;
-		int sizeY = panelSprite->getContentSize().height / this->cellsY;
+		if (!textDisplayed || !strncmp(this->text, text, TEXT_SIZE)){
+			int sizeX = panelSprite->getContentSize().width / this->cellsX;
+			int sizeY = panelSprite->getContentSize().height / this->cellsY;
 
-		CCLabelTTF* pLabel = CCLabelTTF::create(text, font, size);
-		pLabel->setPositionX(sizeX / 2 + cellX * sizeX + locX);
-		pLabel->setPositionY(sizeY / 2 + cellY * sizeY + locY);
-		pLabel->setColor(ccc3(255,255,51));
+			CCLabelTTF* pLabel = CCLabelTTF::create(text, font, size);
+			pLabel->setPositionX(sizeX / 2 + cellX * sizeX + locX);
+			pLabel->setPositionY(sizeY / 2 + cellY * sizeY + locY);
+			pLabel->setColor(ccc3(255,255,51));
 
-		panelSprite->removeChildByTag(tag);
-		panelSprite->addChild(pLabel, 2, tag);
-		return;
+			if (textDisplayed){
+				panelSprite->removeChildByTag(tag);
+				textDisplayed = false;
+			}
+			panelSprite->addChild(pLabel, 2, tag);
+
+			textDisplayed = true;
+			return;
+		}
 	}
 
 	CCLog("Wrong cell index %d %d", cellX, cellY);

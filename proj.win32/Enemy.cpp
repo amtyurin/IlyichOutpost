@@ -3,15 +3,16 @@
 #include "PassingMap.h"
 #include "Wave.h"
 
-Enemy::Enemy(void *wave, const EnemyType eType, CCScene *scene, Waypoint *way)
+Enemy::Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, Waypoint *way) :
+	UpgradeBase(moneyManager, UPGRADES_COUNT_ENEMY)
 {
-	this->wave = wave;
+	this->moneyManager = moneyManager;
 	this->waypoint = way;
 	this->scene = scene;
 	this->currentPoint = 0;
+	this->BaseReachedCallback = NULL;
 
 	char *image = NULL;
-
 	switch(eType)
 	{
 		case ENEMY_SOLDIER:
@@ -66,6 +67,8 @@ Enemy::Enemy(void *wave, const EnemyType eType, CCScene *scene, Waypoint *way)
 			image = "\\Enemy\\soldier.png";
 			break;
 	}
+
+	this->SetUpgPriceForNextLevel(this->healthCurrent);
 
 	CCSprite *spriteEnemyLocal = CCSprite::create(image);
 	float scaleX = PassingMap::MAP_CELL_SIZE / spriteEnemyLocal->getContentSize().width;
@@ -136,6 +139,8 @@ void Enemy::CheckPointReached()
   else
   {
 	  CCLog("Enemy reached base");
+	  if (this->BaseReachedCallback)
+		  BaseReachedCallback();
   }
 }
 
@@ -157,6 +162,8 @@ bool Enemy::MakeDamage(const int health)
         CCFiniteTimeAction* actionDestroy = CCCallFunc::create( this, callfunc_selector(Enemy::Destroy));
         this->sprite->runAction( CCSequence::create(actionKill, actionDestroy, NULL) );
 
+		moneyManager->AddMoney((int)sqrt((float)this->healthTotal));
+
 		return true;
 	}
 	else
@@ -174,4 +181,10 @@ void Enemy::Start()
 CCPoint Enemy::GetPosition()
 {
 		return this->sprite->getPosition();
+}
+
+void Enemy::Upgrade()
+{
+	CCLog("Perform upgrade");
+	//UpgradeBase::Upgrade();	
 }
