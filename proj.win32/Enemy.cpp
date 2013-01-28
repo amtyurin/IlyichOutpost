@@ -185,6 +185,10 @@ CCPoint Enemy::GetPosition()
 
 void Enemy::Upgrade()
 {
-	CCLog("Perform upgrade");
-	//UpgradeBase::Upgrade();	
+#ifdef DEBUG_LOGS
+	CCLog("Perform enemy upgrade");
+#endif	
+	UpgradeBase::Upgrade();
+	healthTotal *= UPGRADE_COEF_ENEMY;
+	speed *= UPGRADE_COEF_ENEMY;
 }

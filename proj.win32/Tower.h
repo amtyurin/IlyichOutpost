@@ -9,6 +9,7 @@
 #define GAME_SPEED 10
 
 #define UPGRADES_COUNT_TOWER 5
+#define UPGRADE_COEF_TOWER 1.2
 
 enum TowerTypes{
 	MACHINE_GUN = 1,

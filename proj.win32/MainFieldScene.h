@@ -34,6 +34,7 @@ class MainFieldScene : public cocos2d::CCLayer
 	MoneyManager *moneyManager;
 
 	void DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY);
+	void StopGame(char *text);
 
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone

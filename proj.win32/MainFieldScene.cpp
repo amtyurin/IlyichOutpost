@@ -203,17 +203,13 @@ void MainFieldScene::GameLogic(float dt)
 		panelGeneral->DisplayText(1, text,"Arial",20,0,0,5,0);
 	}
 
-	if (this->wave != NULL){
-
-		towerArrayIterator it;
-		for (it = this->towers->begin(); it != this->towers->end(); it++){
+	if (this->wave != NULL){	
+		for (towerArrayIterator it = this->towers->begin(); it != this->towers->end(); it++){
 			(*it)->processEnemies(this->wave);
 		}
 
-		if (this->wave->GetEnemyCount() <= 0)
-		{
-			if (this->wave->GetCurrentWaveNumber() <= this->wavesCount)
-			{	
+		if (this->wave->GetEnemyCount() <= 0){
+			if (this->wave->GetCurrentWaveNumber() <= this->wavesCount)	{	
 				//start new wave after some timout
 				CCLog("STart new wave in %d secs", this->waveTimout);
 				passedTimeTillNewWave = 0;
@@ -222,19 +218,34 @@ void MainFieldScene::GameLogic(float dt)
 				this->wave = NULL;
 				return;
 			}
-			else
-			{
-				CCLog("All waves are passed. You won!");
+			else{				
+				StopGame("You won!");
+				
+				// Next Scene();
 				//this->scheduleOnce( schedule_selector(MainMenu::CreateScene), 2 );
-				this->unschedule( schedule_selector(MainFieldScene::GameLogic));
 
-				panelGeneral->DisplayText(4, "You won!", "Arial", 18, 1, 0, 0,0);
-
-				delete this->wave;
-				this->wave = NULL;
 				return;
 			}
 		}	
+		else{
+			// check if enemy reached base and make some damage to base
+			// base can be our and/or enemy
+			// bool
+			/*for (baseArrayIterator it = this->bases->begin(); it != this->bases->end(); it++){
+				(*it)->processEnemies(this->wave);
+			}
+			
+			if (this->bases->BaseEnemyDestroyed() && this->bases->BaseOurDestroyed()){
+				StopGame("Draw!");
+				return;
+			} else if (this->bases->BaseEnemyDestroyed()){
+				StopGame("You won!);
+				return;
+			} else if (this->bases->BaseOurDestroyed()){
+				StopGame("You lost!);
+				return;
+			}*/
+		}
 	}
 }
 
@@ -265,4 +276,16 @@ void MainFieldScene::DisplayText(const int tag, const char *text, const char *fo
 	this->addChild(pLabel, 2, tag);
 
 	textDisplayed = true;;
+}
+
+void MainFieldScene::StopGame(char *text)
+{
+	CCLog(text);
+
+	this->unschedule( schedule_selector(MainFieldScene::GameLogic));
+
+	panelGeneral->DisplayText(4, text, "Arial", 18, 1, 0, 0,0);
+
+	delete this->wave;
+	this->wave = NULL;
 }

@@ -9,10 +9,11 @@
 using namespace cocos2d;
 
 #define UPGRADES_COUNT_ENEMY 5
+#define UPGRADE_COEF_ENEMY 1.1
 
 enum EnemyType
 {
-	ENEMY_SOLDIER,
+	ENEMY_SOLDIER = 1,
 	ENEMY_HEAVY_SOLDIER,
 	ENEMY_HORSEMAN,
 	ENEMY_HEAVY_HORSEMAN,
@@ -20,7 +21,9 @@ enum EnemyType
 	ENEMY_HEAVY_MACHINEGUN_CART,
 	ENEMY_ARMORED_CAR,
 	ENEMY_TANK,
-	ENEMY_HEAVY_TANK
+	ENEMY_HEAVY_TANK,
+	//add new enemies here
+	MAX_ENEMY_NUMBER
 };
 
 class Enemy : public CCObject , public UpgradeBase

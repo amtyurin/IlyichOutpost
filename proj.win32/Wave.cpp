@@ -44,33 +44,20 @@ Wave::Wave(CCScene *scene, Waypoint *waypoint, MoneyManager *moneyManager)
 			break;
 		case 2:
 			enemyInitialCount = 20;
-			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 2);
-			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 2);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDIER,enemyInitialCount);
-			break;
-		case 3:
-			enemyInitialCount = 30;
-			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 3);
+			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount * 2 / 3);
 			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 3);
-			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 3);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDIER,enemyInitialCount);
-			break;
-		case 4:
-			enemyInitialCount = 40;
-			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 4);
-			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 4);
-			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 4);
-			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyInitialCount / 4);
-			AlignEnemyCount(ENEMY_HEAVY_SOLDIER,enemyInitialCount);
-			break;
-		case 5:
-			enemyInitialCount = 50;
-			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount / 5);
-			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 5);
-			CreateEnemies(ENEMY_HORSEMAN, enemyInitialCount / 5);
-			CreateEnemies(ENEMY_HEAVY_HORSEMAN, enemyInitialCount / 5);
-			CreateEnemies(ENEMY_MACHINEGUN_CART, enemyInitialCount / 5);
-			AlignEnemyCount(ENEMY_HEAVY_TANK,enemyInitialCount);
+			AlignEnemyCount(ENEMY_SOLDIER,enemyInitialCount);
+			break;	
+		default:
+			if (Wave::currentWaveNumber > 1){
+				enemyInitialCount = Wave::currentWaveNumber * 12;
+				int parts = sqrt((float)Wave::currentWaveNumber);
+				int maxEnemyType = min(parts, MAX_ENEMY_NUMBER - 1);
+				for (int i = 1; i <= maxEnemyType; i++){
+					CreateEnemies(static_cast<EnemyType>(i), enemyInitialCount / parts);
+				}
+				AlignEnemyCount(static_cast<EnemyType>(maxEnemyType), enemyInitialCount);
+			}
 			break;
 	}	
 }

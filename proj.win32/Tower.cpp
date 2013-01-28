@@ -131,14 +131,14 @@ const bool Tower::isAbleToFire() const{
 void Tower::Upgrade()
 {
 #ifdef DEBUG_LOGS
-	CCLog("Perform upgrade");
+	CCLog("Perform tower upgrade");
 #endif
 	UpgradeBase::Upgrade();	
 
-	fireSpeed *= UPGRADE_LEVEL;
-	fireRadius *= UPGRADE_LEVEL;
-	damage *= UPGRADE_LEVEL;
-	reloadTime *= UPGRADE_LEVEL;
+	fireSpeed *= UPGRADE_COEF_TOWER;
+	fireRadius *= UPGRADE_COEF_TOWER;
+	damage *= UPGRADE_COEF_TOWER;
+	reloadTime *= UPGRADE_COEF_TOWER;
 }
 
 bool Tower::CanBuy()

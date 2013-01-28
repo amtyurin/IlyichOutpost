@@ -3,7 +3,6 @@
 #include "MoneyManager.h"
 
 #define NEXT_LEVEL_PRICE_GROWTH 1.5
-#define UPGRADE_LEVEL 1.2
 
 class UpgradeBase
 {
