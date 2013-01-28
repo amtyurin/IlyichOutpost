@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <vector>
 
+#include "FileNames.h"
+
 using namespace std;
 
 enum CellState

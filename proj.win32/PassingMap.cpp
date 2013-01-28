@@ -45,13 +45,13 @@ void PassingMap::ShowDebugGrid(CCScene *scene)
 			switch(PassingMap::map[ax][ay].type)
 			{
 				case STATE_CELL_FREE:
-					cell_filename = "\\cells\\free_cell.png";
+					cell_filename = FILE_NAME_IMAGE_STATE_CELL_FREE;
 					break;
 				case STATE_CELL_BUSY:
-					cell_filename = "\\cells\\busy_cell.png";
+					cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUSY;
 					break;
 				case STATE_CELL_BUILD:
-					cell_filename = "\\cells\\build_cell.png";
+					cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUILD;
 					break;
 				default:
 					CCLOG("ERROR: Cell type is not right");
@@ -111,10 +111,10 @@ void PassingMap::ShowWaypoint(Waypoint *way, CCScene *scene)
 
 	while(cell)
 	{
-		CCSprite *cellSprite = CCSprite::create("\\cells\\busy_cell.png");
+		CCSprite *cellSprite = CCSprite::create(FILE_NAME_IMAGE_STATE_CELL_BUSY);
 		CC_BREAK_IF(! cellSprite);
 
-		cellSprite->setScale(0.6);
+		cellSprite->setScale(0.6f);
 		cellSprite->setPositionX(cell->x);
         cellSprite->setPositionY(cell->y);
 

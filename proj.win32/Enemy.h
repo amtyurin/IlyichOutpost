@@ -4,6 +4,7 @@
 
 #include "Waypoint.h"
 #include "UpgradeBase.h"
+#include "FileNames.h"
 
 using namespace cocos2d;
 

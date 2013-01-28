@@ -69,7 +69,7 @@ bool MainFieldScene::init()
 		CCSize size = CCDirector::sharedDirector()->getWinSize();
 
         // 3. Add add background, show the cocos2d splash image.
-        CCSprite* pSpriteBg = CCSprite::create("background.png");
+        CCSprite* pSpriteBg = CCSprite::create(FILE_NAME_IMAGE_BACKGROUND);
         CC_BREAK_IF(! pSpriteBg);
 
 		pSpriteBg->setScaleX(size.width / pSpriteBg->getContentSize().width);
@@ -82,7 +82,7 @@ bool MainFieldScene::init()
         this->addChild(pSpriteBg, 0);
 
 		// Add wire
-		CCSprite* pSpriteWire = CCSprite::create("wire.png");
+		CCSprite* pSpriteWire = CCSprite::create(FILE_NAME_IMAGE_BASE);
         CC_BREAK_IF(! pSpriteWire);
 
         // Place the sprite on the center of the screen
@@ -126,7 +126,7 @@ bool MainFieldScene::init()
 		towers = new TowerArray(moneyManager);
 
 		// sound
-		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
+		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(FILE_NAME_AUDIO_MAIN_SCENE_BG, true);  
 
 		this->addTower(MACHINE_GUN, ccp(230, 200));
 

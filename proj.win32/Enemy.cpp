@@ -18,53 +18,53 @@ Enemy::Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, 
 		case ENEMY_SOLDIER:
 			this->healthCurrent = this->healthTotal = 50;
 			this->speed = 10;
-			image = "\\Enemy\\soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_SOLDIER;
 			break;
 		case ENEMY_HEAVY_SOLDIER:
 			this->healthCurrent = this->healthTotal = 100;
 			this->speed = 10;
-			image = "\\Enemy\\heavy_soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_HEAVY_SOLDIER;
 			break;
 		case ENEMY_HORSEMAN:
 			this->healthCurrent = this->healthTotal = 150;
 			this->speed = 25;
-			image = "\\Enemy\\horseman.png";
+			image = FILE_NAME_IMAGE_ENEMY_HORSEMAN;
 			break;
 		case ENEMY_HEAVY_HORSEMAN:
 			this->healthCurrent = this->healthTotal = 300;
 			this->speed = 20;
-			image = "\\Enemy\\soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_HEAVY_HORSEMAN;
 			break;
 		case ENEMY_MACHINEGUN_CART:
 			this->healthCurrent = this->healthTotal = 500;
 			this->speed = 20;
-			image = "\\Enemy\\soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_MACHINEGUN_CART;
 			break;
 		case ENEMY_HEAVY_MACHINEGUN_CART:
 			this->healthCurrent = this->healthTotal = 750;
 			this->speed = 15;
-			image = "\\Enemy\\soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_HEAVY_MACHINEGUN_CART;
 			break;
 		case ENEMY_ARMORED_CAR:
 			this->healthCurrent = this->healthTotal = 1000;
 			this->speed = 15;
-			image = "\\Enemy\\soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_ARMORED_CAR;
 			break;
 		case ENEMY_TANK:
 			this->healthCurrent = this->healthTotal = 1500;
 			this->speed = 10;
-			image = "\\Enemy\\soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_TANK;
 			break;
 		case ENEMY_HEAVY_TANK:
 			this->healthCurrent = this->healthTotal = 2000;
 			this->speed = 7;
-			image = "\\Enemy\\soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_HEAVY_TANK;
 			break;
 		default:
 			CCLog("Wrong enemy type!");
 			this->healthCurrent = this->healthTotal = 50;
 			this->speed = 10;
-			image = "\\Enemy\\soldier.png";
+			image = FILE_NAME_IMAGE_ENEMY_SOLDIER;
 			break;
 	}
 

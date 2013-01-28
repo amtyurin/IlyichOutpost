@@ -4,9 +4,9 @@
 PanelGeneral::PanelGeneral(CCScene *scene, const CCPoint ccp, const CCSize size)
 	: PanelBase(scene, 4,1, ccp, size)
 {
-	this->SetCellBorderImage("panel_border_common.png");
+	this->SetCellBorderImage(FILE_NAME_IMAGE_PANEL_BORDER);
 
-	this->SetCellContentImage("coin.png", 0,0);	
+	this->SetCellContentImage(FILE_NAME_IMAGE_PANEL_COIN, 0,0);	
 }
 
 

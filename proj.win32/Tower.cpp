@@ -2,18 +2,6 @@
 
 using namespace cocos2d;
 
-Tower::Tower(MoneyManager *_moneyManager, int _damage, int _fireSpeed, int _fireRadius, CCPoint _position):
-UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
-	this->moneyManager = _moneyManager;
-	this->damage = _damage; 
-	this->fireSpeed = _fireSpeed; 
-	this->fireRadius = _fireRadius; 
-	this->position = _position;
-
-	spritePtr = CCSprite::create("machineGun.png");
-	spritePtr->setPosition(this->position);
-}
-
 Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) : 
 		UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
 	//CCLog("Type: %d\n", type);
@@ -24,14 +12,14 @@ Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) :
 			this->damage = 10;
 			this->fireSpeed = 10;
 			this->fireRadius = 150;
-			this->spritePtr = CCSprite::create("machineGun.png");
+			this->spritePtr = CCSprite::create(FILE_NAME_IMAGE_TOWER_MACHINE_GUN);
 			CC_BREAK_IF(! this->spritePtr);
 			break;
 		case HEAVY_GUN:
 			this->damage = 20;
-			this->fireSpeed = 5;
+			this->fireSpeed = 7;
 			this->fireRadius = 170;
-			this->spritePtr = CCSprite::create("machineGun.png");
+			this->spritePtr = CCSprite::create(FILE_NAME_IMAGE_TOWER_HEAVY_GUN);
 			CC_BREAK_IF(! this->spritePtr);
 			break;
 		default:
@@ -39,7 +27,8 @@ Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) :
 			this->fireSpeed = 0;
 			this->fireRadius = 0;
 	}
-	this->SetUpgPriceForNextLevel(this->damage + this->fireRadius);
+	this->price = (this->damage + this->fireRadius + this->fireSpeed) / 2;
+	this->SetUpgPriceForNextLevel(this->price * 2);	
 
 	this->position=_position;
 	this->spritePtr->setPosition(_position);
@@ -150,4 +139,14 @@ void Tower::Upgrade()
 	fireRadius *= UPGRADE_LEVEL;
 	damage *= UPGRADE_LEVEL;
 	reloadTime *= UPGRADE_LEVEL;
+}
+
+bool Tower::CanBuy()
+{
+	return moneyManager->CanSpendMoney(this->price);
+}
+
+void Tower::Buy()
+{
+	moneyManager->SpendMoney(this->price);
 }

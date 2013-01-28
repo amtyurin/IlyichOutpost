@@ -39,6 +39,7 @@ bool UpgradeBase::CanUpgrade()
 	if (currLevel < maxLevel){
 		return moneyManager->CanSpendMoney(priceForNextLevel);
 	}
+	return false;
 }
 
 void UpgradeBase::Upgrade()

@@ -103,6 +103,9 @@
     <ClInclude Include="MoneyManager.h">
       <Filter>Tower</Filter>
     </ClInclude>
+    <ClInclude Include="FileNames.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

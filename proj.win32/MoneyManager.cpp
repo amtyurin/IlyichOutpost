@@ -28,7 +28,7 @@ void MoneyManager::AddMoney(const int amount)
 
 bool MoneyManager::SpendMoney(const int amount)
 {
-	int res = false;
+	bool res = false;
 	pthread_mutex_lock(&mutex);
 
 	if (money >= amount){
@@ -43,7 +43,7 @@ bool MoneyManager::SpendMoney(const int amount)
 
 bool MoneyManager::CanSpendMoney(const int amount)
 {
-	int res = false;
+	bool res = false;
 	pthread_mutex_lock(&mutex);
 
 	if (money >= amount){

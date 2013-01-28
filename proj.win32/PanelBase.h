@@ -1,6 +1,8 @@
 #pragma once
 #include "cocos2d.h"
 
+#include "FileNames.h"
+
 using namespace cocos2d;
 
 #define TEXT_SIZE 30

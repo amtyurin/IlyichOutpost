@@ -27,6 +27,7 @@ private:
 	int fireRadius;
 	int damage;
 	int reloadTime;
+	int price;
 	float normRotateX;
 	float normRotateY;
 
@@ -40,7 +41,6 @@ private:
 
 public:
 	Tower(MoneyManager *moneyManager, int type, cocos2d::CCPoint _position);
-	Tower(MoneyManager *moneyManager, int _damage, int _fireSpeed, int _fireRadius, cocos2d::CCPoint _position);
 	~Tower(void);
 	const float getX() const { return position.x;};
 	const float getY() const { return position.y;};
@@ -56,5 +56,7 @@ public:
 	const bool isAbleToFire() const;
 
 	virtual void Upgrade();
+	bool CanBuy();
+	void Buy();
 };
 
