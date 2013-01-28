@@ -11,9 +11,11 @@
 #include "PanelGeneral.h"
 #include "PanelTowers.h"
 
+#include "MoneyManager.h"
+
 #include <set>
 
-typedef vector<Tower>::iterator towerArrayIterator;
+typedef vector<Tower*>::iterator towerArrayIterator;
 
 class MainFieldScene : public cocos2d::CCLayer
 {
@@ -22,10 +24,16 @@ class MainFieldScene : public cocos2d::CCLayer
 
 	int wavesCount;
 	int waveTimout;
-	TowerArray towers;
+	float gameLogicTimeout;
+	int enemyRespawnTime;
+	TowerArray *towers;
 
 	PanelGeneral *panelGeneral;
 	PanelTowers *panelTower;
+
+	MoneyManager *moneyManager;
+
+	void DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY);
 
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -43,5 +51,5 @@ public:
 	void StartWave(float dt);
 	void WaveGenerateEnemyProcess(float dt);
 	void GameLogic(float dt);
-	Tower addTower(int towerType, cocos2d::CCPoint position);
+	Tower *addTower(int towerType, cocos2d::CCPoint position);
 };

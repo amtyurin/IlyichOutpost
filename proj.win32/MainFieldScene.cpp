@@ -114,23 +114,28 @@ bool MainFieldScene::init()
 		way.AddPoint(PassingMap::GetCell(12,9));
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 
+		wave = NULL;		
 		wavesCount = 5;
 		waveTimout = 5;
-		wave = NULL;
-		this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
+		gameLogicTimeout = 0.1f;
+		enemyRespawnTime = 2;
 
-		this->schedule( schedule_selector(MainFieldScene::GameLogic), 0.3f );
+		moneyManager = new MoneyManager();
+		moneyManager->AddMoney(100);
+
+		towers = new TowerArray(moneyManager);
 
 		// sound
 		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\toska.mp3", true);  
 
-		this->addTower(MACHINE_GUN, ccp(130, 100));
+		this->addTower(MACHINE_GUN, ccp(230, 200));
 
 		int posFromBorder = 20;
 		panelGeneral =  new PanelGeneral((CCScene*)this, ccp(size.width/2, size.height - posFromBorder),CCSize(size.width/2, 2 * posFromBorder));
-		posFromBorder = 50;
+		posFromBorder = 45;
 		panelTower = new PanelTowers((CCScene*)this, ccp(size.width - posFromBorder, size.height/2), CCSize(2 * posFromBorder, size.height * 2 / 3));
 
+		this->schedule( schedule_selector(MainFieldScene::GameLogic), gameLogicTimeout );
 
         bRet = true;
     } while (0);
@@ -147,57 +152,117 @@ void MainFieldScene::CreateScene(CCObject* sender)
 
 void MainFieldScene::GameLogic(float dt)
 {
+	static float passedTimeTotal = 0;	
+	passedTimeTotal += dt;
 
-	//printf("Function called\n");
-	towerArrayIterator it;
-	for (it = this->towers.begin(); it != this->towers.end(); ++it){
-		for (int i = 0; i < this->wave->GetEnemyCount(); ++i){
-			if (it->isTargetInRange(this->wave->GetEnemyPosition(i))){
-				it->turnTo(this->wave->GetEnemyPosition(i));
-				this->wave->MakeDamage(i, it->getDamage());
+	{// display time
+		char curTime[TEXT_SIZE];
+		sprintf(curTime, "%d:%d:%d", (int)(passedTimeTotal / 60 / 60) % 24, (int)(passedTimeTotal / 60) % 60, (int)passedTimeTotal % 60);
+		panelGeneral->DisplayText(2, curTime, "Arial", 20, 2, 0, 0,0);
+	}
+
+	static float passedTimeStartEnemy = 0;
+	passedTimeStartEnemy += dt;
+
+	static float passedTimeTillNewWave = 0;
+	passedTimeTillNewWave += dt;
+
+	if (passedTimeTillNewWave >= waveTimout){		
+
+		DisplayText(1,NULL,"Arial",50,0,0);
+
+		if (this->wave == NULL){
+			this->wave = new Wave((CCScene *)this, &way, moneyManager);
+
+			CCLog("New wave started");
+		
+			{ // display wave number
+				char waveNum[TEXT_SIZE];
+				sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
+				panelGeneral->DisplayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
 			}
+		}		
+
+		if (passedTimeStartEnemy >= enemyRespawnTime){
+			this->wave->StartEnemy();
+			passedTimeStartEnemy = 0;
+		}
+	}
+	else {
+		CCLog("New wave in %f", waveTimout - passedTimeTillNewWave);
+		{ // display wave number
+			char text[TEXT_SIZE];
+			sprintf(text,"New wave in\n  %d sec\n\n", (int)(waveTimout - passedTimeTillNewWave));
+			DisplayText(1,text,"Arial",50,0,0);
 		}
 	}
 
-	if (wave->GetEnemyCount() <= 0)
-	{
-		if (wave->GetCurrentWaveNumber() <= wavesCount)
-		{	
-			//start new wave after some timout
-			CCLog("STart new wave in %d secs", waveTimout);
-			this->scheduleOnce( schedule_selector(MainFieldScene::StartWave), waveTimout );
+	{ // display money
+		char text[TEXT_SIZE];
+		sprintf(text,"%d", moneyManager->GetMoneyBalance());
+		panelGeneral->DisplayText(1, text,"Arial",20,0,0,5,0);
+	}
+
+	if (this->wave != NULL){
+
+		towerArrayIterator it;
+		for (it = this->towers->begin(); it != this->towers->end(); it++){
+			(*it)->processEnemies(this->wave);
 		}
-		else
+
+		if (this->wave->GetEnemyCount() <= 0)
 		{
-			CCLog("All waves are passed. You won!");
-		}
+			if (this->wave->GetCurrentWaveNumber() <= this->wavesCount)
+			{	
+				//start new wave after some timout
+				CCLog("STart new wave in %d secs", this->waveTimout);
+				passedTimeTillNewWave = 0;
+
+				delete this->wave;
+				this->wave = NULL;
+				return;
+			}
+			else
+			{
+				CCLog("All waves are passed. You won!");
+				//this->scheduleOnce( schedule_selector(MainMenu::CreateScene), 2 );
+				this->unschedule( schedule_selector(MainFieldScene::GameLogic));
+
+				panelGeneral->DisplayText(4, "You won!", "Arial", 18, 1, 0, 0,0);
+
+				delete this->wave;
+				this->wave = NULL;
+				return;
+			}
+		}	
 	}
 }
 
-void MainFieldScene::StartWave(float dt)
-{
-	if (wave != NULL){
-		delete wave;
-	}
-
-	wave = new Wave((CCScene *)this, &way);	
-
-	this->schedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess), 2.0 );
-}
-
-void MainFieldScene::WaveGenerateEnemyProcess(float dt)
-{
-    // called every X msec
-	bool added = wave->AddEnemy();
-	if (!added)
-	{		
-		this->unschedule( schedule_selector(MainFieldScene::WaveGenerateEnemyProcess) );		
-	}
-}
-
-Tower MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
-	Tower newTower(towerType, position);
-	this->addChild(newTower.getSprite());
-	this->towers.addTower(newTower);
+Tower *MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
+	Tower *newTower = towers->createTower(towerType, position);
+	this->addChild(newTower->getSprite());
 	return newTower;
+}
+
+void MainFieldScene::DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY)
+{
+	static bool textDisplayed = false;
+	
+	if (textDisplayed){
+		this->removeChildByTag(tag); 
+		textDisplayed = false;
+	}
+
+	if (text == NULL)
+		return;
+
+	CCSize sizeWin = CCDirector::sharedDirector()->getWinSize();
+
+	CCLabelTTF* pLabel = CCLabelTTF::create(text, font, size);
+	pLabel->setPositionX(sizeWin.width / 2 + locX);
+	pLabel->setPositionY(sizeWin.height / 2 + locY);
+	
+	this->addChild(pLabel, 2, tag);
+
+	textDisplayed = true;;
 }

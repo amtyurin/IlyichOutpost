@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\Classes;$(SolutionDir)cocos2dx;$(SolutionDir)cocos2dx\include;$(SolutionDir)cocos2dx\kazmath\include;$(SolutionDir)cocos2dx\platform\win32;$(SolutionDir)cocos2dx\platform\third_party\win32;$(SolutionDir)cocos2dx\platform\third_party\win32\OGLES;$(SolutionDir)CocosDenshion\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)cocos2dx\platform\third_party\win32\pthread;.;..\Classes;$(SolutionDir)cocos2dx;$(SolutionDir)cocos2dx\include;$(SolutionDir)cocos2dx\kazmath\include;$(SolutionDir)cocos2dx\platform\win32;$(SolutionDir)cocos2dx\platform\third_party\win32;$(SolutionDir)cocos2dx\platform\third_party\win32\OGLES;$(SolutionDir)CocosDenshion\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -64,7 +64,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libcocos2d.lib;opengl32.lib;glew32.lib;libCocosDenshion.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pthreadVCE2.lib;libcocos2d.lib;opengl32.lib;glew32.lib;libCocosDenshion.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -143,6 +143,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MainFieldScene.h" />
+    <ClInclude Include="MoneyManager.h" />
     <ClInclude Include="PanelBase.h" />
     <ClInclude Include="PanelGeneral.h" />
     <ClInclude Include="PanelTowers.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Tower.h" />
     <ClInclude Include="TowerArray.h" />
+    <ClInclude Include="UpgradeBase.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Waypoint.h" />
   </ItemGroup>
@@ -159,12 +161,14 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainFieldScene.cpp" />
+    <ClCompile Include="MoneyManager.cpp" />
     <ClCompile Include="PanelBase.cpp" />
     <ClCompile Include="PanelGeneral.cpp" />
     <ClCompile Include="PanelTowers.cpp" />
     <ClCompile Include="PassingMap.cpp" />
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="TowerArray.cpp" />
+    <ClCompile Include="UpgradeBase.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Waypoint.cpp" />
   </ItemGroup>

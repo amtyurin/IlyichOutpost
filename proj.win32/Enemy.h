@@ -3,13 +3,16 @@
 #include "cocos2d.h"
 
 #include "Waypoint.h"
+#include "UpgradeBase.h"
 
 using namespace cocos2d;
 
+#define UPGRADES_COUNT_ENEMY 5
+
 enum EnemyType
 {
-	ENEMY_SOLDER,
-	ENEMY_HEAVY_SOLDER,
+	ENEMY_SOLDIER,
+	ENEMY_HEAVY_SOLDIER,
 	ENEMY_HORSEMAN,
 	ENEMY_HEAVY_HORSEMAN,
 	ENEMY_MACHINEGUN_CART,
@@ -19,7 +22,7 @@ enum EnemyType
 	ENEMY_HEAVY_TANK
 };
 
-class Enemy : public CCObject
+class Enemy : public CCObject , public UpgradeBase
 {
 	int healthTotal;
 	int healthCurrent;
@@ -27,24 +30,27 @@ class Enemy : public CCObject
 	int currentPoint;
 	int speed;
 
-	void *wave;
+	MoneyManager *moneyManager;
 
 	CCSprite *sprite;
 	CCSprite *spriteHealth;
 	CCScene *scene;
 
-	void CheckPointReached(Enemy* sender);
-	void Destroy(Enemy *sender);
+	void CheckPointReached();
+	void (*BaseReachedCallback)();
+	void Destroy();	
 	
 public:
-	Enemy(void *wave, const EnemyType eType, CCScene *scene, Waypoint *way);
+	Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, Waypoint *way);
 	~Enemy(void);
 
 	void SetSpeed(const int speed);
 	CCPoint GetPosition();
 
-	void MakeDamage(const int health);
+	bool MakeDamage(const int health);
 
 	void Start();
+
+	virtual void Upgrade();
 };
 

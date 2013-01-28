@@ -97,6 +97,12 @@
     <ClInclude Include="PanelTowers.h">
       <Filter>Panel</Filter>
     </ClInclude>
+    <ClInclude Include="UpgradeBase.h">
+      <Filter>Tower</Filter>
+    </ClInclude>
+    <ClInclude Include="MoneyManager.h">
+      <Filter>Tower</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -137,6 +143,12 @@
     </ClCompile>
     <ClCompile Include="PanelTowers.cpp">
       <Filter>Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradeBase.cpp">
+      <Filter>Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="MoneyManager.cpp">
+      <Filter>Tower</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

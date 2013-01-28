@@ -112,7 +112,7 @@ bool MainMenu::init()
 		// \menu items
 
 		// sound
-		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\MainMenu.mp3", true);    
+		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("\\Audio\\MainMenu.mp3", true);    
         bRet = true;
     } while (0);
 

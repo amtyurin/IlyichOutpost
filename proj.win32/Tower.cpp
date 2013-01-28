@@ -2,38 +2,48 @@
 
 using namespace cocos2d;
 
-Tower::Tower(void)
-{
-}
+Tower::Tower(MoneyManager *_moneyManager, int _damage, int _fireSpeed, int _fireRadius, CCPoint _position):
+UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
+	this->moneyManager = _moneyManager;
+	this->damage = _damage; 
+	this->fireSpeed = _fireSpeed; 
+	this->fireRadius = _fireRadius; 
+	this->position = _position;
 
-Tower::Tower(int _damage, int _fireSpeed, int _fireRadius, CCPoint _position): 
-damage(_damage), fireSpeed(_fireSpeed), fireRadius(_fireRadius), position(_position){
 	spritePtr = CCSprite::create("machineGun.png");
 	spritePtr->setPosition(this->position);
 }
 
-Tower::Tower(int type, CCPoint _position){
+Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) : 
+		UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
 	//CCLog("Type: %d\n", type);
+	this->moneyManager = moneyManager;
+
 	switch (type){
 		case MACHINE_GUN:
 			this->damage = 10;
 			this->fireSpeed = 10;
 			this->fireRadius = 150;
 			this->spritePtr = CCSprite::create("machineGun.png");
+			CC_BREAK_IF(! this->spritePtr);
 			break;
 		case HEAVY_GUN:
 			this->damage = 20;
 			this->fireSpeed = 5;
 			this->fireRadius = 170;
 			this->spritePtr = CCSprite::create("machineGun.png");
+			CC_BREAK_IF(! this->spritePtr);
 			break;
 		default:
 			this->damage = 0;
 			this->fireSpeed = 0;
 			this->fireRadius = 0;
 	}
+	this->SetUpgPriceForNextLevel(this->damage + this->fireRadius);
+
 	this->position=_position;
 	this->spritePtr->setPosition(_position);
+	this->reloadTime = 0;
 	//CCLog("FireRadius: %d\n", this->fireRadius);
 }
 
@@ -61,7 +71,8 @@ const bool Tower::operator < (const Tower &tower) const{
 	return (this < &tower);
 }
 
-void Tower::turnTo(const CCPoint point){
+void Tower::turnTo(const CCPoint point) const{
+	//CCLog ("TurnTo called");
 	double dx = this->position.x - point.x;
 	double dy = this->position.y - point.y;
 	int circleHalf;
@@ -73,21 +84,12 @@ void Tower::turnTo(const CCPoint point){
 	
 	double tanOfAngle = (dx/dy);
 	double angle = atan(tanOfAngle)*57.2957795135;
-	if (circleHalf == LOWER_HALF){
+	if (circleHalf == UPPER_HALF){
 		angle+=180;
 	}
-	CCLog("%f\t%f\t%f\t%f\n", dx, dy, tanOfAngle, angle);
 	if (angle >= 0 && angle <= 360){
-		this->spritePtr->setRotation(angle+180);
+		this->spritePtr->setRotation(angle);
 	}
-	//CCLog("%f\t%f\n", angle, angleDegrees);
-	/*double dX = abs(this->position.x - point.x);
-	double dY = abs(this->position.y - point.y);
-	double angleSin = (dX/dY);
-	double angle = asin(angleSin);
-	this->spritePtr->setRotation(angle*180/3.14);*/
-	//this->spritePtr->setRotationX(point.x);
-	//this->spritePtr->setRotationY(point.y);
 }
 
 const bool Tower::operator> (const Tower &tower) const{
@@ -106,4 +108,46 @@ const bool Tower::isTargetInRange(CCPoint target) const{
 	}else{
 		return false;
 	}
+}
+
+void Tower::processEnemies(Wave *wave){
+	for (int i = 0; i < wave->GetEnemyCount(); i++){
+		if (this->isTargetInRange(wave->GetEnemyPosition(i))){
+			this->turnTo(wave->GetEnemyPosition(i));
+			this->fire(wave, i);
+			break;
+		}
+	}
+}
+
+void Tower::fire(Wave *wave, int index){
+	if (this->isAbleToFire()){
+#ifdef DEBUG_LOGS
+		CCLog("Making damage");
+#endif
+		wave->MakeDamage(index, this->damage);
+		this->reloadTime = GAME_SPEED / this->fireSpeed;
+	}else{
+#ifdef DEBUG_LOGS
+		CCLog("Reloading");
+#endif
+		this->reloadTime--;
+	}
+}
+
+const bool Tower::isAbleToFire() const{
+	return (this->reloadTime <= 0);
+}
+
+void Tower::Upgrade()
+{
+#ifdef DEBUG_LOGS
+	CCLog("Perform upgrade");
+#endif
+	UpgradeBase::Upgrade();	
+
+	fireSpeed *= UPGRADE_LEVEL;
+	fireRadius *= UPGRADE_LEVEL;
+	damage *= UPGRADE_LEVEL;
+	reloadTime *= UPGRADE_LEVEL;
 }
