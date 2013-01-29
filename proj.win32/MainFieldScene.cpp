@@ -79,17 +79,7 @@ bool MainFieldScene::init()
         pSpriteBg->setPosition(ccp(size.width/2, size.height/2));
 
         // Add the sprite to MainMenu layer as a child layer.
-        this->addChild(pSpriteBg, 0);
-
-		// Add wire
-		CCSprite* pSpriteWire = CCSprite::create(FILE_NAME_IMAGE_BASE);
-        CC_BREAK_IF(! pSpriteWire);
-
-        // Place the sprite on the center of the screen
-        pSpriteWire->setPosition(ccp(size.width/2, size.height/2));
-
-        // Add the sprite to MainMenu layer as a child layer.
-        this->addChild(pSpriteWire, 1);
+        this->addChild(pSpriteBg, 0);		
 
 		/*CCSprite *pSpriteTower = CCSprite::create("machineGun.png");
 		CC_BREAK_IF(! pSpriteWire);
@@ -124,6 +114,8 @@ bool MainFieldScene::init()
 		moneyManager->AddMoney(100);
 
 		towers = new TowerArray(moneyManager);
+		Outpost *outpost = new Outpost((CCScene*)this, OUTPOST_TYPE_OUR, CCRect(350, 250, 80, 80));
+		outposts.AddOutpost(outpost);
 
 		// sound
 		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(FILE_NAME_AUDIO_MAIN_SCENE_BG, true);  
@@ -231,20 +223,18 @@ void MainFieldScene::GameLogic(float dt)
 			// check if enemy reached base and make some damage to base
 			// base can be our and/or enemy
 			// bool
-			/*for (baseArrayIterator it = this->bases->begin(); it != this->bases->end(); it++){
-				(*it)->processEnemies(this->wave);
-			}
+			this->outposts.ProcessEnemies(this->wave);
 			
-			if (this->bases->BaseEnemyDestroyed() && this->bases->BaseOurDestroyed()){
+			if (this->outposts.OutpostEnemyDestroyed() && this->outposts.OutpostOurDestroyed()){
 				StopGame("Draw!");
 				return;
-			} else if (this->bases->BaseEnemyDestroyed()){
-				StopGame("You won!);
+			} else if (this->outposts.OutpostEnemyDestroyed()){
+				StopGame("You won!");
 				return;
-			} else if (this->bases->BaseOurDestroyed()){
-				StopGame("You lost!);
+			} else if (this->outposts.OutpostOurDestroyed()){
+				StopGame("You lost!");
 				return;
-			}*/
+			}
 		}
 	}
 }
@@ -284,7 +274,7 @@ void MainFieldScene::StopGame(char *text)
 
 	this->unschedule( schedule_selector(MainFieldScene::GameLogic));
 
-	DisplayText(4, text, "Arial", 18, 0, 0);
+	DisplayText(4, text, "Arial", 70, 0, 0);
 
 	delete this->wave;
 	this->wave = NULL;

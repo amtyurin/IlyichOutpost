@@ -7,6 +7,7 @@
 #include "Wave.h"
 #include "Tower.h"
 #include "TowerArray.h"
+#include "OutpostArray.h"
 
 #include "PanelGeneral.h"
 #include "PanelTowers.h"
@@ -27,6 +28,7 @@ class MainFieldScene : public cocos2d::CCLayer
 	float gameLogicTimeout;
 	int enemyRespawnTime;
 	TowerArray *towers;
+	OutpostArray outposts;
 
 	PanelGeneral *panelGeneral;
 	PanelTowers *panelTower;

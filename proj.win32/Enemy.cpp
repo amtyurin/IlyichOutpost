@@ -83,7 +83,7 @@ Enemy::Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, 
 	this->sprite->setPosition(ccp(-100, -100));
 
 	// add health line
-	this->spriteHealth = CCSprite::create("\\Enemy\\health_line.png");
+	this->spriteHealth = CCSprite::create(FILE_NAME_IMAGE_HEALTH_LINE);
 
 	int posX = this->sprite->getContentSize().width / 2;
 	int posY = this->sprite->getContentSize().height;
@@ -97,6 +97,7 @@ Enemy::Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, 
 
 Enemy::~Enemy(void)
 {
+	Destroy();
 }
 
 void Enemy::SetSpeed(const int speed)

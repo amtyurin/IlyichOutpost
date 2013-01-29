@@ -57,7 +57,7 @@ const bool Tower::operator < (const Tower &tower) const{
 	/*int compareValue = this->position.x * 10000 + this->position.y;
 	int compareValue2 = tower.getX() * 10000 + tower.getY();
 	return compareValue < compareValue2;*/
-	return (*this < tower);
+	return (this < &tower);
 }
 
 void Tower::turnTo(const CCPoint point) const{
