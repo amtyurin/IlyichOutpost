@@ -55,4 +55,9 @@ public:
 	void WaveGenerateEnemyProcess(float dt);
 	void GameLogic(float dt);
 	Tower *addTower(int towerType, cocos2d::CCPoint position);
+
+	void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
+    void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
+    void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
+	void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);
 };

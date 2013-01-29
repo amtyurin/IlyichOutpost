@@ -111,3 +111,8 @@ void Wave::MakeDamage(const int index, const int health)
 
 	CCLog("MakeDamage: Wrong enemy index %d, count %d", index,aliveEnemies.size() );
 }
+
+bool Wave::AllEnemiesCreated()
+{
+	return ((this->enemyCountForWave - this->createdEnemies) <= 0);
+}

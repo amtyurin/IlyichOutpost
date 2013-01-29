@@ -33,9 +33,10 @@ public:
 
 	bool StartEnemy();
 	int GetCurrentWaveNumber();
-
 	int GetEnemyCount();
 	CCPoint GetEnemyPosition(const int index);
+	bool AllEnemiesCreated();
+
 	void MakeDamage(const int index, const int health);
 };
 

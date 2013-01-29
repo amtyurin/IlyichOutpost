@@ -36,7 +36,6 @@ private:
 
 	cocos2d::CCPoint position;
 	cocos2d::CCSprite *spritePtr;
-	cocos2d::CCSprite *spriteRange;
 
 	void fire(Wave *wave, int index);
 

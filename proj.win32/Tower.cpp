@@ -7,19 +7,20 @@ Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) :
 	//CCLog("Type: %d\n", type);
 	this->moneyManager = moneyManager;
 
+	char *image = NULL;
 	switch (type){
 		case MACHINE_GUN:
 			this->damage = 10;
 			this->fireSpeed = 10;
 			this->fireRadius = 150;
-			this->spritePtr = CCSprite::create(FILE_NAME_IMAGE_TOWER_MACHINE_GUN);
+			image = FILE_NAME_IMAGE_TOWER_MACHINE_GUN;
 			CC_BREAK_IF(! this->spritePtr);
 			break;
 		case HEAVY_GUN:
 			this->damage = 20;
 			this->fireSpeed = 7;
 			this->fireRadius = 170;
-			this->spritePtr = CCSprite::create(FILE_NAME_IMAGE_TOWER_HEAVY_GUN);
+			image = FILE_NAME_IMAGE_TOWER_HEAVY_GUN;
 			CC_BREAK_IF(! this->spritePtr);
 			break;
 		default:
@@ -27,6 +28,7 @@ Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) :
 			this->fireSpeed = 0;
 			this->fireRadius = 0;
 	}
+	this->spritePtr = CCSprite::create(image);
 	this->price = (this->damage + this->fireRadius + this->fireSpeed) / 2;
 	this->SetUpgPriceForNextLevel(this->price * 2);	
 

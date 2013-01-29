@@ -81,14 +81,7 @@ bool MainFieldScene::init()
         // Add the sprite to MainMenu layer as a child layer.
         this->addChild(pSpriteBg, 0);		
 
-		/*CCSprite *pSpriteTower = CCSprite::create("machineGun.png");
-		CC_BREAK_IF(! pSpriteWire);
-		pSpriteTower->setPosition(ccp(18,582));
-		this->addChild(pSpriteTower);
-		for (int i = 0; i<=180; ++i){
-			pSpriteTower->setRotation(i);
-		}
-		*/
+		this->setTouchEnabled(true);
 
 		PassingMap::ClearMap();
 		PassingMap::SetCellState(5,5,STATE_CELL_BUSY);
@@ -127,7 +120,7 @@ bool MainFieldScene::init()
 		posFromBorder = 45;
 		panelTower = new PanelTowers((CCScene*)this, ccp(size.width - posFromBorder, size.height/2), CCSize(2 * posFromBorder, size.height * 2 / 3));
 
-		this->schedule( schedule_selector(MainFieldScene::GameLogic), gameLogicTimeout );
+		this->schedule( schedule_selector(MainFieldScene::GameLogic), gameLogicTimeout );		
 
         bRet = true;
     } while (0);
@@ -200,8 +193,8 @@ void MainFieldScene::GameLogic(float dt)
 			(*it)->processEnemies(this->wave);
 		}
 
-		if (this->wave->GetEnemyCount() <= 0){
-			if (this->wave->GetCurrentWaveNumber() <= this->wavesCount)	{	
+		if (this->wave->GetEnemyCount() <= 0 && this->wave->AllEnemiesCreated()){
+			if (this->wave->GetCurrentWaveNumber() < this->wavesCount)	{	
 				//start new wave after some timout
 				CCLog("STart new wave in %d secs", this->waveTimout);
 				passedTimeTillNewWave = 0;
@@ -216,6 +209,8 @@ void MainFieldScene::GameLogic(float dt)
 				// Next Scene();
 				//this->scheduleOnce( schedule_selector(MainMenu::CreateScene), 2 );
 
+				delete this->wave;
+				this->wave = NULL;
 				return;
 			}
 		}	
@@ -278,4 +273,26 @@ void MainFieldScene::StopGame(char *text)
 
 	delete this->wave;
 	this->wave = NULL;
+}
+
+void MainFieldScene::ccTouchesBegan(CCSet* touches, CCEvent* event)
+{
+}
+
+void MainFieldScene::ccTouchesMoved(CCSet* touches, CCEvent* event)
+{
+}
+
+void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
+{
+	// Choose one of the touches to work with
+    CCTouch* touch = (CCTouch*)( touches->anyObject() );
+	CCPoint location = touch->getLocation();
+    //location = CCDirector::sharedDirector()->convertToGL(location);
+
+	//this->addTower(MACHINE_GUN, ccp(location.x, location.y));
+}
+
+void MainFieldScene::ccTouchesCancelled(CCSet* touches, CCEvent* event)
+{
 }

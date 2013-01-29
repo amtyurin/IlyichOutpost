@@ -7,6 +7,7 @@
 #define FILE_NAME_IMAGE_OUTPOST_ENEMY "wire.png"
 #define FILE_NAME_IMAGE_OUTPOST_OUR "wire.png"
 
+#define FILE_NAME_IMAGE_TOWER_RANGE "TowerRange.png"
 #define FILE_NAME_IMAGE_TOWER_MACHINE_GUN "machineGun.png"
 #define FILE_NAME_IMAGE_TOWER_HEAVY_GUN "machineGun.png"
 
