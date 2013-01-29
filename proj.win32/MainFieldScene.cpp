@@ -284,7 +284,7 @@ void MainFieldScene::StopGame(char *text)
 
 	this->unschedule( schedule_selector(MainFieldScene::GameLogic));
 
-	panelGeneral->DisplayText(4, text, "Arial", 18, 1, 0, 0,0);
+	DisplayText(4, text, "Arial", 18, 0, 0);
 
 	delete this->wave;
 	this->wave = NULL;

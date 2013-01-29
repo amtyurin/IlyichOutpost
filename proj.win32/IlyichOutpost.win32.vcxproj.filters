@@ -25,6 +25,9 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{954ff3e3-f403-4dcd-b530-93147153749c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Outpost">
+      <UniqueIdentifier>{2f389b8d-15ab-40e7-b362-d2418fa55a4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\IlyichOutpost.ico">
@@ -106,6 +109,12 @@
     <ClInclude Include="FileNames.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Outpost.h">
+      <Filter>Outpost</Filter>
+    </ClInclude>
+    <ClInclude Include="OutpostArray.h">
+      <Filter>Outpost</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -152,6 +161,12 @@
     </ClCompile>
     <ClCompile Include="MoneyManager.cpp">
       <Filter>Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="Outpost.cpp">
+      <Filter>Outpost</Filter>
+    </ClCompile>
+    <ClCompile Include="OutpostArray.cpp">
+      <Filter>Outpost</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

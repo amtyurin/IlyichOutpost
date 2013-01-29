@@ -6,57 +6,52 @@
 
 int Wave::currentWaveNumber = 0;
 
-void Wave::CreateEnemies(const EnemyType eType,const int count)
+void Wave::CreateEnemyTypeMap(const EnemyType eType,const int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		Enemy *mob = new Enemy(moneyManager, eType, scene, waypoint);
-		this->aliveEnemies.push_back(mob);
+		enemyTypeMap.push_back(eType);
 	}
 }
 
 void Wave::AlignEnemyCount(const EnemyType eType, const int enemyInitialCount)
 {
-	int diff = enemyInitialCount - aliveEnemies.size();
-	for (int i = 0; i < diff; i++)
-	{
-		Enemy *mob = new Enemy(moneyManager, eType, scene, waypoint);
-		this->aliveEnemies.push_back(mob);
-	}
+	CreateEnemyTypeMap(eType, enemyInitialCount - this->enemyTypeMap.size());
 }
 
 Wave::Wave(CCScene *scene, Waypoint *waypoint, MoneyManager *moneyManager)
-{
-	this->runningEnemies = 0;
+{	
+	this->createdEnemies = 0;
+	this->enemyCountForWave = 0;
 	this->aliveEnemies.resize(0);
+	this->enemyTypeMap.resize(0);
 
 	this->scene = scene;
 	this->waypoint = waypoint;
 	this->moneyManager = moneyManager;
 
 	currentWaveNumber++;
-	int enemyInitialCount = 0;
 	switch(Wave::currentWaveNumber)
 	{
 		case 1:
-			enemyInitialCount = 10;
-			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount);
+			this->enemyCountForWave = 10;
+			CreateEnemyTypeMap(ENEMY_SOLDIER, this->enemyCountForWave);
 			break;
 		case 2:
-			enemyInitialCount = 20;
-			CreateEnemies(ENEMY_SOLDIER, enemyInitialCount * 2 / 3);
-			CreateEnemies(ENEMY_HEAVY_SOLDIER, enemyInitialCount / 3);
-			AlignEnemyCount(ENEMY_SOLDIER,enemyInitialCount);
+			this->enemyCountForWave = 20;
+			CreateEnemyTypeMap(ENEMY_SOLDIER, this->enemyCountForWave * 2 / 3);
+			CreateEnemyTypeMap(ENEMY_HEAVY_SOLDIER, this->enemyCountForWave / 3);
+			AlignEnemyCount(ENEMY_SOLDIER, this->enemyCountForWave);
 			break;	
 		default:
 			if (Wave::currentWaveNumber > 1){
-				enemyInitialCount = Wave::currentWaveNumber * 12;
+				this->enemyCountForWave = Wave::currentWaveNumber * 12;
 				int parts = sqrt((float)Wave::currentWaveNumber);
 				int maxEnemyType = min(parts, MAX_ENEMY_NUMBER - 1);
 				for (int i = 1; i <= maxEnemyType; i++){
-					CreateEnemies(static_cast<EnemyType>(i), enemyInitialCount / parts);
+					CreateEnemyTypeMap(static_cast<EnemyType>(i), this->enemyCountForWave / parts);
 				}
-				AlignEnemyCount(static_cast<EnemyType>(maxEnemyType), enemyInitialCount);
+				AlignEnemyCount(static_cast<EnemyType>(maxEnemyType), this->enemyCountForWave);
 			}
 			break;
 	}	
@@ -78,9 +73,11 @@ int Wave::GetEnemyCount()
 
 bool Wave::StartEnemy()
 {
-	if (this->runningEnemies < this->aliveEnemies.size()){	
-		this->aliveEnemies[runningEnemies]->Start();		
-		this->runningEnemies++;
+	if (this->createdEnemies < this->enemyCountForWave){	
+		Enemy *mob = new Enemy(moneyManager, enemyTypeMap[this->createdEnemies], scene, waypoint);
+		this->aliveEnemies.push_back(mob);
+		mob->Start();		
+		this->createdEnemies++;
 		return true;
 	}
 	else{
@@ -108,7 +105,6 @@ void Wave::MakeDamage(const int index, const int health)
 		bool killed = this->aliveEnemies[index]->MakeDamage(health);
 		if (killed)	{
 			aliveEnemies.erase(std::remove(aliveEnemies.begin(), aliveEnemies.end(), aliveEnemies[index]), aliveEnemies.end());
-			runningEnemies--;
 		}
 		return;
 	}

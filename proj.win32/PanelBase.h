@@ -7,6 +7,11 @@ using namespace cocos2d;
 
 #define TEXT_SIZE 30
 
+struct PanelCell
+{
+	char text[TEXT_SIZE];
+};
+
 class PanelBase
 {
 	CCSprite *panelSprite;
@@ -14,8 +19,7 @@ class PanelBase
 	int cellsX;
 	int cellsY;
 
-	bool textDisplayed;
-	char text[TEXT_SIZE];
+	PanelCell **cells;	
 	
 public:
 	PanelBase(CCScene *scene, const int cellsX, const int cellsY, const CCPoint ccp, const CCSize size);

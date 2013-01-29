@@ -145,6 +145,8 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="MainFieldScene.h" />
     <ClInclude Include="MoneyManager.h" />
+    <ClInclude Include="Outpost.h" />
+    <ClInclude Include="OutpostArray.h" />
     <ClInclude Include="PanelBase.h" />
     <ClInclude Include="PanelGeneral.h" />
     <ClInclude Include="PanelTowers.h" />
@@ -163,6 +165,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainFieldScene.cpp" />
     <ClCompile Include="MoneyManager.cpp" />
+    <ClCompile Include="Outpost.cpp" />
+    <ClCompile Include="OutpostArray.cpp" />
     <ClCompile Include="PanelBase.cpp" />
     <ClCompile Include="PanelGeneral.cpp" />
     <ClCompile Include="PanelTowers.cpp" />
