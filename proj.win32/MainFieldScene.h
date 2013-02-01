@@ -18,6 +18,11 @@
 
 typedef vector<Tower*>::iterator towerArrayIterator;
 
+using namespace cocos2d;
+
+#define TAG_TOWER_SCENE_MASK	1 << 12
+#define TAG_TOWER_MENU_MASK		1 << 13
+
 class MainFieldScene : public cocos2d::CCLayer
 {
 	Waypoint way;
@@ -34,6 +39,10 @@ class MainFieldScene : public cocos2d::CCLayer
 	PanelTowers *panelTower;
 
 	MoneyManager *moneyManager;
+
+	CCSprite *touchedPanelSprite;
+	CCSprite *touchedTowerSprite;
+	vector<CCSprite *> touchableSprites;
 
 	void DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY);
 	void StopGame(char *text);
@@ -60,4 +69,7 @@ public:
     void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
     void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
 	void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);
+
+	void addTouchableSprite(CCSprite * child, int tag);
+	void removeTouchableSprite(CCSprite * child);
 };

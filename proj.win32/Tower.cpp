@@ -6,6 +6,7 @@ Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) :
 		UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
 	//CCLog("Type: %d\n", type);
 	this->moneyManager = moneyManager;
+	this->index = 0;
 
 	char *image = NULL;
 	switch (type){
@@ -35,6 +36,7 @@ Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) :
 	this->position=_position;
 	this->spritePtr->setPosition(_position);
 	this->reloadTime = 0;
+
 	//CCLog("FireRadius: %d\n", this->fireRadius);
 }
 
@@ -90,9 +92,7 @@ const bool Tower::operator> (const Tower &tower) const{
 const bool Tower::isTargetInRange(CCPoint target) const{
 	//std::cout<<this->position.x<<"\t"<<this->position.y<<std::endl;
 	//std::cout<<target.x<<"\t"<<target.y<<std::endl;
-	double dX = abs(this->position.x - target.x);
-	double dY = abs(this->position.y - target.y);
-	double range = sqrt(pow(dX, 2) + pow(dY, 2));
+	double range = ccpDistance(spritePtr->getPosition(), target);
 	//CCLog("%f\t%d\n", range, this->fireRadius);
 	if (range <= this->fireRadius) {
 		return true;
@@ -151,4 +151,29 @@ bool Tower::CanBuy()
 void Tower::Buy()
 {
 	moneyManager->SpendMoney(this->price);
+}
+
+void Tower::SetIndex(const int i)
+{
+	this->index = i;
+}
+
+int Tower::GetIndex()
+{
+	return this->index;
+}
+
+void Tower::ShowRange()
+{	
+	this->spriteRangePtr = CCSprite::create(FILE_NAME_IMAGE_TOWER_RANGE);
+	this->spriteRangePtr->setPosition(this->spritePtr->getPosition());
+	this->spriteRangePtr->setScale((float)this->fireRadius / (this->spriteRangePtr->getContentSize().width / 2.0));
+	this->spriteRangePtr->setOpacity(100);
+	this->spritePtr->getParent()->addChild(this->spriteRangePtr, 5);	
+}
+
+void Tower::HideRange()
+{
+	this->spritePtr->getParent()->removeChild(this->spriteRangePtr, true);
+	this->spriteRangePtr = NULL;
 }

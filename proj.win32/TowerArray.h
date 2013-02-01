@@ -21,4 +21,6 @@ public:
 	~TowerArray(void);
 	vector<Tower*>::iterator begin();
 	vector<Tower*>::iterator end();
+
+	Tower *GetTower(int index);
 };

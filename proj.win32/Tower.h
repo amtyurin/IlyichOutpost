@@ -32,10 +32,13 @@ private:
 	float normRotateX;
 	float normRotateY;
 
+	int index;
+
 	MoneyManager *moneyManager;
 
 	cocos2d::CCPoint position;
 	cocos2d::CCSprite *spritePtr;
+	cocos2d::CCSprite *spriteRangePtr;
 
 	void fire(Wave *wave, int index);
 
@@ -54,6 +57,12 @@ public:
 	const bool isTargetInRange(CCPoint target) const;
 	void processEnemies(Wave *wave);
 	const bool isAbleToFire() const;
+
+	void SetIndex(const int i);
+	int GetIndex();
+
+	void ShowRange();
+	void HideRange();
 
 	virtual void Upgrade();
 	bool CanBuy();

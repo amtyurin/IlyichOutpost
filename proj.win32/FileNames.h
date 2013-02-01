@@ -27,6 +27,7 @@
 #define FILE_NAME_IMAGE_STATE_CELL_BUSY "\\cells\\busy_cell.png"
 #define FILE_NAME_IMAGE_STATE_CELL_BUILD "\\cells\\build_cell.png"
 
+#define FILE_NAME_IMAGE_PANEL_TOWER_SELECTION "TowerMenuSelection.png"
 #define FILE_NAME_IMAGE_PANEL_BORDER "panel_border_common.png"
 #define FILE_NAME_IMAGE_PANEL_COIN "coin.png"
 

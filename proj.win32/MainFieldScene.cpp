@@ -7,7 +7,6 @@
 
 using namespace cocos2d;
 
-
 CCScene* MainFieldScene::scene()
 {
     CCScene * scene = NULL;
@@ -97,6 +96,8 @@ bool MainFieldScene::init()
 		way.AddPoint(PassingMap::GetCell(12,9));
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 
+		touchedTowerSprite = NULL;
+		touchedPanelSprite = NULL;
 		wave = NULL;		
 		wavesCount = 5;
 		waveTimout = 5;
@@ -236,7 +237,8 @@ void MainFieldScene::GameLogic(float dt)
 
 Tower *MainFieldScene::addTower(int towerType, cocos2d::CCPoint position){
 	Tower *newTower = towers->createTower(towerType, position);
-	this->addChild(newTower->getSprite());
+	this->addChild(newTower->getSprite(), 10);
+	this->addTouchableSprite(newTower->getSprite(), TAG_TOWER_SCENE_MASK | newTower->GetIndex());
 	return newTower;
 }
 
@@ -277,6 +279,28 @@ void MainFieldScene::StopGame(char *text)
 
 void MainFieldScene::ccTouchesBegan(CCSet* touches, CCEvent* event)
 {
+	CCTouch* touch = (CCTouch*)( touches->anyObject() );
+	CCPoint location = touch->getLocation();
+
+	CCSprite *sprite = NULL;
+	for (int i = 0; i < this->touchableSprites.size(); i++){
+		CCPoint point = touchableSprites[i]->convertToNodeSpace(location);
+		CCRect rect = touchableSprites[i]->boundingBox();
+		if (touchableSprites[i]->boundingBox().containsPoint(touchableSprites[i]->convertToNodeSpace(location))){
+			sprite = touchableSprites[i];
+			break;
+		}
+	}
+	if (sprite != NULL){		
+		int tagNew = sprite->getTag();	
+
+		if (tagNew & TAG_TOWER_MENU_MASK){
+			CCLog("begin Touch Sprite in menu tower: %d", tagNew);
+			panelTower->SelectCell(sprite);
+			touchedPanelSprite = sprite;
+			//PassingMap::ShowDebugGrid((CCScene*)this);
+		}
+	}
 }
 
 void MainFieldScene::ccTouchesMoved(CCSet* touches, CCEvent* event)
@@ -289,10 +313,62 @@ void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
     CCTouch* touch = (CCTouch*)( touches->anyObject() );
 	CCPoint location = touch->getLocation();
     //location = CCDirector::sharedDirector()->convertToGL(location);
-
+	
 	//this->addTower(MACHINE_GUN, ccp(location.x, location.y));
+	
+	CCSprite *sprite = NULL;
+	for (int i = 0; i < this->touchableSprites.size(); i++){
+		if (touchableSprites[i]->boundingBox().containsPoint(location)){
+			sprite = touchableSprites[i];
+			break;
+		}
+	}
+	if (sprite == NULL){
+		if (this->touchedTowerSprite && this->touchedTowerSprite->getTag() & TAG_TOWER_SCENE_MASK){
+			Tower *tower = towers->GetTower(this->touchedTowerSprite->getTag() ^ TAG_TOWER_SCENE_MASK);
+			if(tower){
+				tower->HideRange();
+			}
+			this->touchedTowerSprite = NULL;
+		}
+	}
+	else if (sprite != this->touchedTowerSprite){		
+		int tagNew = sprite->getTag();		
+
+		if (tagNew & TAG_TOWER_SCENE_MASK){
+			CCLog("Touched Sprite is tower: %d", tagNew);
+			int indexNew = tagNew ^ TAG_TOWER_SCENE_MASK;
+			Tower *tower = towers->GetTower(tagNew ^ TAG_TOWER_SCENE_MASK);
+			if(tower){
+				tower->ShowRange();
+			}
+			if (this->touchedTowerSprite){
+				Tower *tower = towers->GetTower(this->touchedTowerSprite->getTag() ^ TAG_TOWER_SCENE_MASK);
+				if(tower){
+					tower->HideRange();
+				}
+			}
+			this->touchedTowerSprite = sprite;
+		}
+	}
+
+	if (touchedPanelSprite){
+		panelTower->UnSelectCell(touchedPanelSprite);
+		touchedPanelSprite = NULL;
+	}
 }
 
 void MainFieldScene::ccTouchesCancelled(CCSet* touches, CCEvent* event)
 {
+}
+
+void MainFieldScene::addTouchableSprite(CCSprite * child, int tag)
+{
+	child->setTag(tag);
+	touchableSprites.push_back(child);	
+}
+
+void MainFieldScene::removeTouchableSprite(CCSprite * child)
+{
+	touchableSprites.erase(std::remove(touchableSprites.begin(), touchableSprites.end(), child), touchableSprites.end());
 }

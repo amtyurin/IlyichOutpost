@@ -14,12 +14,13 @@ struct PanelCell
 
 class PanelBase
 {
-	CCSprite *panelSprite;
-
 	int cellsX;
 	int cellsY;
 
 	PanelCell **cells;	
+
+protected:
+	CCSprite *panelSprite;
 	
 public:
 	PanelBase(CCScene *scene, const int cellsX, const int cellsY, const CCPoint ccp, const CCSize size);
