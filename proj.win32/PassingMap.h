@@ -21,7 +21,8 @@ private:
     void operator=(PassingMap const&); // Don't implement	
 
 	static Cell map[MAP_WIDTH_MAX][MAP_HEIGHT_MAX];	
-	
+
+	static CCSprite *spriteAll;	
 public:
 
 	static void ClearMap();
@@ -30,11 +31,10 @@ public:
 	static Cell* GetCell(const int x, const int y);
 	static void SetCellState(const int x, const int y, const CellState state);
 
-	static void ShowDebugGrid(CCScene *scene);	
+	static void ShowDebugGrid(CCScene *scene, CellState type);	
+	static void HideDebugGrid(CCScene *scene);
 
 	static void ShowWaypoint(Waypoint *way, CCScene *scene);
-
-
 	
 	~PassingMap(void);
 };

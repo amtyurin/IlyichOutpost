@@ -1,7 +1,7 @@
 #include "PassingMap.h"
 
 PassingMap::PassingMap(void)
-{
+{	
 }
 
 
@@ -10,6 +10,7 @@ PassingMap::~PassingMap(void)
 }
 
 Cell PassingMap::map[MAP_WIDTH_MAX][MAP_HEIGHT_MAX];
+CCSprite *PassingMap::spriteAll;
 
 void PassingMap::ClearMap()
 {
@@ -29,47 +30,64 @@ void PassingMap::ClearMap()
 		
 		posX += MAP_CELL_SIZE;
  	    posY = 0;
-	}
+	}	
+	spriteAll = NULL;
 }
 
 
-void PassingMap::ShowDebugGrid(CCScene *scene)
-{
-	CCSprite *spriteAll = CCSprite::create();
+void PassingMap::ShowDebugGrid(CCScene *scene, CellState type)
+{	
+	if (spriteAll != NULL){
+		spriteAll->removeFromParent();
+		spriteAll->removeAllChildren();
+		spriteAll = NULL;
+	}
+	spriteAll = CCSprite::create();
 
 	for (int ax = 0; ax < MAP_WIDTH_MAX; ax++)
 	{
 		for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
 		{
-			char *cell_filename = NULL;
-			switch(PassingMap::map[ax][ay].type)
-			{
-				case STATE_CELL_FREE:
-					cell_filename = FILE_NAME_IMAGE_STATE_CELL_FREE;
-					break;
-				case STATE_CELL_BUSY:
-					cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUSY;
-					break;
-				case STATE_CELL_BUILD:
-					cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUILD;
-					break;
-				default:
-					CCLOG("ERROR: Cell type is not right");
-					continue;
-					break;
+			if (PassingMap::map[ax][ay].type == type){
+				char *cell_filename = NULL;
+				switch(PassingMap::map[ax][ay].type)
+				{
+					case STATE_CELL_FREE:
+						cell_filename = FILE_NAME_IMAGE_STATE_CELL_FREE;
+						break;
+					case STATE_CELL_BUSY:
+						cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUSY;
+						break;
+					case STATE_CELL_BUILD:
+						cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUILD;
+						break;
+					default:
+						CCLOG("ERROR: Cell type is not right");
+						continue;
+						break;
+				}
+
+				CCSprite *cellSprite = CCSprite::create(cell_filename);
+				CC_BREAK_IF(! cellSprite);
+
+				cellSprite->setPositionX(map[ax][ay].x);
+				cellSprite->setPositionY(map[ax][ay].y);
+
+				spriteAll->addChild(cellSprite, 1);		
 			}
-
-			CCSprite *cellSprite = CCSprite::create(cell_filename);
-			CC_BREAK_IF(! cellSprite);
-
-			cellSprite->setPositionX(map[ax][ay].x);
-            cellSprite->setPositionY(map[ax][ay].y);
-
-			spriteAll->addChild(cellSprite, 1);			
 		}
 	}
-
+	
 	scene->addChild(spriteAll, 10);
+}
+
+void PassingMap::HideDebugGrid(CCScene *scene)
+{
+	if (spriteAll != NULL){
+		spriteAll->removeFromParent();
+		//spriteAll->removeAllChildren();
+		spriteAll = NULL;
+	}
 }
 
 CellState PassingMap::GetCellSTate(const int x,const int y)

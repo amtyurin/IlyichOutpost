@@ -10,7 +10,7 @@ public:
 	PanelTowers(CCScene *scene, const CCPoint ccp, const CCSize size);
 	virtual ~PanelTowers(void);
 
-	void SelectCell(CCSprite *sprite);
-	void UnSelectCell(CCSprite *sprite);
+	void SelectCell(CCScene* scene, CCSprite *sprite);
+	void UnSelectCell(CCScene* scene);
 };
 

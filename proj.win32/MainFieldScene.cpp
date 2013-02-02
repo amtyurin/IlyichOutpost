@@ -85,6 +85,7 @@ bool MainFieldScene::init()
 		PassingMap::ClearMap();
 		PassingMap::SetCellState(5,5,STATE_CELL_BUSY);
 		PassingMap::SetCellState(5,6,STATE_CELL_BUSY);
+		PassingMap::SetCellState(3,8,STATE_CELL_BUILD);
 		PassingMap::SetCellState(10,10,STATE_CELL_BUILD);
 		PassingMap::SetCellState(11,11,STATE_CELL_BUILD);
 		//PassingMap::ShowDebugGrid((CCScene*)this);
@@ -282,6 +283,11 @@ void MainFieldScene::ccTouchesBegan(CCSet* touches, CCEvent* event)
 	CCTouch* touch = (CCTouch*)( touches->anyObject() );
 	CCPoint location = touch->getLocation();
 
+	if (touchedPanelSprite){
+		panelTower->UnSelectCell((CCScene*)this);
+		touchedPanelSprite = NULL;
+	}
+
 	CCSprite *sprite = NULL;
 	for (int i = 0; i < this->touchableSprites.size(); i++){
 		CCPoint point = touchableSprites[i]->convertToNodeSpace(location);
@@ -296,9 +302,8 @@ void MainFieldScene::ccTouchesBegan(CCSet* touches, CCEvent* event)
 
 		if (tagNew & TAG_TOWER_MENU_MASK){
 			CCLog("begin Touch Sprite in menu tower: %d", tagNew);
-			panelTower->SelectCell(sprite);
-			touchedPanelSprite = sprite;
-			//PassingMap::ShowDebugGrid((CCScene*)this);
+			panelTower->SelectCell((CCScene*)this,sprite);
+			touchedPanelSprite = sprite;			
 		}
 	}
 }
@@ -353,7 +358,7 @@ void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
 	}
 
 	if (touchedPanelSprite){
-		panelTower->UnSelectCell(touchedPanelSprite);
+		panelTower->UnSelectCell((CCScene*)this);
 		touchedPanelSprite = NULL;
 	}
 }

@@ -115,3 +115,8 @@ void PanelBase::DisplayText(const int tag, const char *text, const char *font, c
 
 	CCLog("DisplayText: Wrong cell index %d %d", cellX, cellY);
 }
+
+void PanelBase::RemoveCellContentSprite(CCSprite *sprite)
+{
+	this->panelSprite->removeChild(sprite, true);
+}
