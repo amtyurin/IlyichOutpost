@@ -127,6 +127,9 @@ bool MainFieldScene::init()
         bRet = true;
     } while (0);
 
+	this->menuTower = CCSprite::create(FILE_NAME_IMAGE_TOWER_MACHINE_GUN);
+	this->addChild(this->menuTower);
+
     return bRet;
 }
 
@@ -310,6 +313,10 @@ void MainFieldScene::ccTouchesBegan(CCSet* touches, CCEvent* event)
 
 void MainFieldScene::ccTouchesMoved(CCSet* touches, CCEvent* event)
 {
+	CCTouch *touch = (CCTouch*)touches->anyObject();
+	CCPoint position = touch->getLocation();
+	//sprite->autorelease();
+	menuTower->setPosition(position);
 }
 
 void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
@@ -377,6 +384,7 @@ void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
 		panelTower->UnSelectCell((CCScene*)this);
 		touchedPanelSprite = NULL;
 	}
+	menuTower->setPosition(ccp(-10, -10));
 }
 
 void MainFieldScene::ccTouchesCancelled(CCSet* touches, CCEvent* event)

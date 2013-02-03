@@ -42,6 +42,7 @@ class MainFieldScene : public cocos2d::CCLayer
 
 	CCSprite *touchedPanelSprite;
 	CCSprite *touchedTowerSprite;
+	CCSprite *menuTower;
 	vector<CCSprite *> touchableSprites;
 
 	void DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY);
