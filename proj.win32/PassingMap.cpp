@@ -24,6 +24,7 @@ void PassingMap::ClearMap()
 			map[ax][ay].type = STATE_CELL_FREE;
 			map[ax][ay].x = posX + MAP_CELL_SIZE / 2;
 			map[ax][ay].y = posY + MAP_CELL_SIZE / 2;
+			map[ax][ay].sprite= NULL;
 
 			posY += MAP_CELL_SIZE;
 		}
@@ -74,6 +75,7 @@ void PassingMap::ShowDebugGrid(CCScene *scene, CellState type)
 				cellSprite->setPositionY(map[ax][ay].y);
 
 				spriteAll->addChild(cellSprite, 1);		
+				map[ax][ay].sprite = cellSprite;
 			}
 		}
 	}

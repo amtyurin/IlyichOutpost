@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <vector>
 
+#include "cocos2d.h"
+
 #include "FileNames.h"
 
 using namespace std;
@@ -19,6 +21,8 @@ struct Cell
 	CellState type;
 	int x; // center of cell
 	int y; // center of cell
+
+	cocos2d::CCSprite *sprite;
 };
 
 class Waypoint

@@ -354,10 +354,26 @@ void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
 				}
 			}
 			this->touchedTowerSprite = sprite;
+			return;
 		}
 	}
 
 	if (touchedPanelSprite){
+		Cell *touchedCell = NULL;
+		for (int x = 0; x < PassingMap::MAP_WIDTH_MAX; x++){
+			for(int y = 0; y < PassingMap::MAP_HEIGHT_MAX; y++){
+				if (PassingMap::GetCell(x, y)->sprite &&
+					PassingMap::GetCell(x, y)->sprite->boundingBox().containsPoint(location)){
+					touchedCell = PassingMap::GetCell(x, y);
+					break;
+				}
+			}
+		}
+
+		if (touchedCell){
+			this->addTower(MACHINE_GUN, ccp(touchedCell->x, touchedCell->y));
+		}
+
 		panelTower->UnSelectCell((CCScene*)this);
 		touchedPanelSprite = NULL;
 	}
