@@ -281,9 +281,10 @@ void MainFieldScene::StopGame(char *text)
 	this->wave = NULL;
 }
 
-void MainFieldScene::ccTouchesBegan(CCSet* touches, CCEvent* event)
+
+bool MainFieldScene::ccTouchBegan(CCTouch *touch, CCEvent *event)
 {
-	CCTouch* touch = (CCTouch*)( touches->anyObject() );
+	//CCTouch* touch = (CCTouch*)( touches->anyObject() );
 	CCPoint location = touch->getLocation();
 
 	if (touchedPanelSprite){

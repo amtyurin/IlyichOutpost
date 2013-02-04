@@ -70,6 +70,7 @@ public:
     void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
     void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
 	void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);
+	bool ccTouchBegan(CCTouch *touch, CCEvent *pEvent);
 
 	void addTouchableSprite(CCSprite * child, int tag);
 	void removeTouchableSprite(CCSprite * child);
