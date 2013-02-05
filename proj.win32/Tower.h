@@ -28,22 +28,24 @@ private:
 	int fireRadius;
 	int damage;
 	int reloadTime;
-	int price;
 	float normRotateX;
 	float normRotateY;
 
 	int index;
-
-	MoneyManager *moneyManager;
-
+	
 	cocos2d::CCPoint position;
 	cocos2d::CCSprite *spritePtr;
 	cocos2d::CCSprite *spriteRangePtr;
 
 	void fire(Wave *wave, int index);
 
+	static int GetDamage(TowerTypes type);
+	static int GetFireSpeed(TowerTypes type);
+	static int GetRadius(TowerTypes type);
+	static char* GetImage(TowerTypes type);
+
 public:
-	Tower(MoneyManager *moneyManager, int type, cocos2d::CCPoint _position);
+	Tower(MoneyManager *moneyManager, TowerTypes type, cocos2d::CCPoint _position);
 	~Tower(void);
 	const float getX() const { return position.x;};
 	const float getY() const { return position.y;};
@@ -60,12 +62,12 @@ public:
 
 	void SetIndex(const int i);
 	int GetIndex();
-
+	
 	void ShowRange();
 	void HideRange();
 
 	virtual void Upgrade();
-	bool CanBuy();
-	void Buy();
+
+	static int GetPrice(TowerTypes type);
 };
 

@@ -10,6 +10,7 @@ using namespace cocos2d;
 struct PanelCell
 {
 	char text[TEXT_SIZE];
+	CCSprite *spriteCell;
 };
 
 class PanelBase
@@ -29,7 +30,7 @@ public:
 	void RemoveCellContentSprite(CCSprite *sprite);
 	void SetCellBorderImage(const char* image);
 	void SetCellContentImage(const char* image, const int cellX, const int cellY);
-	void SetCellContentSprite(CCSprite *sprite, const int cellX, const int cellY);
+	void SetCellContentSprite(CCSprite *sprite, const int cellX, const int cellY, const int locX, const int locY);
 	void DisplayText(const int tag, const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY);
 };
 

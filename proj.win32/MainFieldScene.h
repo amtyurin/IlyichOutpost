@@ -42,12 +42,16 @@ class MainFieldScene : public cocos2d::CCLayer
 
 	CCSprite *touchedPanelSprite;
 	CCSprite *touchedTowerSprite;
-	CCSprite *menuTower;
+	CCSprite *movingTowerSprite;
 	vector<CCSprite *> touchableSprites;
 
 	void DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY);
 	void StopGame(char *text);
 
+	void StartWave(float dt);
+	void WaveGenerateEnemyProcess(float dt);
+	void GameLogic(float dt);
+	void addTower(TowerTypes towerType, cocos2d::CCPoint position);
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
@@ -61,16 +65,11 @@ public:
 	// Menu items handlers
 	void CreateScene(CCObject* sender);		
 
-	void StartWave(float dt);
-	void WaveGenerateEnemyProcess(float dt);
-	void GameLogic(float dt);
-	Tower *addTower(int towerType, cocos2d::CCPoint position);
-
 	void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
     void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
     void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
 	void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);
-	bool ccTouchBegan(CCTouch *touch, CCEvent *pEvent);
+	//bool ccTouchBegan(CCTouch *touch, CCEvent *pEvent);
 
 	void addTouchableSprite(CCSprite * child, int tag);
 	void removeTouchableSprite(CCSprite * child);

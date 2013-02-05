@@ -109,7 +109,7 @@ void Enemy::Destroy()
 {
 	this->sprite->cleanup();
 	this->sprite->removeAllChildrenWithCleanup(true);
-	this->scene->removeChild(this->sprite, true);
+	this->sprite->removeFromParent();//this->scene->removeChild(this->sprite, true);
 
 	CCLog("Enemy is destroyed");
 }

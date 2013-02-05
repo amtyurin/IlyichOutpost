@@ -13,7 +13,7 @@ void TowerArray::addTower(Tower *tower){
 	this->towerSet.push_back(tower);
 }
 
-Tower *TowerArray::createTower(int type, CCPoint position){
+Tower *TowerArray::createTower(TowerTypes type, CCPoint position){
 	Tower *newTower = new Tower(moneyManager, type, position);	
 	towerSet.push_back(newTower);
 	newTower->SetIndex(towerSet.size());
@@ -40,3 +40,9 @@ Tower *TowerArray::GetTower(int index)
 	else
 		return NULL;
 }
+
+bool TowerArray::Buy(TowerTypes type)
+{
+	return moneyManager->SpendMoney(Tower::GetPrice(type));
+}
+

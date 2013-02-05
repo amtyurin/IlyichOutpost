@@ -17,6 +17,7 @@ PanelBase::PanelBase(CCScene *scene, const int cellsX, const int cellsY, const C
 	for(int x = 0; x < this->cellsX; x++){
 		for(int y = 0; y < this->cellsY; y++){
 			strcpy(this->cells[x][y].text, "");
+			cells[x][y].spriteCell = NULL;
 		}
 	}
 
@@ -53,6 +54,8 @@ void PanelBase::SetCellBorderImage(const char* image)
 			sprites[i][j]->setScaleY(scaleY);
 			sprites[i][j]->setPositionX(sizeX / 2 + i * sizeX);
 			sprites[i][j]->setPositionY(sizeY / 2 + j * sizeY);
+			
+			cells[i][j].spriteCell = sprites[i][j];
 
 			panelSprite->addChild(sprites[i][j], 1);
 		}
@@ -65,26 +68,19 @@ void PanelBase::SetCellContentImage(const char* image, const int cellX, const in
 		cellY >= 0 && cellY < this->cellsY){
 		CCSprite * sprite = CCSprite::create(image);
 
-		SetCellContentSprite(sprite, cellX, cellY);
+		SetCellContentSprite(sprite, cellX, cellY, 0, 0);
 	}
 }
 
-void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const int cellY)
+void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const int cellY, const int locX, const int locY)
 {
 	if (cellX >= 0 && cellX < this->cellsX &&
 		cellY >= 0 && cellY < this->cellsY){
-		int sizeX = panelSprite->getContentSize().width / this->cellsX;
-		int sizeY = panelSprite->getContentSize().height / this->cellsY;
 
-		float scaleX = sizeX / sprite->getContentSize().width;
-		float scaleY = sizeY / sprite->getContentSize().height;
+		sprite->setPositionX(cells[cellX][cellY].spriteCell->getTextureRect().size.width / 2 + locX);
+		sprite->setPositionY(cells[cellX][cellY].spriteCell->getTextureRect().size.height / 2 + locY);
 
-		sprite->setScaleX(scaleX * 0.8);
-		sprite->setScaleY(scaleY * 0.8);
-		sprite->setPositionX(sizeX / 2 + cellX * sizeX);
-		sprite->setPositionY(sizeY / 2 + cellY * sizeY);
-
-		this->panelSprite->addChild(sprite, 1);
+		cells[cellX][cellY].spriteCell->addChild(sprite, 1);
 		return;
 	}
 
@@ -96,17 +92,19 @@ void PanelBase::DisplayText(const int tag, const char *text, const char *font, c
 	if (cellX >= 0 && cellX < this->cellsX &&
 		cellY >= 0 && cellY < this->cellsY){
 		if (strncmp(cells[cellX][cellY].text, text, TEXT_SIZE)){
-			int sizeX = panelSprite->getContentSize().width / this->cellsX;
-			int sizeY = panelSprite->getContentSize().height / this->cellsY;
 
 			CCLabelTTF* pLabel = CCLabelTTF::create(text, font, size);
-			pLabel->setPositionX(sizeX / 2 + cellX * sizeX + locX);
-			pLabel->setPositionY(sizeY / 2 + cellY * sizeY + locY);
+			int cellWidth = cells[cellX][cellY].spriteCell->getContentSize().width * cells[cellX][cellY].spriteCell->getScaleX();
+			int cellHeight = cells[cellX][cellY].spriteCell->getContentSize().height * cells[cellX][cellY].spriteCell->getScaleY();
+			pLabel->setPositionX(cellWidth / 2 + cellWidth * cellX + locX);
+			pLabel->setPositionY(cellHeight / 2 + cellHeight * cellY + locY);
 			pLabel->setColor(ccc3(255,255,51));
 
 			panelSprite->removeChildByTag(tag);
 			
-			this->panelSprite->addChild(pLabel, 2, tag);
+			panelSprite->addChild(pLabel, 2, tag);
+
+			strncpy(cells[cellX][cellY].text, text, TEXT_SIZE);
 
 			return;
 		}
@@ -118,5 +116,5 @@ void PanelBase::DisplayText(const int tag, const char *text, const char *font, c
 
 void PanelBase::RemoveCellContentSprite(CCSprite *sprite)
 {
-	this->panelSprite->removeChild(sprite, true);
+	sprite->removeFromParent();
 }

@@ -2,40 +2,20 @@
 
 using namespace cocos2d;
 
-Tower::Tower(MoneyManager *moneyManager, int type, CCPoint _position) : 
+Tower::Tower(MoneyManager *moneyManager, TowerTypes type, CCPoint _position) : 
 		UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
 	//CCLog("Type: %d\n", type);
-	this->moneyManager = moneyManager;
 	this->index = 0;
 
-	char *image = NULL;
-	switch (type){
-		case MACHINE_GUN:
-			this->damage = 10;
-			this->fireSpeed = 10;
-			this->fireRadius = 150;
-			image = FILE_NAME_IMAGE_TOWER_MACHINE_GUN;
-			CC_BREAK_IF(! this->spritePtr);
-			break;
-		case HEAVY_GUN:
-			this->damage = 20;
-			this->fireSpeed = 7;
-			this->fireRadius = 170;
-			image = FILE_NAME_IMAGE_TOWER_HEAVY_GUN;
-			CC_BREAK_IF(! this->spritePtr);
-			break;
-		default:
-			this->damage = 0;
-			this->fireSpeed = 0;
-			this->fireRadius = 0;
-	}
-	this->spritePtr = CCSprite::create(image);
-	this->price = (this->damage + this->fireRadius + this->fireSpeed) / 2;
-	this->SetUpgPriceForNextLevel(this->price * 2);	
+	this->damage = GetDamage(type);
+	this->fireSpeed = GetFireSpeed(type);
+	this->fireRadius = GetRadius(type);
+	this->spritePtr = CCSprite::create(GetImage(type));
+	this->SetUpgPriceForNextLevel(GetPrice(type) * 2);	
 
 	this->position=_position;
 	this->spritePtr->setPosition(_position);
-	this->reloadTime = 0;
+	this->reloadTime = 0;	
 
 	//CCLog("FireRadius: %d\n", this->fireRadius);
 }
@@ -143,16 +123,6 @@ void Tower::Upgrade()
 	reloadTime *= UPGRADE_COEF_TOWER;
 }
 
-bool Tower::CanBuy()
-{
-	return moneyManager->CanSpendMoney(this->price);
-}
-
-void Tower::Buy()
-{
-	moneyManager->SpendMoney(this->price);
-}
-
 void Tower::SetIndex(const int i)
 {
 	this->index = i;
@@ -173,7 +143,68 @@ void Tower::ShowRange()
 }
 
 void Tower::HideRange()
-{
-	this->spritePtr->getParent()->removeChild(this->spriteRangePtr, true);
+{	
+	this->spriteRangePtr->removeFromParent(); //this->spritePtr->getParent()->removeChild(this->spriteRangePtr, true);
 	this->spriteRangePtr = NULL;
+}
+
+int Tower::GetPrice(TowerTypes type)
+{
+	return (GetDamage(type) + GetFireSpeed(type) + GetRadius(type)) / 2;
+}
+
+int Tower::GetDamage(TowerTypes type)
+{
+	int damage = 0;
+	switch (type){
+		case MACHINE_GUN:
+			damage = 10;			
+			break;
+		case HEAVY_GUN:
+			damage = 20;			
+			break;
+	}
+	return damage;
+}
+
+int Tower::GetFireSpeed(TowerTypes type)
+{
+	int speed = 0;
+	switch (type){
+		case MACHINE_GUN:
+			speed = 5;			
+			break;
+		case HEAVY_GUN:
+			speed = 7;			
+			break;
+	}
+	return speed;
+}
+
+int Tower::GetRadius(TowerTypes type)
+{
+	int radius = 0;
+	switch (type){
+		case MACHINE_GUN:
+			radius = 100;			
+			break;
+		case HEAVY_GUN:
+			radius = 150;			
+			break;
+	}
+	return radius;
+}
+
+char* Tower::GetImage(TowerTypes type)
+{
+	char *image = NULL;
+	switch (type){
+		case MACHINE_GUN:			
+			image = FILE_NAME_IMAGE_TOWER_MACHINE_GUN;
+			break;
+		case HEAVY_GUN:
+			image = FILE_NAME_IMAGE_TOWER_HEAVY_GUN;
+			break;
+	}
+	return image;
 }
