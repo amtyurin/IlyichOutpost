@@ -11,6 +11,7 @@
 
 #include "PanelGeneral.h"
 #include "PanelTowers.h"
+#include "UILayer.h"
 
 #include "MoneyManager.h"
 
@@ -34,6 +35,8 @@ class MainFieldScene : public cocos2d::CCLayer
 	int enemyRespawnTime;
 	TowerArray *towers;
 	OutpostArray outposts;
+
+	UILayer *UI;
 
 	PanelGeneral *panelGeneral;
 	PanelTowers *panelTower;
@@ -65,11 +68,13 @@ public:
 	// Menu items handlers
 	void CreateScene(CCObject* sender);		
 
-	void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
-    void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
-    void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
-	void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);
-	//bool ccTouchBegan(CCTouch *touch, CCEvent *pEvent);
+	//void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
+    //void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
+    //void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
+	//void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);
+	virtual bool ccTouchBegan(CCTouch *touch, CCEvent *pEvent);
+	virtual void ccTouchMoved(CCTouch *touch, CCEvent *pEvent);
+	virtual void ccTouchEnded(CCTouch *touch, CCEvent *pEvent);
 
 	void addTouchableSprite(CCSprite * child, int tag);
 	void removeTouchableSprite(CCSprite * child);

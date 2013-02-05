@@ -108,18 +108,14 @@ bool MainFieldScene::init()
 
 		moneyManager = new MoneyManager();
 		moneyManager->AddMoney(100);
-
 		towers = new TowerArray(moneyManager);
 		Outpost *outpost = new Outpost((CCScene*)this, OUTPOST_TYPE_OUR, CCRect(350, 250, 80, 80));
 		outposts.AddOutpost(outpost);
 
+		this->UI = new UILayer((CCScene*)this);
+
 		// sound
 		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(FILE_NAME_AUDIO_MAIN_SCENE_BG, true);  
-
-		int posFromBorder = 20;
-		panelGeneral =  new PanelGeneral((CCScene*)this, ccp(size.width/2, size.height - posFromBorder),CCSize(size.width/2, 2 * posFromBorder));
-		posFromBorder = 45;
-		panelTower = new PanelTowers((CCScene*)this, ccp(size.width - posFromBorder, size.height/2), CCSize(2 * posFromBorder, size.height * 2 / 3));
 
 		this->schedule( schedule_selector(MainFieldScene::GameLogic), gameLogicTimeout );		
 
@@ -144,7 +140,7 @@ void MainFieldScene::GameLogic(float dt)
 	{// display time
 		char curTime[TEXT_SIZE];
 		sprintf(curTime, "%d:%d:%d", (int)(passedTimeTotal / 60 / 60) % 24, (int)(passedTimeTotal / 60) % 60, (int)passedTimeTotal % 60);
-		panelGeneral->DisplayText(2, curTime, "Arial", 20, 2, 0, 0,0);
+		UI->displayText(2, curTime, "Arial", 20, 2, 0, 0,0);
 	}
 
 	static float passedTimeStartEnemy = 0;
@@ -165,7 +161,7 @@ void MainFieldScene::GameLogic(float dt)
 			{ // display wave number
 				char waveNum[TEXT_SIZE];
 				sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
-				panelGeneral->DisplayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
+				UI->displayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
 			}
 		}		
 
@@ -186,7 +182,7 @@ void MainFieldScene::GameLogic(float dt)
 	{ // display money
 		char text[TEXT_SIZE];
 		sprintf(text,"%d", moneyManager->GetMoneyBalance());
-		panelGeneral->DisplayText(1, text,"Arial",20,0,0,5,0);
+		UI->displayText(1, text,"Arial",20,0,0,5,0);
 	}
 
 	if (this->wave != NULL){	
@@ -278,54 +274,24 @@ void MainFieldScene::StopGame(char *text)
 	this->wave = NULL;
 }
 
-
-void MainFieldScene::ccTouchesBegan(CCSet *touches, CCEvent *pEvent)
-{
-	CCTouch* touch = (CCTouch*)( touches->anyObject() );
-	CCPoint location = touch->getLocation();
-
-	if (touchedPanelSprite){
-		panelTower->UnSelectCell((CCScene*)this);
-		touchedPanelSprite = NULL;
-	}
-
-	CCSprite *sprite = NULL;
-	for (int i = 0; i < this->touchableSprites.size(); i++){
-		CCPoint point = touchableSprites[i]->convertToNodeSpace(location);
-		CCRect rect = touchableSprites[i]->boundingBox();
-		if (touchableSprites[i]->boundingBox().containsPoint(touchableSprites[i]->convertToNodeSpace(location))){
-			sprite = touchableSprites[i];
-			break;
-		}
-	}
-	if (sprite != NULL){		
-		int tagNew = sprite->getTag();	
-
-		if (tagNew & TAG_TOWER_MENU_MASK){
-			CCLog("begin Touch Sprite in menu tower: %d", tagNew);
-			panelTower->SelectCell((CCScene*)this,sprite);
-			touchedPanelSprite = sprite;		
-			//touchedPanelSprite->setUserData();
-
-			movingTowerSprite = CCSprite::createWithTexture(touchedPanelSprite->getTexture());
-			this->addChild(movingTowerSprite);
-		}
-	}
+/*virtual*/ bool MainFieldScene::ccTouchBegan(CCTouch *touch, CCEvent *pEvent){
+	return this->UI->ccTouchBegan(touch, pEvent);
 }
 
-void MainFieldScene::ccTouchesMoved(CCSet* touches, CCEvent* event)
+/*virtual*/ void MainFieldScene::ccTouchMoved(CCTouch* touch, CCEvent* pEvent)
 {
-	CCTouch *touch = (CCTouch*)touches->anyObject();
-	CCPoint position = touch->getLocation();
+	/*CCPoint position = touch->getLocation();
 	if (movingTowerSprite != NULL){
 		movingTowerSprite->setPosition(position);
-	}
+	}*/
+	UI->ccTouchMoved(touch, pEvent);
 }
 
-void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
+/*virtual*/ void MainFieldScene::ccTouchEnded(CCTouch* touch, CCEvent* pEvent)
 {
+	UI->ccTouchEnded(touch, pEvent);
 	// Choose one of the touches to work with
-    CCTouch* touch = (CCTouch*)( touches->anyObject() );
+    /*CCTouch* touch = (CCTouch*)( touches->anyObject() );
 	CCPoint location = touch->getLocation();
     //location = CCDirector::sharedDirector()->convertToGL(location);
 		
@@ -382,7 +348,7 @@ void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
 			this->addTower(MACHINE_GUN, ccp(touchedCell->x, touchedCell->y));
 		}
 
-		panelTower->UnSelectCell((CCScene*)this);
+		UI->UnSelectCell((CCScene*)this);
 		touchedPanelSprite = NULL;
 	}
 
@@ -390,19 +356,17 @@ void MainFieldScene::ccTouchesEnded(CCSet* touches, CCEvent* event)
 		movingTowerSprite->removeFromParent();
 		movingTowerSprite = NULL;
 	}
-}
-
-void MainFieldScene::ccTouchesCancelled(CCSet* touches, CCEvent* event)
-{
+	*/
 }
 
 void MainFieldScene::addTouchableSprite(CCSprite * child, int tag)
 {
-	child->setTag(tag);
-	touchableSprites.push_back(child);	
+	/*child->setTag(tag);
+	touchableSprites.push_back(child);*/
+	UI->addSprite(child);
 }
 
 void MainFieldScene::removeTouchableSprite(CCSprite * child)
 {
-	touchableSprites.erase(std::remove(touchableSprites.begin(), touchableSprites.end(), child), touchableSprites.end());
+	//touchableSprites.erase(std::remove(touchableSprites.begin(), touchableSprites.end(), child), touchableSprites.end());
 }

@@ -32,7 +32,7 @@ TowerArray::~TowerArray(void)
 {
 }
 
-Tower *TowerArray::GetTower(int index)
+Tower *TowerArray::GetTower(size_t index)
 {
 	index--;
 	if (index >= 0 && index < towerSet.size())

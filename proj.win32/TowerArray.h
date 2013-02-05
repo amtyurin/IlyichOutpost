@@ -22,7 +22,7 @@ public:
 	vector<Tower*>::iterator begin();
 	vector<Tower*>::iterator end();
 
-	Tower *GetTower(int index);
+	Tower *GetTower(size_t index);
 
 	bool Buy(TowerTypes type);
 };
