@@ -14,10 +14,10 @@ PanelTowers::PanelTowers(CCScene *scene, const CCPoint ccp, const CCSize size)
 	this->SetCellContentSprite(tower2, 0,1,0,0);
 
 	CCSprite *coin =  CCSprite::create(FILE_NAME_IMAGE_PANEL_COIN);
-	coin->setScale(0.15);
+	coin->setScale(0.15f);
 	this->SetCellContentSprite(coin, 0,0,5,-15);
 	coin = CCSprite::createWithTexture(coin->getTexture());
-	coin->setScale(0.15);
+	coin->setScale(0.15f);
 	this->SetCellContentSprite(coin, 0,1, 5, -15);
 
 	char price[10];
@@ -26,8 +26,8 @@ PanelTowers::PanelTowers(CCScene *scene, const CCPoint ccp, const CCSize size)
 	_itoa(Tower::GetPrice(HEAVY_GUN), price, 10);
 	this->DisplayText(2, price, "Arial", 20,0,1,0,-17);
 
-/*	((MainFieldScene *)scene)->addTouchableSprite(tower1, TAG_TOWER_MENU_MASK | 0 << 8  | 0);
-	((MainFieldScene *)scene)->addTouchableSprite(tower2, TAG_TOWER_MENU_MASK | 0 << 8  | 1);	*/
+	((MainFieldScene *)scene)->addTouchableSprite(tower1, TAG_TOWER_MENU_MASK | 0 << 8  | 0);
+	((MainFieldScene *)scene)->addTouchableSprite(tower2, TAG_TOWER_MENU_MASK | 0 << 8  | 1);
 }
 
 

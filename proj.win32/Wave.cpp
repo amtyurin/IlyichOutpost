@@ -86,7 +86,7 @@ bool Wave::StartEnemy()
 	}
 }
 
-CCPoint Wave::GetEnemyPosition(const int index)
+CCPoint Wave::GetEnemyPosition(const size_t index)
 {
 	if (index >= 0 && index < this->aliveEnemies.size())
 	{
@@ -98,7 +98,7 @@ CCPoint Wave::GetEnemyPosition(const int index)
 	return ccp(0,0);
 }
 
-void Wave::MakeDamage(const int index, const int health)
+void Wave::MakeDamage(const size_t index, const int health)
 {
 	if (index >= 0 && index < this->aliveEnemies.size())
 	{

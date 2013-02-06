@@ -7,8 +7,8 @@ PanelGeneral::PanelGeneral(CCScene *scene, const CCPoint ccp, const CCSize size)
 	this->SetCellBorderImage(FILE_NAME_IMAGE_PANEL_BORDER);
 
 	CCSprite *coin =  CCSprite::create(FILE_NAME_IMAGE_PANEL_COIN);
-	coin->setScaleX(0.15);
-	coin->setScaleY(0.25);
+	coin->setScaleX(0.15f);
+	coin->setScaleY(0.25f);
 	this->SetCellContentSprite(coin, 0,0,7,0);	
 }
 

@@ -20,7 +20,7 @@ void OutpostArray::AddOutpost(Outpost *outpost)
 
 void OutpostArray::ProcessEnemies(Wave *enemyWave){
 	for (int i = 0; i < enemyWave->GetEnemyCount(); i++){
-		for (int o = 0; o < outpostSet.size(); o++){
+		for (unsigned int o = 0; o < outpostSet.size(); o++){
 			if (outpostSet[o]->isTargetInRange(enemyWave->GetEnemyPosition(i))){
 				enemyWave->MakeDamage(i, 1000000);
 				if (outpostSet[o]->MakeDamage())

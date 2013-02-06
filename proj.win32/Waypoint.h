@@ -36,6 +36,6 @@ public:
 	void AddPoint(Cell *);
 	void RemovePoint(const Cell *);
 
-	Cell* GetPoint(const int index);
+	Cell* GetPoint(const size_t index);
 };
 
