@@ -15,14 +15,13 @@
 
 #include "MoneyManager.h"
 
+#include "TouchableTowerSprite.h"
+
 #include <set>
 
 typedef vector<Tower*>::iterator towerArrayIterator;
 
 using namespace cocos2d;
-
-#define TAG_TOWER_SCENE_MASK	1 << 12
-#define TAG_TOWER_MENU_MASK		1 << 13
 
 class MainFieldScene : public cocos2d::CCLayer
 {
@@ -76,6 +75,6 @@ public:
 	virtual void ccTouchMoved(CCTouch *touch, CCEvent *pEvent);
 	virtual void ccTouchEnded(CCTouch *touch, CCEvent *pEvent);
 
-	void addTouchableSprite(CCSprite * child, int tag);
+	void addTouchableSprite(TouchableTowerSprite *tSprite);
 	void removeTouchableSprite(CCSprite * child);
 };

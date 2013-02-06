@@ -235,7 +235,16 @@ void MainFieldScene::addTower(TowerTypes towerType, cocos2d::CCPoint position){
 	if (towers->Buy(towerType)){
 		Tower *newTower = towers->createTower(towerType, position);
 		this->addChild(newTower->getSprite(), 10);
-		this->addTouchableSprite(newTower->getSprite(), TAG_TOWER_SCENE_MASK | newTower->GetIndex());
+
+		TouchableTowerSprite *tSprite = new TouchableTowerSprite();
+		tSprite->towerType = towerType;
+		tSprite->index = newTower->GetIndex();
+		tSprite->towerPlace = TOWER_SCENE;
+		tSprite->sprite = newTower->getSprite();
+		tSprite->cellX = 0;
+		tSprite->cellY = 0;
+
+		this->addTouchableSprite(tSprite);
 	}
 }
 
@@ -359,11 +368,11 @@ void MainFieldScene::StopGame(char *text)
 	*/
 }
 
-void MainFieldScene::addTouchableSprite(CCSprite * child, int tag)
+void MainFieldScene::addTouchableSprite(TouchableTowerSprite *tSprite)
 {
 	/*child->setTag(tag);
 	touchableSprites.push_back(child);*/
-	UI->addSprite(child);
+	UI->addSprite(tSprite);
 }
 
 void MainFieldScene::removeTouchableSprite(CCSprite * child)

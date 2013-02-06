@@ -115,6 +115,12 @@
     <ClInclude Include="OutpostArray.h">
       <Filter>Outpost</Filter>
     </ClInclude>
+    <ClInclude Include="UILayer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="TouchableTowerSprite.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -167,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="OutpostArray.cpp">
       <Filter>Outpost</Filter>
+    </ClCompile>
+    <ClCompile Include="UILayer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="TouchableTowerSprite.cpp">
+      <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

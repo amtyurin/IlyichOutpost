@@ -152,6 +152,7 @@
     <ClInclude Include="PanelTowers.h" />
     <ClInclude Include="PassingMap.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="TouchableTowerSprite.h" />
     <ClInclude Include="Tower.h" />
     <ClInclude Include="TowerArray.h" />
     <ClInclude Include="UILayer.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="PanelGeneral.cpp" />
     <ClCompile Include="PanelTowers.cpp" />
     <ClCompile Include="PassingMap.cpp" />
+    <ClCompile Include="TouchableTowerSprite.cpp" />
     <ClCompile Include="Tower.cpp" />
     <ClCompile Include="TowerArray.cpp" />
     <ClCompile Include="UILayer.cpp" />

@@ -20,15 +20,15 @@ void UILayer::displayText(const int tag, const char *text, const char *font, con
 	this->panelGeneral->DisplayText(tag, text, font, size, cellX, cellY, locX, locY);
 }
 
-void UILayer::SelectCell(CCScene *scene, CCSprite *sprite){
-	this->panelTowers->SelectCell(scene, sprite);
+void UILayer::SelectCell(CCScene *scene, TouchableTowerSprite *tSprite){
+	this->panelTowers->SelectCell(scene, tSprite);
 }
 
 void UILayer::UnSelectCell(CCScene *scene){
 	this->panelTowers->UnSelectCell(scene);
 }
 
-void UILayer::addSprite(CCSprite *sprite){
+void UILayer::addSprite(TouchableTowerSprite *sprite){
 	this->touchableSprites.push_back(sprite);
 }
 

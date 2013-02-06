@@ -3,6 +3,8 @@
 #include "MainFieldScene.h"
 #include "PassingMap.h"
 
+#include "TouchableTowerSprite.h"
+
 PanelTowers::PanelTowers(CCScene *scene, const CCPoint ccp, const CCSize size)
 	: PanelBase(scene, 1,5, ccp, size)
 {	
@@ -26,8 +28,22 @@ PanelTowers::PanelTowers(CCScene *scene, const CCPoint ccp, const CCSize size)
 	_itoa(Tower::GetPrice(HEAVY_GUN), price, 10);
 	this->DisplayText(2, price, "Arial", 20,0,1,0,-17);
 
-	((MainFieldScene *)scene)->addTouchableSprite(tower1, TAG_TOWER_MENU_MASK | 0 << 8  | 0);
-	((MainFieldScene *)scene)->addTouchableSprite(tower2, TAG_TOWER_MENU_MASK | 0 << 8  | 1);
+	TouchableTowerSprite *tSprite = new TouchableTowerSprite();
+	tSprite->towerType = MACHINE_GUN;
+	tSprite->index = 0;
+	tSprite->towerPlace = TOWER_MENU;
+	tSprite->sprite = tower1;
+	tSprite->cellX = 0;
+	tSprite->cellY = 0;
+	((MainFieldScene *)scene)->addTouchableSprite(tSprite);
+	tSprite = new TouchableTowerSprite();
+	tSprite->towerType = HEAVY_GUN;
+	tSprite->index = 1;
+	tSprite->towerPlace = TOWER_MENU;
+	tSprite->sprite = tower2;
+	tSprite->cellX = 0;
+	tSprite->cellY = 1;
+	((MainFieldScene *)scene)->addTouchableSprite(tSprite);
 }
 
 
@@ -35,12 +51,10 @@ PanelTowers::~PanelTowers(void)
 {
 }
 
-void PanelTowers::SelectCell(CCScene* scene, CCSprite *sprite)
+void PanelTowers::SelectCell(CCScene* scene, TouchableTowerSprite *tSprite)
 {	
-	int tag = sprite->getTag() ^ TAG_TOWER_MENU_MASK;
-
 	selectionSprite = CCSprite::create(FILE_NAME_IMAGE_PANEL_TOWER_SELECTION);
-	this->SetCellContentSprite(selectionSprite, tag >> 8, tag & 0xf,0,0);
+	this->SetCellContentSprite(selectionSprite, tSprite->cellX, tSprite->cellY,0,0);
 	selectionSprite->setOpacity(100);
 
 	PassingMap::ShowDebugGrid(scene, STATE_CELL_BUILD);
