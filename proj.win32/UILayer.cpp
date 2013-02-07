@@ -191,11 +191,9 @@ void UILayer::addTowerToPanel(TowerTypes towerType, const int cellX, const int c
 	tSprite->sprite = sprite;
 	tSprite->cellX = cellX;
 	tSprite->cellY = cellY;
-	tSprite->sprite->setPositionX(800 - (cellX+1)*42);
-	tSprite->sprite->setPositionY(cellY*80 + 150);
-	tSprite->sprite->setScale(1.3);
+	tSprite->sprite->setPositionX(800 - (cellX+1)*36);
+	tSprite->sprite->setPositionY(cellY*50 + 100);
+	//tSprite->sprite->setScale(1.3);
 	this->addChild(tSprite->sprite);
-	//tSprite->sprite->setVertexZ(25);
-	//this->addChild(tSprite->sprite, 100);
 	addTouchableSprite(tSprite);	
 }
