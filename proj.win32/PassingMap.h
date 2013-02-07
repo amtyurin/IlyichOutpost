@@ -27,7 +27,7 @@ public:
 
 	static CellState GetCellSTate(const int x, const int y);
 	static Cell* GetCell(const int x, const int y);
-	static Cell* GetCellByScreenCoords(const int x, const int y);
+	static Cell* GetCellByScreenCoords(const float x, const float y);
 	static void SetCellState(const int x, const int y, const CellState state);
 
 	static void ShowDebugGrid(cocos2d::CCScene *scene, CellState type);	

@@ -105,8 +105,8 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
     //location = CCDirector::sharedDirector()->convertToGL(location);
 	if (this->movingTowerSprite != NULL){
 		this->movingTowerSprite->ReturnToCell();
-		float x = touch->getLocation().x;
-		float y = touch->getLocation().y;
+		const float x = touch->getLocation().x;
+		const float y = touch->getLocation().y;
 		Cell *touchedCell = PassingMap::GetCellByScreenCoords(x, y);
 		CCLog("%f %f %d %d", x, y, touchedCell->x, touchedCell->y);
 		if (touchedCell !=NULL && touchedCell->type == STATE_CELL_BUILD){
@@ -205,7 +205,7 @@ void UILayer::addTowerToPanel(TowerTypes towerType, const int cellX, const int c
 	tSprite->cellX = cellX;
 	tSprite->cellY = cellY;
 	tSprite->ReturnToCell();
-	tSprite->sprite->setScale(1.1);
+	tSprite->sprite->setScale(1.1f);
 	this->addChild(tSprite->sprite);
 	addTouchableSprite(tSprite);	
 }
