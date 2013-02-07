@@ -148,3 +148,19 @@ void PassingMap::ShowWaypoint(Waypoint *way, CCScene *scene)
 
 	scene->addChild(spriteAll, 20);
 }
+
+Cell* PassingMap::GetCellByScreenCoords(const int x, const int y){
+	int cellX = x / MAP_WIDTH_MAX;
+	int cellY = y / MAP_HEIGHT_MAX;
+	return &PassingMap::map[cellX][cellY];
+}
+
+
+void PassingMap::InitCells(){
+	for (int x = 0; x < MAP_WIDTH_MAX; ++x){
+		for (int y = 0; y < MAP_HEIGHT_MAX; ++y){
+			map[x][y].x = x*MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
+			map[x][y].y = y*MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
+		}
+	}
+}

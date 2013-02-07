@@ -83,6 +83,7 @@ bool MainFieldScene::init()
 		this->setTouchEnabled(true);
 
 		PassingMap::ClearMap();
+		PassingMap::InitCells();
 		PassingMap::SetCellState(15,5,STATE_CELL_BUILD);
 		PassingMap::SetCellState(5,3,STATE_CELL_BUILD);
 		PassingMap::SetCellState(3,8,STATE_CELL_BUILD);

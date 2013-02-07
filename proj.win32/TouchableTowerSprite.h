@@ -12,7 +12,7 @@ class TouchableTowerSprite
 public:
 	TouchableTowerSprite(void);
 	~TouchableTowerSprite(void);
-
+	void ReturnToCell();
 	CCSprite *sprite;
 	int index;
 	TowerTypes towerType;

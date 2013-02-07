@@ -27,12 +27,14 @@ public:
 
 	static CellState GetCellSTate(const int x, const int y);
 	static Cell* GetCell(const int x, const int y);
+	static Cell* GetCellByScreenCoords(const int x, const int y);
 	static void SetCellState(const int x, const int y, const CellState state);
 
 	static void ShowDebugGrid(cocos2d::CCScene *scene, CellState type);	
 	static void HideDebugGrid(cocos2d::CCScene *scene);
 
 	static void ShowWaypoint(Waypoint *way, cocos2d::CCScene *scene);
+	static void InitCells();
 	
 	~PassingMap(void);
 };

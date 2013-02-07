@@ -21,7 +21,7 @@ private:
 
 	TouchableTowerSprite *touchedTowerSprite;
 	TouchableTowerSprite *touchedPanelSprite;
-	cocos2d::CCSprite *movingTowerSprite;
+	TouchableTowerSprite *movingTowerSprite;
 	std::vector<TouchableTowerSprite *> touchableSprites;
 
 	cocos2d::CCScene *scene;
