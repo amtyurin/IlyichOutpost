@@ -79,7 +79,7 @@ void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const in
 		sprite->setPositionX(cells[cellX][cellY].spriteCell->getTextureRect().size.width / 2 + locX);
 		sprite->setPositionY(cells[cellX][cellY].spriteCell->getTextureRect().size.height / 2 + locY);
 
-		cells[cellX][cellY].spriteCell->addChild(sprite, 1);
+		//cells[cellX][cellY].spriteCell->addChild(sprite, 1);
 		return;
 	}
 
@@ -115,5 +115,5 @@ void PanelBase::DisplayText(const int tag, const char *text, const char *font, c
 
 void PanelBase::RemoveCellContentSprite(CCSprite *sprite)
 {
-	sprite->removeFromParent();
+	//sprite->removeFromParent();
 }

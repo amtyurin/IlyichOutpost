@@ -43,6 +43,7 @@ void UILayer::UnSelectCell(CCScene *scene){
 }
 
 void UILayer::addTouchableSprite(TouchableTowerSprite *sprite){
+	CCLog("%f %f", sprite->sprite->getPositionX(), sprite->sprite->getPositionY());
 	this->touchableSprites.push_back(sprite);
 }
 
@@ -55,12 +56,14 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 		UnSelectCell((CCScene*)this);
 		touchedPanelSprite = NULL;
 	}
-
+	CCLog("%d", touchableSprites.size());
 	TouchableTowerSprite *sprite = NULL;
 	for (unsigned int i = 0; i < this->touchableSprites.size(); i++){
 		CCPoint point = touchableSprites[i]->sprite->convertToNodeSpace(location);
 		CCRect rect = touchableSprites[i]->sprite->boundingBox();
-		if (touchableSprites[i]->sprite->boundingBox().containsPoint(touchableSprites[i]->sprite->convertToNodeSpace(location))){
+		//rect.containsPoint(location);
+		//if (touchableSprites[i]->sprite->boundingBox().containsPoint(touchableSprites[i]->sprite->convertToNodeSpace(location))){
+		if (rect.containsPoint(location)){
 			sprite = touchableSprites[i];
 			break;
 		}
@@ -156,7 +159,7 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 void UILayer::addTower(TowerTypes towerType, cocos2d::CCPoint position){
 	if (towers->Buy(towerType)){
 		Tower *newTower = towers->createTower(towerType, position);
-		this->addChild(newTower->getSprite(), 10);
+		this->addChild(newTower->getSprite(), 100);
 
 		TouchableTowerSprite *tSprite = new TouchableTowerSprite();
 		tSprite->towerType = towerType;
@@ -165,7 +168,7 @@ void UILayer::addTower(TowerTypes towerType, cocos2d::CCPoint position){
 		tSprite->sprite = newTower->getSprite();
 		tSprite->cellX = 0;
 		tSprite->cellY = 0;
-
+		//tSprite->sprite->setPosition(ccp(760, 300));
 		addTouchableSprite(tSprite);
 	}
 }
@@ -181,6 +184,11 @@ void UILayer::addTowerToPanel(TowerTypes towerType, const int cellX, const int c
 	tSprite->sprite = sprite;
 	tSprite->cellX = cellX;
 	tSprite->cellY = cellY;
-
+	tSprite->sprite->setPositionX(800 - (cellX+1)*42);
+	tSprite->sprite->setPositionY(cellY*80 + 150);
+	tSprite->sprite->setScale(1.3);
+	this->addChild(tSprite->sprite);
+	//tSprite->sprite->setVertexZ(25);
+	//this->addChild(tSprite->sprite, 100);
 	addTouchableSprite(tSprite);	
 }
