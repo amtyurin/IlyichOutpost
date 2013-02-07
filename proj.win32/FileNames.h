@@ -10,6 +10,13 @@
 #define FILE_NAME_IMAGE_TOWER_RANGE "TowerRange.png"
 #define FILE_NAME_IMAGE_TOWER_MACHINE_GUN "machineGun.png"
 #define FILE_NAME_IMAGE_TOWER_HEAVY_GUN "machineGun.png"
+#define FILE_NAME_IMAGE_TOWER_SNIPER_GUN "machineGun.png"
+#define FILE_NAME_IMAGE_TOWER_ANTITANK_GUN "machineGun.png"
+#define FILE_NAME_IMAGE_TOWER_LASER_GUN "machineGun.png"
+#define FILE_NAME_IMAGE_TOWER_ROCKET_GUN "machineGun.png"
+#define FILE_NAME_IMAGE_TOWER_ELECTROMAGNETIC_GUN "machineGun.png"
+#define FILE_NAME_IMAGE_TOWER_FLAME_GUN "machineGun.png"
+#define FILE_NAME_IMAGE_TOWER_NAPALM_GUN "machineGun.png"
 
 #define FILE_NAME_IMAGE_HEALTH_LINE "\\Enemy\\health_line.png"
 

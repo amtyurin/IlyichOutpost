@@ -13,7 +13,7 @@ UILayer::UILayer(CCScene *_scene, TowerArray *towers):scene(_scene){
 
 	this->size = CCDirector::sharedDirector()->getWinSize();
 	this->panelGeneral =  new PanelGeneral(this, ccp(size.width/2, size.height - GENERAL_PANEL_POSITION),CCSize(size.width/2, 2 * GENERAL_PANEL_POSITION));
-	this->panelTowers = new PanelTowers(this, ccp(size.width - TOWER_PANEL_POSITION, size.height/2), CCSize(2 * TOWER_PANEL_POSITION, size.height * 2 / 3));
+	this->panelTowers = new PanelTowers(this, ccp(size.width - TOWER_PANEL_POSITION, size.height/2), CCSize(2 * TOWER_PANEL_POSITION, size.height * 3 / 4));
 	
 	this->touchedTowerSprite = NULL;
 	this->touchedPanelSprite = NULL;
@@ -25,6 +25,13 @@ UILayer::UILayer(CCScene *_scene, TowerArray *towers):scene(_scene){
 
 	addTowerToPanel(MACHINE_GUN, 0, 0);
 	addTowerToPanel(HEAVY_GUN, 0, 1);
+	addTowerToPanel(SNIPER_GUN, 0, 2);
+	addTowerToPanel(ANTITANK_GUN, 0, 3);
+	addTowerToPanel(LASER_GUN, 0, 4);
+	addTowerToPanel(ROCKET_GUN, 0, 5);
+	addTowerToPanel(ELECTROMAGNETIC_GUN, 0, 6);
+	addTowerToPanel(FLAME_GUN, 0, 7);
+	addTowerToPanel(NAPALM_GUN, 0, 8);
 }
 
 UILayer::~UILayer(void){
@@ -118,7 +125,7 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 				tower->ShowRange();
 			}
 			if (this->touchedTowerSprite){
-				Tower *tower = towers->GetTower(sprite->index);
+				Tower *tower = towers->GetTower(touchedTowerSprite->index);
 				if(tower){
 					tower->HideRange();
 				}

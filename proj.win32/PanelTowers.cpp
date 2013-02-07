@@ -4,7 +4,7 @@
 #include "PassingMap.h"
 
 PanelTowers::PanelTowers(cocos2d::CCNode *node, const CCPoint ccp, const CCSize size)
-	: PanelBase(1,5, ccp, size)
+	: PanelBase(1,9, ccp, size)
 {	
 	node->addChild(this->panelSprite);
 

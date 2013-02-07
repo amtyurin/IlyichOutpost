@@ -83,17 +83,24 @@ bool MainFieldScene::init()
 		this->setTouchEnabled(true);
 
 		PassingMap::ClearMap();
-		PassingMap::SetCellState(5,5,STATE_CELL_BUSY);
-		PassingMap::SetCellState(5,6,STATE_CELL_BUSY);
+		PassingMap::SetCellState(15,5,STATE_CELL_BUILD);
+		PassingMap::SetCellState(5,3,STATE_CELL_BUILD);
 		PassingMap::SetCellState(3,8,STATE_CELL_BUILD);
-		PassingMap::SetCellState(10,10,STATE_CELL_BUILD);
-		PassingMap::SetCellState(11,11,STATE_CELL_BUILD);
+		PassingMap::SetCellState(7,15,STATE_CELL_BUILD);
+		PassingMap::SetCellState(9,10,STATE_CELL_BUILD);
+		PassingMap::SetCellState(16,5,STATE_CELL_BUILD);
+		PassingMap::SetCellState(3,20,STATE_CELL_BUILD);
+		PassingMap::SetCellState(7,17,STATE_CELL_BUILD);
+		PassingMap::SetCellState(9,8,STATE_CELL_BUILD);
 		//PassingMap::ShowDebugGrid((CCScene*)this);
 
 		way.AddPoint(PassingMap::GetCell(1,1));
 		way.AddPoint(PassingMap::GetCell(2,2));
 		way.AddPoint(PassingMap::GetCell(4,4));
-		way.AddPoint(PassingMap::GetCell(7,5));
+		way.AddPoint(PassingMap::GetCell(7,13));
+		way.AddPoint(PassingMap::GetCell(15,10));
+		way.AddPoint(PassingMap::GetCell(17,5));
+		way.AddPoint(PassingMap::GetCell(15,7));
 		way.AddPoint(PassingMap::GetCell(12,9));
 		PassingMap::ShowWaypoint(&way,(CCScene*)this);
 		

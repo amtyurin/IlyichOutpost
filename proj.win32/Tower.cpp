@@ -144,8 +144,10 @@ void Tower::ShowRange()
 
 void Tower::HideRange()
 {	
-	this->spriteRangePtr->removeFromParent(); //this->spritePtr->getParent()->removeChild(this->spriteRangePtr, true);
-	this->spriteRangePtr = NULL;
+	if (this->spriteRangePtr){
+		this->spritePtr->getParent()->removeChild(this->spriteRangePtr, true);
+		this->spriteRangePtr = NULL;
+	}
 }
 
 int Tower::GetPrice(TowerTypes type)
@@ -163,6 +165,27 @@ int Tower::GetDamage(TowerTypes type)
 		case HEAVY_GUN:
 			damage = 20;			
 			break;
+		case SNIPER_GUN:
+			damage = 40;
+			break;
+		case ANTITANK_GUN:
+			damage = 80;
+			break;
+		case LASER_GUN:
+			damage = 100;
+			break;
+		case ROCKET_GUN:
+			damage = 60;
+			break;
+		case ELECTROMAGNETIC_GUN:
+			damage = 40;
+			break;
+		case FLAME_GUN:
+			damage = 80;
+			break;
+		case NAPALM_GUN:
+			damage = 150;
+			break;
 	}
 	return damage;
 }
@@ -172,10 +195,31 @@ int Tower::GetFireSpeed(TowerTypes type)
 	int speed = 0;
 	switch (type){
 		case MACHINE_GUN:
-			speed = 5;			
+			speed = 7;			
 			break;
 		case HEAVY_GUN:
-			speed = 7;			
+			speed = 9;			
+			break;
+		case SNIPER_GUN:
+			speed = 1;
+			break;
+		case ANTITANK_GUN:
+			speed = 3;
+			break;
+		case LASER_GUN:
+			speed = 4;
+			break;
+		case ROCKET_GUN:
+			speed = 7;
+			break;
+		case ELECTROMAGNETIC_GUN:
+			speed = 2;
+			break;
+		case FLAME_GUN:
+			speed = 5;
+			break;
+		case NAPALM_GUN:
+			speed = 5;
 			break;
 	}
 	return speed;
@@ -191,6 +235,27 @@ int Tower::GetRadius(TowerTypes type)
 		case HEAVY_GUN:
 			radius = 150;			
 			break;
+		case SNIPER_GUN:
+			radius = 300;
+			break;
+		case ANTITANK_GUN:
+			radius = 150;
+			break;
+		case LASER_GUN:
+			radius = 250;
+			break;
+		case ROCKET_GUN:
+			radius = 200;
+			break;
+		case ELECTROMAGNETIC_GUN:
+			radius = 100;
+			break;
+		case FLAME_GUN:
+			radius = 100;
+			break;
+		case NAPALM_GUN:
+			radius = 150;
+			break;
 	}
 	return radius;
 }
@@ -204,6 +269,27 @@ char* Tower::GetImage(TowerTypes type)
 			break;
 		case HEAVY_GUN:
 			image = FILE_NAME_IMAGE_TOWER_HEAVY_GUN;
+			break;
+		case SNIPER_GUN:
+			image = FILE_NAME_IMAGE_TOWER_SNIPER_GUN;
+			break;
+		case ANTITANK_GUN:
+			image = FILE_NAME_IMAGE_TOWER_ANTITANK_GUN;
+			break;
+		case LASER_GUN:
+			image = FILE_NAME_IMAGE_TOWER_LASER_GUN;
+			break;
+		case ROCKET_GUN:
+			image = FILE_NAME_IMAGE_TOWER_ROCKET_GUN;
+			break;
+		case ELECTROMAGNETIC_GUN:
+			image = FILE_NAME_IMAGE_TOWER_ELECTROMAGNETIC_GUN;
+			break;
+		case FLAME_GUN:
+			image = FILE_NAME_IMAGE_TOWER_FLAME_GUN;
+			break;
+		case NAPALM_GUN:
+			image = FILE_NAME_IMAGE_TOWER_NAPALM_GUN;
 			break;
 	}
 	return image;

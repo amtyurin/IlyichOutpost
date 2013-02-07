@@ -6,7 +6,7 @@
 #include "PanelTowers.h"
 #include <vector>
 
-#define TOWER_PANEL_POSITION 45
+#define TOWER_PANEL_POSITION 35
 #define GENERAL_PANEL_POSITION 20
 
 class UILayer : public cocos2d::CCLayer

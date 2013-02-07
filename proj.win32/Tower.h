@@ -13,7 +13,14 @@
 
 enum TowerTypes{
 	MACHINE_GUN = 1,
-	HEAVY_GUN = 2
+	HEAVY_GUN = 2,
+	SNIPER_GUN,
+	ANTITANK_GUN,
+	LASER_GUN,
+	ROCKET_GUN,
+	ELECTROMAGNETIC_GUN,
+	FLAME_GUN,
+	NAPALM_GUN
 };
 
 enum CircleHalf{  //for turns processing
