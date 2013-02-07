@@ -7,34 +7,32 @@
 
 #include <vector>
 
-using namespace cocos2d;
-
 class Wave
 {	
 	static int currentWaveNumber;
 	int createdEnemies;
 	int enemyCountForWave;
 
-	CCScene *scene; 
+	cocos2d::CCScene *scene; 
 	Waypoint *waypoint;
 
 	MoneyManager *moneyManager;
 
-	vector<Enemy *> aliveEnemies;
-	vector<EnemyType> enemyTypeMap;
+	std::vector<Enemy *> aliveEnemies;
+	std::vector<EnemyType> enemyTypeMap;
 
 	void CreateEnemyTypeMap(const EnemyType eType, const  int count);
 	void  AlignEnemyCount(const EnemyType eType, const int enemyInitialCount);
 
 public:
-	Wave(CCScene *scene, Waypoint *waypoint, MoneyManager *moneyManager);
+	Wave(cocos2d::CCScene *scene, Waypoint *waypoint, MoneyManager *moneyManager);
 	static Wave* NextWave();
 	~Wave(void);
 
 	bool StartEnemy();
 	int GetCurrentWaveNumber();
 	int GetEnemyCount();
-	CCPoint GetEnemyPosition(const size_t index);
+	cocos2d::CCPoint GetEnemyPosition(const size_t index);
 	bool AllEnemiesCreated();
 
 	void MakeDamage(const size_t index, const int health);

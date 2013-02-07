@@ -3,6 +3,8 @@
 #include "PassingMap.h"
 #include "Wave.h"
 
+using namespace cocos2d;
+
 Enemy::Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, Waypoint *way) :
 	UpgradeBase(moneyManager, UPGRADES_COUNT_ENEMY)
 {

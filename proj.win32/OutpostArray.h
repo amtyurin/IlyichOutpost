@@ -3,11 +3,9 @@
 #include "Outpost.h"
 #include <vector>
 
-using namespace std;
-
 class OutpostArray
 {
-	vector<Outpost *> outpostSet;
+	std::vector<Outpost *> outpostSet;
 
 	bool enemyOutpostDestroyed;
 	bool ourOutpostDestroyed;

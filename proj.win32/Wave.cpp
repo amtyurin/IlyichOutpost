@@ -4,6 +4,8 @@
 
 #include <algorithm>
 
+using namespace cocos2d;
+
 int Wave::currentWaveNumber = 0;
 
 void Wave::CreateEnemyTypeMap(const EnemyType eType,const int count)

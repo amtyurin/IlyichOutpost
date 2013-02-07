@@ -1,5 +1,6 @@
 #include "Outpost.h"
 
+using namespace cocos2d;
 
 Outpost::Outpost(CCScene *scene, OutpostType outpostType, CCRect rect)
 {

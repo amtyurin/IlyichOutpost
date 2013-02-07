@@ -6,8 +6,6 @@
 #include "UpgradeBase.h"
 #include "FileNames.h"
 
-using namespace cocos2d;
-
 #define UPGRADES_COUNT_ENEMY 5
 #define UPGRADE_COEF_ENEMY 1.1
 
@@ -26,7 +24,7 @@ enum EnemyType
 	MAX_ENEMY_NUMBER
 };
 
-class Enemy : public CCObject , public UpgradeBase
+class Enemy : public cocos2d::CCObject , public UpgradeBase
 {
 	int healthTotal;
 	int healthCurrent;
@@ -36,20 +34,20 @@ class Enemy : public CCObject , public UpgradeBase
 
 	MoneyManager *moneyManager;
 
-	CCSprite *sprite;
-	CCSprite *spriteHealth;
-	CCScene *scene;
+	cocos2d::CCSprite *sprite;
+	cocos2d::CCSprite *spriteHealth;
+	cocos2d::CCScene *scene;
 
 	void CheckPointReached();
 	void (*BaseReachedCallback)();
 	void Destroy();	
 	
 public:
-	Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, Waypoint *way);
+	Enemy(MoneyManager *moneyManager, const EnemyType eType, cocos2d::CCScene *scene, Waypoint *way);
 	~Enemy(void);
 
 	void SetSpeed(const int speed);
-	CCPoint GetPosition();
+	cocos2d::CCPoint GetPosition();
 
 	bool MakeDamage(const int health);
 

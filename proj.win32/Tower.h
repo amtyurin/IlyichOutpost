@@ -39,11 +39,6 @@ private:
 
 	void fire(Wave *wave, int index);
 
-	static int GetDamage(TowerTypes type);
-	static int GetFireSpeed(TowerTypes type);
-	static int GetRadius(TowerTypes type);
-	static char* GetImage(TowerTypes type);
-
 public:
 	Tower(MoneyManager *moneyManager, TowerTypes type, cocos2d::CCPoint _position);
 	~Tower(void);
@@ -56,7 +51,7 @@ public:
 	void turnTo(const cocos2d::CCPoint position) const;
 	const bool operator < (const Tower &tower) const;
 	const bool operator > (const Tower &tower) const;
-	const bool isTargetInRange(CCPoint target) const;
+	const bool isTargetInRange(cocos2d::CCPoint target) const;
 	void processEnemies(Wave *wave);
 	const bool isAbleToFire() const;
 
@@ -69,5 +64,9 @@ public:
 	virtual void Upgrade();
 
 	static int GetPrice(TowerTypes type);
+	static int GetDamage(TowerTypes type);
+	static int GetFireSpeed(TowerTypes type);
+	static int GetRadius(TowerTypes type);
+	static char* GetImage(TowerTypes type);
 };
 

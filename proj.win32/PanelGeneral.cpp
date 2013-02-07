@@ -1,9 +1,12 @@
 #include "PanelGeneral.h"
 
+using namespace cocos2d;
 
-PanelGeneral::PanelGeneral(CCScene *scene, const CCPoint ccp, const CCSize size)
-	: PanelBase(scene, 4,1, ccp, size)
+PanelGeneral::PanelGeneral(CCNode *node, const CCPoint ccp, const CCSize size)
+	: PanelBase(4,1, ccp, size)
 {
+	node->addChild(this->panelSprite);
+
 	this->SetCellBorderImage(FILE_NAME_IMAGE_PANEL_BORDER);
 
 	CCSprite *coin =  CCSprite::create(FILE_NAME_IMAGE_PANEL_COIN);

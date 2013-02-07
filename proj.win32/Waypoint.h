@@ -7,8 +7,6 @@
 
 #include "FileNames.h"
 
-using namespace std;
-
 enum CellState
 {
 	STATE_CELL_FREE = 0,
@@ -27,7 +25,7 @@ struct Cell
 
 class Waypoint
 {
-	vector<Cell *> way;
+	std::vector<Cell *> way;
 
 public:
 	Waypoint(void);

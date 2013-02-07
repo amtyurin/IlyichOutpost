@@ -1,12 +1,11 @@
 #include "PanelBase.h"
 
+using namespace cocos2d;
 
-PanelBase::PanelBase(CCScene *scene, const int cellsX, const int cellsY, const CCPoint ccp, const CCSize size) 
+PanelBase::PanelBase(const int cellsX, const int cellsY, const CCPoint ccp, const CCSize size) 
 {	
 	panelSprite = CCSprite::create();
-
-	scene->addChild(panelSprite);
-
+	
 	this->cellsX = cellsX;
 	this->cellsY = cellsY;
 

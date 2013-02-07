@@ -11,7 +11,7 @@ class TowerArray
 {
 	MoneyManager *moneyManager;
 private:
-	vector<Tower*> towerSet;
+	std::vector<Tower*> towerSet;
 public:
 	TowerArray(MoneyManager *moneyManager);
 
@@ -19,8 +19,8 @@ public:
 	Tower *createTower(TowerTypes type, cocos2d::CCPoint _position);
 	void removeTower(Tower &tower);
 	~TowerArray(void);
-	vector<Tower*>::iterator begin();
-	vector<Tower*>::iterator end();
+	std::vector<Tower*>::iterator begin();
+	std::vector<Tower*>::iterator end();
 
 	Tower *GetTower(size_t index);
 

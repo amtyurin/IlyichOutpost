@@ -6,8 +6,6 @@
 
 #include "Waypoint.h"
 
-using namespace cocos2d;
-
 class PassingMap
 {
 public:
@@ -22,7 +20,7 @@ private:
 
 	static Cell map[MAP_WIDTH_MAX][MAP_HEIGHT_MAX];	
 
-	static CCSprite *spriteAll;	
+	static cocos2d::CCSprite *spriteAll;	
 public:
 
 	static void ClearMap();
@@ -31,10 +29,10 @@ public:
 	static Cell* GetCell(const int x, const int y);
 	static void SetCellState(const int x, const int y, const CellState state);
 
-	static void ShowDebugGrid(CCScene *scene, CellState type);	
-	static void HideDebugGrid(CCScene *scene);
+	static void ShowDebugGrid(cocos2d::CCScene *scene, CellState type);	
+	static void HideDebugGrid(cocos2d::CCScene *scene);
 
-	static void ShowWaypoint(Waypoint *way, CCScene *scene);
+	static void ShowWaypoint(Waypoint *way, cocos2d::CCScene *scene);
 	
 	~PassingMap(void);
 };

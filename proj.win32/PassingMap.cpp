@@ -1,5 +1,7 @@
 #include "PassingMap.h"
 
+using namespace cocos2d;
+
 PassingMap::PassingMap(void)
 {	
 }

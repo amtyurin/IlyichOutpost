@@ -1,6 +1,7 @@
 #include "TowerArray.h"
 #include "cocos2d.h"
 
+using namespace std;
 using std::set;
 using namespace cocos2d;
 
