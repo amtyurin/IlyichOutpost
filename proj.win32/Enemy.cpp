@@ -158,7 +158,7 @@ bool Enemy::MakeDamage(const int health)
 	this->healthCurrent -= health;
 	if (healthCurrent <= 0)
 	{
-		this->spriteHealth->setScaleX(0);
+		this->healthCurrent = 0;		
 
 		this->sprite->cleanup();
 
@@ -168,7 +168,7 @@ bool Enemy::MakeDamage(const int health)
 		CCFiniteTimeAction *actionWait = CCActionInterval::create(TIMEOUT_ANIMATION);
 		CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3f, ccg(1,1), TIMEOUT_ANIMATION);
 
-        CCFiniteTimeAction* actionDestroy = CCCallFunc::create( this, callfunc_selector(Enemy::Destroy));
+		CCFiniteTimeAction* actionDestroy = CCCallFunc::create( this, callfunc_selector(Enemy::Destroy));
         this->sprite->runAction( CCSequence::create(actionWait, actionKill, actionDestroy, NULL) );
 
 		moneyManager->AddMoney((int)sqrt((float)this->healthTotal));
