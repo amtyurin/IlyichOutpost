@@ -11,7 +11,7 @@
 
 #define UPGRADES_COUNT_TOWER 5
 #define UPGRADE_COEF_TOWER 1.2
-#define FIRE_ANIMATION_TIME 0.5f
+#define FIRE_ANIMATION_TIME 0.2f
 
 enum TowerTypes{
 	MACHINE_GUN = 1,

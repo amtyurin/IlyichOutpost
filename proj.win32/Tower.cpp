@@ -300,7 +300,7 @@ void Tower::startFireAnimation(const CCPoint startPosition, const CCPoint endPos
 	CCSprite *shellSprite = CCSprite::create(FILE_NAME_MACHINEGUN_BULLET);
 	CCNode *parent = this->spritePtr->getParent();
 	shellSprite->setPosition(startPosition);
-	shellSprite->setScale(3);
+	shellSprite->setScale(0.3f);
 	CCFiniteTimeAction *actionMove = CCMoveTo::create(FIRE_ANIMATION_TIME, endPosition);
 	CCFiniteTimeAction* actionMoveDone = CCCallFuncN::create(parent, callfuncN_selector(Tower::deleteShell));
 	parent->addChild(shellSprite);
