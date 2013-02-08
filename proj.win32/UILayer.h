@@ -17,33 +17,32 @@ private:
 
 	UILayer(void);
 
-	CCSize size;
+	cocos2d::CCSize size;
 
 	TouchableTowerSprite *touchedTowerSprite;
-	TouchableTowerSprite *touchedPanelSprite;
 	TouchableTowerSprite *movingTowerSprite;
 	std::vector<TouchableTowerSprite *> touchableSprites;
 
 	cocos2d::CCScene *scene;
 	TowerArray *towers;
 
-	void addTower(TowerTypes towerType, cocos2d::CCPoint position);
+	void addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position);
 	void addTowerToPanel(TowerTypes towerType, const int cellX, const int cellY);
 
 public:
-	UILayer(CCScene *scene, TowerArray *towers);
+	UILayer(cocos2d::CCScene *scene, TowerArray *towers);
 	~UILayer(void);
 	const PanelTowers * getPanelTowersPointer()const{ return panelTowers;};
 	const PanelGeneral * getPanelGeneralPointer()const{ return panelGeneral;};
 	void displayText(const int tag, const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY);
-	void SelectCell(CCScene* scene, TouchableTowerSprite *tSprite);
-	void UnSelectCell(CCScene* scene);
+	void SelectCell(cocos2d::CCScene* scene, TouchableTowerSprite *tSprite);
+	void UnSelectCell(cocos2d::CCScene* scene);
 
 	void addTouchableSprite(TouchableTowerSprite *sprite);
 
-	void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
-    void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
-    void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
+	void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+    void ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
+    void ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
 	//void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);
 };
 

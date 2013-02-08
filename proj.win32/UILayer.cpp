@@ -16,7 +16,6 @@ UILayer::UILayer(CCScene *_scene, TowerArray *towers):scene(_scene){
 	this->panelTowers = new PanelTowers(this, ccp(size.width - TOWER_PANEL_POSITION, size.height/2), CCSize(2 * TOWER_PANEL_POSITION, size.height * 3 / 4));
 	
 	this->touchedTowerSprite = NULL;
-	this->touchedPanelSprite = NULL;
 	this->movingTowerSprite = NULL;
 
 	this->setTouchEnabled(true);
@@ -54,39 +53,43 @@ void UILayer::addTouchableSprite(TouchableTowerSprite *sprite){
 	this->touchableSprites.push_back(sprite);
 }
 
-void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
-	PassingMap::ShowDebugGrid(this->scene, STATE_CELL_BUILD);
+void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){	
     CCTouch* touch = (CCTouch*)( pTouches->anyObject() );
 	CCPoint location = touch->getLocation();
 	
-	if (touchedPanelSprite){
-		UnSelectCell((CCScene*)this);
-		touchedPanelSprite = NULL;
+	if (this->touchedTowerSprite){		
+		Tower *tower = towers->GetTower(touchedTowerSprite->index);
+		if(tower){
+			tower->HideRange();
+		}		
+		this->touchedTowerSprite = NULL;
 	}
+
 	TouchableTowerSprite *sprite = NULL;
 	for (unsigned int i = 0; i < this->touchableSprites.size(); i++){
-		//CCPoint point = touchableSprites[i]->sprite->convertToNodeSpace(location);
 		CCRect rect = touchableSprites[i]->sprite->boundingBox();
-		//rect.containsPoint(location);
-		//if (touchableSprites[i]->sprite->boundingBox().containsPoint(touchableSprites[i]->sprite->convertToNodeSpace(location))){
-		if (rect.containsPoint(location)){
+		if (rect.containsPoint(location)){			
 			sprite = touchableSprites[i];
 			break;
 		}
 	}
-	this->movingTowerSprite = sprite;
-	/*if (sprite != NULL){		
-
+	
+	this->movingTowerSprite = NULL;
+	if (sprite != NULL){	
 		if (sprite->towerPlace == TOWER_MENU){
 			CCLog("begin Touch Sprite in menu tower");
-			SelectCell((CCScene*)this,sprite);
-			touchedPanelSprite = sprite;		
-			//touchedPanelSprite->setUserData();
-
-			movingTowerSprite = CCSprite::createWithTexture(touchedPanelSprite->sprite->getTexture());
-			this->addChild(movingTowerSprite);
+			this->movingTowerSprite = sprite;
+			this->movingTowerSprite->SaveInitialPosition();
+			PassingMap::ShowDebugGrid(this->scene, STATE_CELL_BUILD);
 		}
-	}*/
+		else if (sprite->towerPlace == TOWER_SCENE){
+			this->touchedTowerSprite = sprite;
+			Tower *tower = towers->GetTower(sprite->index);
+			if(tower){
+				tower->ShowRange();
+			}
+		}
+	}
 }
 
 void UILayer::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent){
@@ -101,82 +104,23 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 	// Choose one of the touches to work with
     CCTouch* touch = (CCTouch*)( pTouches->anyObject() );
 	CCPoint location = touch->getLocation();
-	PassingMap::HideDebugGrid(this->scene);
-    //location = CCDirector::sharedDirector()->convertToGL(location);
+	
+    PassingMap::HideDebugGrid(this->scene);
+
 	if (this->movingTowerSprite != NULL){
-		this->movingTowerSprite->ReturnToCell();
+		this->movingTowerSprite->ReturnToOriginalPosition();
 		const float x = touch->getLocation().x;
 		const float y = touch->getLocation().y;
 		Cell *touchedCell = PassingMap::GetCellByScreenCoords(x, y);
 		CCLog("%f %f %d %d", x, y, touchedCell->x, touchedCell->y);
 		if (touchedCell !=NULL && touchedCell->type == STATE_CELL_BUILD){
-			this->addTower(movingTowerSprite->towerType, ccp(touchedCell->x, touchedCell->y));
+			this->addTouchableTower(movingTowerSprite->towerType, ccp(touchedCell->x, touchedCell->y));
 		}
 
 	}
-		/*
-	TouchableTowerSprite *sprite = NULL;
-	for (unsigned int i = 0; i < this->touchableSprites.size(); i++){
-		if (touchableSprites[i]->sprite->boundingBox().containsPoint(location)){
-			sprite = touchableSprites[i];
-			break;
-		}
-	}
-	if (sprite == NULL){
-		if (this->touchedTowerSprite && this->touchedTowerSprite->towerPlace == TOWER_SCENE){
-			Tower *tower = towers->GetTower(this->touchedTowerSprite->index);
-			if(tower){
-				tower->HideRange();
-			}
-			this->touchedTowerSprite = NULL;
-		}
-	}
-	else if (sprite != this->touchedTowerSprite){	
-
-		if (sprite->towerPlace == TOWER_SCENE){
-			CCLog("Touched Sprite is tower");
-			Tower *tower = towers->GetTower(sprite->index);
-			if(tower){
-				tower->ShowRange();
-			}
-			if (this->touchedTowerSprite){
-				Tower *tower = towers->GetTower(touchedTowerSprite->index);
-				if(tower){
-					tower->HideRange();
-				}
-			}
-			this->touchedTowerSprite = sprite;
-		}
-	}
-
-	if (touchedPanelSprite){
-		Cell *touchedCell = NULL;
-		for (int x = 0; x < PassingMap::MAP_WIDTH_MAX; x++){
-			for(int y = 0; y < PassingMap::MAP_HEIGHT_MAX; y++){
-				if (PassingMap::GetCell(x, y)->sprite &&
-					PassingMap::GetCell(x, y)->sprite->boundingBox().containsPoint(location)){
-					touchedCell = PassingMap::GetCell(x, y);
-					break;
-				}
-			}
-		}
-
-		if (touchedCell){
-			this->addTower(touchedPanelSprite->towerType, ccp(touchedCell->x, touchedCell->y));
-		}
-
-		UnSelectCell((CCScene*)this);
-		touchedPanelSprite = NULL;
-	}
-
-	if (movingTowerSprite != NULL){
-		movingTowerSprite->removeFromParent();
-		movingTowerSprite = NULL;
-	}
-	*/
 }
 
-void UILayer::addTower(TowerTypes towerType, cocos2d::CCPoint position){
+void UILayer::addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position){
 	if (towers->Buy(towerType)){
 		Tower *newTower = towers->createTower(towerType, position);
 		this->addChild(newTower->getSprite(), 100);
@@ -188,7 +132,7 @@ void UILayer::addTower(TowerTypes towerType, cocos2d::CCPoint position){
 		tSprite->sprite = newTower->getSprite();
 		tSprite->cellX = 0;
 		tSprite->cellY = 0;
-		//tSprite->sprite->setPosition(ccp(760, 300));
+
 		addTouchableSprite(tSprite);
 	}
 }
@@ -204,8 +148,12 @@ void UILayer::addTowerToPanel(TowerTypes towerType, const int cellX, const int c
 	tSprite->sprite = sprite;
 	tSprite->cellX = cellX;
 	tSprite->cellY = cellY;
-	tSprite->ReturnToCell();
 	tSprite->sprite->setScale(1.1f);
-	this->addChild(tSprite->sprite);
+
+	//CCPoint pos = tSprite->sprite->getPosition();
+	//CCPoint posWorld = tSprite->sprite->(pos);
+	//tSprite->sprite->setPosition(posWorld);
+	this->addChild(tSprite->sprite, 100);
+
 	addTouchableSprite(tSprite);	
 }

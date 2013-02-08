@@ -71,6 +71,23 @@ void PanelBase::SetCellContentImage(const char* image, const int cellX, const in
 	}
 }
 
+void PanelBase::SetSpriteCoords(cocos2d::CCSprite *sprite, const int cellX, const int cellY, const int locX, const int locY)
+{
+	if (cellX >= 0 && cellX < this->cellsX &&
+		cellY >= 0 && cellY < this->cellsY){
+
+		int sizeX = this->panelSprite->getContentSize().width / this->cellsX;
+		int sizeY = this->panelSprite->getContentSize().height / this->cellsY;
+
+		sprite->setPositionX(this->panelSprite->getPositionX() + sizeX / 2 + cellX * sizeX + locX - sizeX * cellsX / 2);
+		sprite->setPositionY(this->panelSprite->getPositionY() + sizeY / 2 + cellY * sizeY + locY - sizeY * cellsY / 2);
+
+		return;
+	}
+
+	CCLog("SetCellContentSprite: Wrong cell index %d %d", cellX, cellY);
+}
+
 void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const int cellY, const int locX, const int locY)
 {
 	if (cellX >= 0 && cellX < this->cellsX &&
@@ -79,7 +96,7 @@ void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const in
 		sprite->setPositionX(cells[cellX][cellY].spriteCell->getTextureRect().size.width / 2 + locX);
 		sprite->setPositionY(cells[cellX][cellY].spriteCell->getTextureRect().size.height / 2 + locY);
 
-		//cells[cellX][cellY].spriteCell->addChild(sprite, 1);
+		cells[cellX][cellY].spriteCell->addChild(sprite, 1);
 		return;
 	}
 

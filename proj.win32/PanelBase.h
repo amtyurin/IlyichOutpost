@@ -20,7 +20,8 @@ class PanelBase
 
 protected:
 	cocos2d::CCSprite *panelSprite;
-	
+
+	void SetSpriteCoords(cocos2d::CCSprite *sprite, const int cellX, const int cellY, const int locX, const int locY);
 public:
 	PanelBase(const int cellsX, const int cellsY, const cocos2d::CCPoint ccp, const cocos2d::CCSize size);
 	~PanelBase(void);

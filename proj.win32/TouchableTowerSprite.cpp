@@ -1,8 +1,10 @@
 #include "TouchableTowerSprite.h"
+#include "PassingMap.h"
 
 
 TouchableTowerSprite::TouchableTowerSprite(void)
 {
+	origPos = ccp(0,0);
 }
 
 
@@ -10,7 +12,10 @@ TouchableTowerSprite::~TouchableTowerSprite(void)
 {
 }
 
-void TouchableTowerSprite::ReturnToCell(){
-	this->sprite->setPositionX(800 - (this->cellX+1)*36);
-	this->sprite->setPositionY(cellY*50 + 100);
+void TouchableTowerSprite::ReturnToOriginalPosition(){
+	this->sprite->setPosition(origPos);
+}
+
+void TouchableTowerSprite::SaveInitialPosition(){
+	origPos = this->sprite->getPosition();
 }

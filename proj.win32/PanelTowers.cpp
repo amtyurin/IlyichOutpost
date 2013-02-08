@@ -36,7 +36,7 @@ void PanelTowers::UnSelectCell(CCScene* scene)
 CCSprite * PanelTowers::AddTower(TowerTypes type, const int cellX, const int cellY)
 {
 	CCSprite *tower =  CCSprite::create(Tower::GetImage(type));
-	this->SetCellContentSprite(tower, cellX,cellY,0,0);
+	this->SetSpriteCoords(tower, cellX,cellY,0,0);
 
 	CCSprite *coin =  CCSprite::create(FILE_NAME_IMAGE_PANEL_COIN);
 	coin->setScale(0.15f);
