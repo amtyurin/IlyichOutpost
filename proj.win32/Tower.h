@@ -5,11 +5,13 @@
 #include "Wave.h"
 #include "Enemy.h"
 #include "UpgradeBase.h"
+#include <cstdlib>
 
 #define GAME_SPEED 10
 
 #define UPGRADES_COUNT_TOWER 5
 #define UPGRADE_COEF_TOWER 1.2
+#define FIRE_ANIMATION_TIME 0.5f
 
 enum TowerTypes{
 	MACHINE_GUN = 1,
@@ -45,6 +47,10 @@ private:
 	cocos2d::CCSprite *spriteRangePtr;
 
 	void fire(Wave *wave, int index);
+	void startFireAnimation(const cocos2d::CCPoint startPosition, const cocos2d::CCPoint endPosistion);
+	void deleteShell(cocos2d::CCNode *sender);
+	Wave *targets;
+	size_t targetIndex;
 
 public:
 	Tower(MoneyManager *moneyManager, TowerTypes type, cocos2d::CCPoint _position);

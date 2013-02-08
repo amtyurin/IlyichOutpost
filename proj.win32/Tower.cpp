@@ -96,6 +96,7 @@ void Tower::fire(Wave *wave, int index){
 #ifdef DEBUG_LOGS
 		CCLog("Making damage");
 #endif
+		this->startFireAnimation(this->position, wave->GetEnemyPosition(index));
 		wave->MakeDamage(index, this->damage);
 		this->reloadTime = GAME_SPEED / this->fireSpeed;
 	}else{
@@ -293,4 +294,20 @@ char* Tower::GetImage(TowerTypes type)
 			break;
 	}
 	return image;
+}
+
+void Tower::startFireAnimation(const CCPoint startPosition, const CCPoint endPosition){
+	CCSprite *shellSprite = CCSprite::create(FILE_NAME_MACHINEGUN_BULLET);
+	CCNode *parent = this->spritePtr->getParent();
+	shellSprite->setPosition(startPosition);
+	shellSprite->setScale(3);
+	CCFiniteTimeAction *actionMove = CCMoveTo::create(FIRE_ANIMATION_TIME, endPosition);
+	CCFiniteTimeAction* actionMoveDone = CCCallFuncN::create(parent, callfuncN_selector(Tower::deleteShell));
+	parent->addChild(shellSprite);
+	shellSprite->runAction(CCSequence::create(actionMove, actionMoveDone, NULL));
+}
+
+void Tower::deleteShell(CCNode *sender){
+	CCSprite *shellSprite = (CCSprite*) sender;
+	shellSprite->removeFromParent();
 }

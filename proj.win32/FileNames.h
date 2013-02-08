@@ -38,3 +38,4 @@
 #define FILE_NAME_IMAGE_PANEL_BORDER "panel_border_common.png"
 #define FILE_NAME_IMAGE_PANEL_COIN "coin.png"
 
+#define FILE_NAME_MACHINEGUN_BULLET "\\shells\\machinegun_bullet.png"
