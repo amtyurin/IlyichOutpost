@@ -1,5 +1,8 @@
 #pragma once
 
+#define TIMEOUT_GAME_LOGIC 0.15f
+#define TIMEOUT_ANIMATION 0.20f
+
 #define FILE_NAME_AUDIO_MAIN_SCENE_BG "\\Audio\\toska.mp3"
 #define FILE_NAME_AUDIO_MAIN_MENU_BG "\\Audio\\MainMenu.mp3"
 
