@@ -10,6 +10,7 @@
 class TowerArray
 {
 	MoneyManager *moneyManager;
+	pthread_mutex_t mutex;
 private:
 	std::vector<Tower*> towerSet;
 public:
@@ -17,7 +18,7 @@ public:
 
 	void addTower(Tower *tower);
 	Tower *createTower(TowerTypes type, cocos2d::CCPoint _position);
-	void removeTower(Tower &tower);
+	void removeTower(Tower *tower);
 	~TowerArray(void);
 	std::vector<Tower*>::iterator begin();
 	std::vector<Tower*>::iterator end();
