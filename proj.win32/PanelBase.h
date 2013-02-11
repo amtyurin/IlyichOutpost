@@ -16,12 +16,17 @@ class PanelBase
 	int cellsX;
 	int cellsY;
 
+	int cellsSizeX;
+	int cellsSizeY;
+
 	PanelCell **cells;	
 
 protected:
 	cocos2d::CCSprite *panelSprite;
 
 	void SetSpriteCoords(cocos2d::CCSprite *sprite, const int cellX, const int cellY, const int locX, const int locY);
+
+	cocos2d::CCSprite *GetSprite(const int cellX, const int cellY);
 public:
 	PanelBase(const int cellsX, const int cellsY, const cocos2d::CCPoint ccp, const cocos2d::CCSize size);
 	~PanelBase(void);
@@ -30,6 +35,6 @@ public:
 	void SetCellBorderImage(const char* image);
 	void SetCellContentImage(const char* image, const int cellX, const int cellY);
 	void SetCellContentSprite(cocos2d::CCSprite *sprite, const int cellX, const int cellY, const int locX, const int locY);
-	void DisplayText(const int tag, const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY);
+	void DisplayText(const int tag, const char *text, const char *font, cocos2d::ccColor3B color, const int size, const int cellX, const int cellY, const int locX, const int locY);
 };
 

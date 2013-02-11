@@ -13,10 +13,13 @@ UILayer::UILayer(CCScene *_scene, TowerArray *towers):scene(_scene){
 
 	this->size = CCDirector::sharedDirector()->getWinSize();
 	this->panelGeneral =  new PanelGeneral(this, ccp(size.width/2, size.height - GENERAL_PANEL_POSITION),CCSize(size.width/2, 2 * GENERAL_PANEL_POSITION));
-	this->panelTowers = new PanelTowers(this, ccp(size.width - TOWER_PANEL_POSITION, size.height/2), CCSize(2 * TOWER_PANEL_POSITION, size.height * 3 / 4));
+	int cellsCount = 9;
+	this->panelTowers = new PanelTowers(this, cellsCount, ccp(size.width - TOWER_PANEL_POSITION, size.height/2), CCSize(2 * TOWER_PANEL_POSITION, size.height * 3 / 4));
+	this->towerDescription = new PanelTowerDescription(this, CCSize(TOWER_PANEL_POSITION, size.height * 3 / 4 / cellsCount));
+	this->towerMenu = new TowerMenu(1, 3, this, CCSize(3 * TOWER_PANEL_POSITION, 2.2 * TOWER_PANEL_POSITION));
 	
 	this->touchedTowerSprite = NULL;
-	this->movingTowerSprite = NULL;
+	this->movingTowerSprite = NULL;	
 
 	this->setTouchEnabled(true);
 
@@ -37,30 +40,24 @@ UILayer::~UILayer(void){
 }
 
 void UILayer::displayText(const int tag, const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY){
-	this->panelGeneral->DisplayText(tag, text, font, size, cellX, cellY, locX, locY);
-}
-
-void UILayer::SelectCell(CCScene *scene, TouchableTowerSprite *tSprite){
-	this->panelTowers->SelectCell(scene, tSprite);
-}
-
-void UILayer::UnSelectCell(CCScene *scene){
-	this->panelTowers->UnSelectCell(scene);
+	this->panelGeneral->DisplayText(tag, text, font, ccc3(255,255,51), size, cellX, cellY, locX, locY);
 }
 
 void UILayer::addTouchableSprite(TouchableTowerSprite *sprite){
 	//CCLog("%f %f", sprite->sprite->getPositionX(), sprite->sprite->getPositionY());
-	this->touchableSprites.push_back(sprite);
+	if (std::find(this->touchableSprites.begin(), this->touchableSprites.end(), sprite) == this->touchableSprites.end())
+		this->touchableSprites.push_back(sprite);
 }
 
 void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){	
     CCTouch* touch = (CCTouch*)( pTouches->anyObject() );
 	CCPoint location = touch->getLocation();
+
+	CCTime::gettimeofdayCocos2d(&touchStartTime, NULL);
 	
 	if (this->touchedTowerSprite){		
-		Tower *tower = towers->GetTower(touchedTowerSprite->index);
-		if(tower){
-			tower->HideRange();
+		if(this->touchedTowerSprite->tower){
+			this->touchedTowerSprite->tower->HideRange();
 		}		
 		this->touchedTowerSprite = NULL;
 	}
@@ -80,13 +77,20 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 			CCLog("begin Touch Sprite in menu tower");
 			this->movingTowerSprite = sprite;
 			this->movingTowerSprite->SaveInitialPosition();
+
 			PassingMap::ShowDebugGrid(this->scene, STATE_CELL_BUILD);
-		}
-		else if (sprite->towerPlace == TOWER_SCENE){
+
+			this->towerDescription->Show(sprite);
+		} else if (sprite->towerPlace == TOWER_SCENE){
 			this->touchedTowerSprite = sprite;
-			Tower *tower = towers->GetTower(sprite->index);
-			if(tower){
-				tower->ShowRange();
+			if(this->touchedTowerSprite->tower){
+				this->touchedTowerSprite->tower->ShowRange();
+			}
+		} else if (sprite->towerPlace == TOWER_MENU_ITEM){
+			sprite->tower->Upgrade();
+			// refresh range
+			if(this->touchedTowerSprite->tower){
+				this->touchedTowerSprite->tower->ShowRange();
 			}
 		}
 	}
@@ -104,9 +108,9 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 	// Choose one of the touches to work with
     CCTouch* touch = (CCTouch*)( pTouches->anyObject() );
 	CCPoint location = touch->getLocation();
-	
-    PassingMap::HideDebugGrid(this->scene);
 
+	PassingMap::HideDebugGrid(this->scene);
+	
 	if (this->movingTowerSprite != NULL){
 		this->movingTowerSprite->ReturnToOriginalPosition();
 		const float x = touch->getLocation().x;
@@ -116,8 +120,39 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 		if (touchedCell !=NULL && touchedCell->type == STATE_CELL_BUILD){
 			this->addTouchableTower(movingTowerSprite->towerType, ccp(touchedCell->x, touchedCell->y));
 		}
-
 	}
+	else{	
+		this->towerDescription->Hide();
+	}
+
+	if (this->touchedTowerSprite){
+		// if press is more than 2 sec, then display tower menu
+		struct cocos2d::cc_timeval now;
+		CCTime::gettimeofdayCocos2d(&now, NULL);
+		if (now.tv_sec - this->touchStartTime.tv_sec >= 1){
+			addTouchableTowerMenuItem(TowerMenuItem::UPGRADE, this->touchedTowerSprite, 0, 2);
+			addTouchableTowerMenuItem(TowerMenuItem::DESTROY, this->touchedTowerSprite, 0, 0);
+		}
+	}
+	else{
+		this->towerMenu->Hide();
+	}
+
+}
+
+void UILayer::addTouchableTowerMenuItem(TowerMenuItem item, TouchableTowerSprite *tower, const int cellX, const int cellY){	
+	CCSprite *sprite = this->towerMenu->AddMenuItem(item, this->touchedTowerSprite, cellX, cellY);
+
+	TouchableTowerSprite *tSprite = new TouchableTowerSprite();
+	tSprite->towerType = tower->towerType;
+	tSprite->tower = tower->tower;
+	tSprite->towerPlace = TOWER_MENU_ITEM;
+	tSprite->sprite = sprite;
+	tSprite->cellX = tower->cellX;
+	tSprite->cellY = tower->cellY;
+
+
+	addTouchableSprite(tSprite);
 }
 
 void UILayer::addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position){
@@ -127,7 +162,7 @@ void UILayer::addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position)
 
 		TouchableTowerSprite *tSprite = new TouchableTowerSprite();
 		tSprite->towerType = towerType;
-		tSprite->index = newTower->GetIndex();
+		tSprite->tower = newTower;
 		tSprite->towerPlace = TOWER_SCENE;
 		tSprite->sprite = newTower->getSprite();
 		tSprite->cellX = 0;
@@ -143,7 +178,7 @@ void UILayer::addTowerToPanel(TowerTypes towerType, const int cellX, const int c
 
 	TouchableTowerSprite *tSprite = new TouchableTowerSprite();
 	tSprite->towerType = towerType;
-	tSprite->index = 0;
+	tSprite->tower = NULL;
 	tSprite->towerPlace = TOWER_MENU;
 	tSprite->sprite = sprite;
 	tSprite->cellX = cellX;

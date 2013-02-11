@@ -12,7 +12,7 @@ PanelGeneral::PanelGeneral(CCNode *node, const CCPoint ccp, const CCSize size)
 	CCSprite *coin =  CCSprite::create(FILE_NAME_IMAGE_PANEL_COIN);
 	coin->setScaleX(0.15f);
 	coin->setScaleY(0.25f);
-	this->SetCellContentSprite(coin, 0,0,7,0);	
+	this->SetCellContentSprite(coin, 0,0,-10,5);	
 }
 
 

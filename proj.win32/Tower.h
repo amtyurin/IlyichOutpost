@@ -49,7 +49,6 @@ private:
 	void startFireAnimation(const cocos2d::CCPoint startPosition, const cocos2d::CCPoint endPosistion);
 	void deleteShell(cocos2d::CCNode *sender);
 	Wave *targets;
-	size_t targetIndex;
 
 public:
 	Tower(MoneyManager *moneyManager, TowerTypes type, cocos2d::CCPoint _position);
@@ -68,7 +67,6 @@ public:
 	const bool isAbleToFire() const;
 
 	void SetIndex(const int i);
-	int GetIndex();
 	
 	void ShowRange();
 	void HideRange();

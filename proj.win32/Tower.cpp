@@ -129,17 +129,12 @@ void Tower::SetIndex(const int i)
 	this->index = i;
 }
 
-int Tower::GetIndex()
-{
-	return this->index;
-}
-
 void Tower::ShowRange()
 {	
 	this->spriteRangePtr = CCSprite::create(FILE_NAME_IMAGE_TOWER_RANGE);
 	this->spriteRangePtr->setPosition(this->spritePtr->getPosition());
 	this->spriteRangePtr->setScale((float)this->fireRadius / (this->spriteRangePtr->getContentSize().width / 2.0));
-	this->spriteRangePtr->setOpacity(100);
+	this->spriteRangePtr->setOpacity(50);
 	this->spritePtr->getParent()->addChild(this->spriteRangePtr, 5);	
 }
 
