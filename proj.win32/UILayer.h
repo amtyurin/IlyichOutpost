@@ -4,6 +4,8 @@
 #include "TowerArray.h"
 #include "PanelGeneral.h"
 #include "PanelTowers.h"
+#include "PanelTowerDescription.h"
+#include "TowerMenu.h"
 #include <vector>
 
 #define TOWER_PANEL_POSITION 35
@@ -23,11 +25,17 @@ private:
 	TouchableTowerSprite *movingTowerSprite;
 	std::vector<TouchableTowerSprite *> touchableSprites;
 
+	PanelTowerDescription *towerDescription;
+	TowerMenu *towerMenu;
+
 	cocos2d::CCScene *scene;
 	TowerArray *towers;
 
 	void addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position);
 	void addTowerToPanel(TowerTypes towerType, const int cellX, const int cellY);
+	void addTouchableTowerMenuItem(TowerMenuItem item, TouchableTowerSprite *tower, const int cellX, const int cellY);
+
+	struct cocos2d::cc_timeval touchStartTime;
 
 public:
 	UILayer(cocos2d::CCScene *scene, TowerArray *towers);
@@ -35,8 +43,6 @@ public:
 	const PanelTowers * getPanelTowersPointer()const{ return panelTowers;};
 	const PanelGeneral * getPanelGeneralPointer()const{ return panelGeneral;};
 	void displayText(const int tag, const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY);
-	void SelectCell(cocos2d::CCScene* scene, TouchableTowerSprite *tSprite);
-	void UnSelectCell(cocos2d::CCScene* scene);
 
 	void addTouchableSprite(TouchableTowerSprite *sprite);
 

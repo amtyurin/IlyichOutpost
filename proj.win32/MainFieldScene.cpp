@@ -108,7 +108,6 @@ bool MainFieldScene::init()
 		wave = NULL;		
 		wavesCount = 50;
 		waveTimout = 5;
-		gameLogicTimeout = 0.15f;
 		enemyRespawnTime = 2;
 
 		moneyManager = new MoneyManager();
@@ -123,7 +122,7 @@ bool MainFieldScene::init()
 		// sound
 		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(FILE_NAME_AUDIO_MAIN_SCENE_BG, true);  
 
-		this->schedule( schedule_selector(MainFieldScene::GameLogic), gameLogicTimeout );		
+		this->schedule( schedule_selector(MainFieldScene::GameLogic), TIMEOUT_GAME_LOGIC);		
 
         bRet = true;
     } while (0);

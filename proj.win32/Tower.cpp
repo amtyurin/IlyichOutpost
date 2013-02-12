@@ -96,7 +96,7 @@ void Tower::fire(Wave *wave, int index){
 #ifdef DEBUG_LOGS
 		CCLog("Making damage");
 #endif
-		this->startFireAnimation(this->position, wave->GetEnemyPosition(index));
+		this->startFireAnimation(this->position, wave->GetEnemyPosition(index));		
 		wave->MakeDamage(index, this->damage);
 		this->reloadTime = GAME_SPEED / this->fireSpeed;
 	}else{
@@ -129,17 +129,12 @@ void Tower::SetIndex(const int i)
 	this->index = i;
 }
 
-int Tower::GetIndex()
-{
-	return this->index;
-}
-
 void Tower::ShowRange()
 {	
 	this->spriteRangePtr = CCSprite::create(FILE_NAME_IMAGE_TOWER_RANGE);
 	this->spriteRangePtr->setPosition(this->spritePtr->getPosition());
 	this->spriteRangePtr->setScale((float)this->fireRadius / (this->spriteRangePtr->getContentSize().width / 2.0));
-	this->spriteRangePtr->setOpacity(100);
+	this->spriteRangePtr->setOpacity(50);
 	this->spritePtr->getParent()->addChild(this->spriteRangePtr, 5);	
 }
 
@@ -301,7 +296,7 @@ void Tower::startFireAnimation(const CCPoint startPosition, const CCPoint endPos
 	CCNode *parent = this->spritePtr->getParent();
 	shellSprite->setPosition(startPosition);
 	shellSprite->setScale(0.3f);
-	CCFiniteTimeAction *actionMove = CCMoveTo::create(FIRE_ANIMATION_TIME, endPosition);
+	CCFiniteTimeAction *actionMove = CCMoveTo::create(TIMEOUT_ANIMATION, endPosition);
 	CCFiniteTimeAction* actionMoveDone = CCCallFuncN::create(parent, callfuncN_selector(Tower::deleteShell));
 	parent->addChild(shellSprite);
 	shellSprite->runAction(CCSequence::create(actionMove, actionMoveDone, NULL));

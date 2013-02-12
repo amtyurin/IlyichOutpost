@@ -147,31 +147,41 @@ void Enemy::CheckPointReached()
   }
 }
 
+void Enemy::RefreshHealth()
+{
+	this->spriteHealth->setScaleX((float)this->healthCurrent / this->healthTotal);
+}
+
 // true - if killed
 bool Enemy::MakeDamage(const int health)
 {
 	this->healthCurrent -= health;
 	if (healthCurrent <= 0)
 	{
-		this->spriteHealth->setScaleX(0);
+		this->healthCurrent = 0;		
 
 		this->sprite->cleanup();
 
 		//CCParticleExplosion *particle = CCParticleExplosion::createWithTotalParticles(100);
 		//particle->setTexture(sprite->getTexture());
 
-		CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3f, ccg(1,1), 0.1f);
+		CCFiniteTimeAction *actionWait = CCActionInterval::create(TIMEOUT_ANIMATION);
+		CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3f, ccg(1,1), TIMEOUT_ANIMATION);
 
-        CCFiniteTimeAction* actionDestroy = CCCallFunc::create( this, callfunc_selector(Enemy::Destroy));
-        this->sprite->runAction( CCSequence::create(actionKill, actionDestroy, NULL) );
+		CCFiniteTimeAction* actionDestroy = CCCallFunc::create( this, callfunc_selector(Enemy::Destroy));
+        this->sprite->runAction( CCSequence::create(actionWait, actionKill, actionDestroy, NULL) );
 
 		moneyManager->AddMoney((int)sqrt((float)this->healthTotal));
 
 		return true;
 	}
 	else
-	{
-		this->spriteHealth->setScaleX((float)this->healthCurrent / this->healthTotal);
+	{		
+		CCFiniteTimeAction *actionWait = CCActionInterval::create(TIMEOUT_ANIMATION);
+
+        CCFiniteTimeAction* actionRefreshHealth = CCCallFunc::create( this, callfunc_selector(Enemy::RefreshHealth));
+        this->sprite->runAction( CCSequence::create(actionWait, actionRefreshHealth, NULL) );
+
 		return false;
 	}
 }

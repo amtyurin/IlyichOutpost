@@ -20,6 +20,9 @@ PanelBase::PanelBase(const int cellsX, const int cellsY, const CCPoint ccp, cons
 		}
 	}
 
+	cellsSizeX = size.width / cellsX;
+	cellsSizeY = size.height / cellsY;
+
 	this->panelSprite->setPosition(ccp);
 	this->panelSprite->setContentSize(size);
 }
@@ -28,6 +31,15 @@ PanelBase::~PanelBase(void)
 {
 	this->panelSprite->removeFromParent();
 	this->panelSprite->removeAllChildrenWithCleanup(true);
+}
+
+CCSprite *PanelBase::GetSprite(const int cellX, const int cellY)
+{
+	if (cellX >= 0 && cellX < this->cellsX &&
+		cellY >= 0 && cellY < this->cellsY){
+
+		return cells[cellX][cellY].spriteCell;
+	}
 }
 
 void PanelBase::SetCellBorderImage(const char* image)
@@ -40,14 +52,24 @@ void PanelBase::SetCellBorderImage(const char* image)
 		sprites[i] = new CCSprite*[this->cellsY];
 	}
 
-	sprites[0][0] = CCSprite::create(image);
+	if (image == NULL){
+		sprites[0][0] = CCSprite::create(FILE_NAME_IMAGE_PANEL_BORDER);
+		sprites[0][0]->setOpacity(0);
+	}
+	else
+		sprites[0][0] = CCSprite::create(image);
 	float scaleX = sizeX / sprites[0][0]->getContentSize().width;
 	float scaleY = sizeY / sprites[0][0]->getContentSize().height;
 
 	for(int i = 0; i < this->cellsX; ++i){
 		for(int j = 0; j < this->cellsY; ++j){
 			if (i != 0 || j != 0){
-				sprites[i][j] = CCSprite::create(image);
+				if (image == NULL){
+					sprites[i][j] = CCSprite::create(FILE_NAME_IMAGE_PANEL_BORDER);
+					sprites[i][j]->setOpacity(0);
+				}
+				else
+					sprites[i][j] = CCSprite::create(image);
 			}
 			sprites[i][j]->setScaleX(scaleX);
 			sprites[i][j]->setScaleY(scaleY);
@@ -93,8 +115,8 @@ void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const in
 	if (cellX >= 0 && cellX < this->cellsX &&
 		cellY >= 0 && cellY < this->cellsY){
 
-		sprite->setPositionX(cells[cellX][cellY].spriteCell->getTextureRect().size.width / 2 + locX);
-		sprite->setPositionY(cells[cellX][cellY].spriteCell->getTextureRect().size.height / 2 + locY);
+		sprite->setPositionX(cellsSizeX / 2 + locX);
+		sprite->setPositionY(cellsSizeY / 2 + locY);
 
 		cells[cellX][cellY].spriteCell->addChild(sprite, 1);
 		return;
@@ -103,22 +125,20 @@ void PanelBase::SetCellContentSprite(CCSprite *sprite, const int cellX, const in
 	CCLog("SetCellContentSprite: Wrong cell index %d %d", cellX, cellY);
 }
 
-void PanelBase::DisplayText(const int tag, const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY)
+void PanelBase::DisplayText(const int tag, const char *text, const char *font, ccColor3B color, const int size, const int cellX, const int cellY, const int locX, const int locY)
 {
 	if (cellX >= 0 && cellX < this->cellsX &&
 		cellY >= 0 && cellY < this->cellsY){
 		if (strncmp(cells[cellX][cellY].text, text, TEXT_SIZE)){
 
 			CCLabelTTF* pLabel = CCLabelTTF::create(text, font, size);
-			int cellWidth = cells[cellX][cellY].spriteCell->getContentSize().width * cells[cellX][cellY].spriteCell->getScaleX();
-			int cellHeight = cells[cellX][cellY].spriteCell->getContentSize().height * cells[cellX][cellY].spriteCell->getScaleY();
-			pLabel->setPositionX(cellWidth / 2 + cellWidth * cellX + locX);
-			pLabel->setPositionY(cellHeight / 2 + cellHeight * cellY + locY);
-			pLabel->setColor(ccc3(255,255,51));
+			pLabel->setPositionX(cellsSizeX / 2 + cellsSizeX * cellX + locX);
+			pLabel->setPositionY(cellsSizeY / 2 + cellsSizeY * cellY + locY);
+			pLabel->setColor(color);
 
 			panelSprite->removeChildByTag(tag);
 			
-			panelSprite->addChild(pLabel, 2, tag);
+			panelSprite->addChild(pLabel, 200, tag);
 
 			strncpy(cells[cellX][cellY].text, text, TEXT_SIZE);
 

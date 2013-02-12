@@ -41,6 +41,7 @@ class Enemy : public cocos2d::CCObject , public UpgradeBase
 	void CheckPointReached();
 	void (*BaseReachedCallback)();
 	void Destroy();	
+	void RefreshHealth();
 	
 public:
 	Enemy(MoneyManager *moneyManager, const EnemyType eType, cocos2d::CCScene *scene, Waypoint *way);
