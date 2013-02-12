@@ -93,10 +93,19 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 }
 
 void UILayer::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent){
-	CCTouch* touch = (CCTouch*)( pTouches->anyObject() );
-	CCPoint location = touch->getLocation();
 	if (movingTowerSprite != NULL){
-		movingTowerSprite->sprite->setPosition(location);
+		CCTouch* touch = (CCTouch*)( pTouches->anyObject() );
+		CCPoint touchLocation = touch->getLocation();
+		CCPoint position;
+		Cell *cell = PassingMap::GetCellByScreenCoords(touchLocation.x, touchLocation.y);
+		if (cell->type == STATE_CELL_BUILD){
+			position.x = cell->x;
+			position.y = cell->y;
+		}else{
+			position.x = touchLocation.x;
+			position.y = touchLocation.y;
+		}
+		movingTowerSprite->sprite->setPosition(position);
 	}
 }
 
