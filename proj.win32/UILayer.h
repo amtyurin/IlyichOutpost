@@ -33,7 +33,7 @@ private:
 
 	void addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position);
 	void addTowerToPanel(TowerTypes towerType, const int cellX, const int cellY);
-	void addTouchableTowerMenuItem(TowerMenuItem item, TouchableTowerSprite *tower, const int cellX, const int cellY);
+	void addTouchableTowerMenuItem(TowerMenuItem item, TouchableTowerSprite *tower);
 
 	struct cocos2d::cc_timeval touchStartTime;
 

@@ -118,13 +118,13 @@
     <ClInclude Include="UILayer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="TouchableTowerSprite.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="PanelTowerDescription.h">
       <Filter>Panel</Filter>
     </ClInclude>
     <ClInclude Include="TowerMenu.h">
+      <Filter>Tower</Filter>
+    </ClInclude>
+    <ClInclude Include="TouchableTowerSprite.h">
       <Filter>Tower</Filter>
     </ClInclude>
   </ItemGroup>
@@ -183,13 +183,13 @@
     <ClCompile Include="UILayer.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="TouchableTowerSprite.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="PanelTowerDescription.cpp">
       <Filter>Panel</Filter>
     </ClCompile>
     <ClCompile Include="TowerMenu.cpp">
+      <Filter>Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="TouchableTowerSprite.cpp">
       <Filter>Tower</Filter>
     </ClCompile>
   </ItemGroup>

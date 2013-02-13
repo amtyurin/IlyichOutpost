@@ -2,48 +2,44 @@
 
 using namespace cocos2d;
 
-TowerMenu::TowerMenu(const int cellsX, const int cellsY, cocos2d::CCNode * node, const cocos2d::CCSize size)
-	: PanelBase(cellsX,cellsY, ccp(0,0), size)
+TowerMenu::TowerMenu(CCNode *scene)
 {
-	node->addChild(this->panelSprite);
-	
-	this->SetCellBorderImage(NULL);
-
-	CCSprite *sprite = CCSprite::create(FILE_NAME_IMAGE_PANEL_BORDER);
-	sprite->setOpacity(100);
-	this->SetCellContentSprite(sprite,0,0,0,0);
-	sprite = CCSprite::create(FILE_NAME_IMAGE_PANEL_BORDER);
-	sprite->setOpacity(100);
-	this->SetCellContentSprite(sprite,0,2,0,0);
+	this->scene = scene;
 }
-
 
 TowerMenu::~TowerMenu(void)
 {
 }
 
-CCSprite * TowerMenu::AddMenuItem(TowerMenuItem item, TouchableTowerSprite *tower, const int cellX, const int cellY)
+CCSprite * TowerMenu::AddMenuItem(TowerMenuItem item, TouchableTowerSprite *tower, cocos2d::CCPoint position)
 {
-	this->panelSprite->setPositionX(tower->sprite->getPositionX());
-	this->panelSprite->setPositionY(tower->sprite->getPositionY());
-
 	char text[15]="\0";
 	switch(item){
 		case UPGRADE:
 			snprintf(text, 15, "Upgrade:%d",tower->tower->GetUpgradePrice());
+			position.setPoint(position.x, position.y + 25);
 			break;
 		case DESTROY:
 			snprintf(text, 15, "Destroy:+%d",Tower::GetPrice(tower->towerType) / 2);
+			position.setPoint(position.x, position.y - 25);
 			break;
-	};
-	this->DisplayText(cellX * 100 + cellY, text, "Arial", ccc3(255,255,255), 18, cellX,cellY, 0,0);
+	};	
 
-	return this->GetSprite(cellX, cellY);
+	CCLabelTTF* pLabel = CCLabelTTF::create(text, "Arial", 18);
+	pLabel->setPosition(position);
+	pLabel->setColor(ccc3(255,255,255));
+			
+	//CCSprite *sprite = CCSprite::create();
+	//sprite->addChild(pLabel, 200);
+	scene->addChild(pLabel);
+
+	return pLabel;
 }
 
 
 void TowerMenu::Hide()
 {
-	this->panelSprite->setPositionY(-100);
+	//this->panelSprite->setPositionY(-100);
+
 }
 

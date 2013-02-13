@@ -116,12 +116,14 @@ void Tower::Upgrade()
 #ifdef DEBUG_LOGS
 	CCLog("Perform tower upgrade");
 #endif
-	UpgradeBase::Upgrade();	
+	if (UpgradeBase::CanUpgrade()){
+		UpgradeBase::Upgrade();
 
-	fireSpeed *= UPGRADE_COEF_TOWER;
-	fireRadius *= UPGRADE_COEF_TOWER;
-	damage *= UPGRADE_COEF_TOWER;
-	reloadTime *= UPGRADE_COEF_TOWER;
+		fireSpeed *= UPGRADE_COEF_TOWER;
+		fireRadius *= UPGRADE_COEF_TOWER;
+		damage *= UPGRADE_COEF_TOWER;
+		reloadTime *= UPGRADE_COEF_TOWER;
+	}
 }
 
 void Tower::SetIndex(const int i)
