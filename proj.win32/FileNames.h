@@ -42,3 +42,6 @@
 #define FILE_NAME_IMAGE_PANEL_COIN "coin.png"
 
 #define FILE_NAME_MACHINEGUN_BULLET "\\shells\\machinegun_bullet.png"
+
+#define FILE_NAME_UPGRADE_TOWER_BUTTON "\\Buttons\\UpgradeTowerButton.png"
+#define FILE_NAME_SELL_TOWER_BUTTON "\\Buttons\\SellTowerButton.png"

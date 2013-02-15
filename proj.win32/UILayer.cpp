@@ -17,6 +17,9 @@ UILayer::UILayer(CCScene *_scene, TowerArray *towers):scene(_scene){
 	this->panelTowers = new PanelTowers(this, cellsCount, ccp(size.width - TOWER_PANEL_POSITION, size.height/2), CCSize(2 * TOWER_PANEL_POSITION, size.height * 3 / 4));
 	this->towerDescription = new PanelTowerDescription(this, CCSize(TOWER_PANEL_POSITION, size.height * 3 / 4 / cellsCount));
 	this->towerMenu = new TowerMenu(this);
+	this->touchableSprites.push_back(towerMenu->getUpgradeButton());
+	this->touchableSprites.push_back(towerMenu->getSellButton());
+
 	
 	this->touchedTowerSprite = NULL;
 	this->movingTowerSprite = NULL;	
@@ -34,6 +37,7 @@ UILayer::UILayer(CCScene *_scene, TowerArray *towers):scene(_scene){
 	addTowerToPanel(ELECTROMAGNETIC_GUN, 0, 6);
 	addTowerToPanel(FLAME_GUN, 0, 7);
 	addTowerToPanel(NAPALM_GUN, 0, 8);
+	isMenuOnScreen = false;
 }
 
 UILayer::~UILayer(void){
@@ -58,6 +62,7 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 	if (this->touchedTowerSprite){		
 		if(this->touchedTowerSprite->tower){
 			this->touchedTowerSprite->tower->HideRange();
+			this->towerMenu->detachFromTower();
 		}		
 		this->touchedTowerSprite = NULL;
 	}
@@ -85,6 +90,7 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 			this->touchedTowerSprite = sprite;
 			if(this->touchedTowerSprite->tower){
 				this->touchedTowerSprite->tower->ShowRange();
+				this->towerMenu->attachToTower(this->touchedTowerSprite->tower);
 			}
 		} else if (sprite->towerPlace == TOWER_MENU_ITEM){
 			sprite->tower->Upgrade();
@@ -132,17 +138,11 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 		this->towerDescription->Hide();
 	}
 
-	if (this->touchedTowerSprite){
-		// if press is more than 2 sec, then display tower menu
-		struct cocos2d::cc_timeval now;
-		CCTime::gettimeofdayCocos2d(&now, NULL);
-		if (now.tv_sec - this->touchStartTime.tv_sec >= 1){
-			addTouchableTowerMenuItem(TowerMenuItem::UPGRADE, this->touchedTowerSprite);
-			addTouchableTowerMenuItem(TowerMenuItem::DESTROY, this->touchedTowerSprite);
-		}
+	if (this->touchedTowerSprite){ //maybe we should delete it
+		//do_nothing
 	}
 	else{
-		this->towerMenu->Hide();
+		//do_nothing either
 	}
 
 }

@@ -37,6 +37,8 @@ private:
 
 	struct cocos2d::cc_timeval touchStartTime;
 
+	bool isMenuOnScreen;
+
 public:
 	UILayer(cocos2d::CCScene *scene, TowerArray *towers);
 	~UILayer(void);
