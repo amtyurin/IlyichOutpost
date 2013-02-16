@@ -165,8 +165,9 @@ bool Enemy::MakeDamage(const int health)
 		//CCParticleExplosion *particle = CCParticleExplosion::createWithTotalParticles(100);
 		//particle->setTexture(sprite->getTexture());
 
-		CCFiniteTimeAction *actionWait = CCActionInterval::create(TIMEOUT_ANIMATION);
+		CCFiniteTimeAction *actionWait = CCDelayTime::create(TIMEOUT_ANIMATION);
 		CCFiniteTimeAction* actionKill = CCTwirl::create(ccp(sprite->getContentSize().width / 2, sprite->getContentSize().height / 2), 3, 0.3f, ccg(1,1), TIMEOUT_ANIMATION);
+
 
 		CCFiniteTimeAction* actionDestroy = CCCallFunc::create( this, callfunc_selector(Enemy::Destroy));
         this->sprite->runAction( CCSequence::create(actionWait, actionKill, actionDestroy, NULL) );
@@ -177,11 +178,9 @@ bool Enemy::MakeDamage(const int health)
 	}
 	else
 	{		
-		CCFiniteTimeAction *actionWait = CCActionInterval::create(TIMEOUT_ANIMATION);
-
+		CCFiniteTimeAction *actionWait = CCDelayTime::create(TIMEOUT_ANIMATION);
         CCFiniteTimeAction* actionRefreshHealth = CCCallFunc::create( this, callfunc_selector(Enemy::RefreshHealth));
         this->sprite->runAction( CCSequence::create(actionWait, actionRefreshHealth, NULL) );
-
 		return false;
 	}
 }
@@ -204,4 +203,8 @@ void Enemy::Upgrade()
 	UpgradeBase::Upgrade();
 	healthTotal *= UPGRADE_COEF_ENEMY;
 	speed *= UPGRADE_COEF_ENEMY;
+}
+
+void Enemy::update(float dt){
+
 }

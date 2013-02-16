@@ -6,10 +6,10 @@ TowerMenu::TowerMenu(CCNode *scene)
 {
 	this->scene = scene;
 	this->tower = NULL;
-	this->position.x = -100;
-	this->position.y = -100;
-	this->upgradeButton = new TouchableTowerSprite();
-	this->sellButton = new TouchableTowerSprite();
+	this->position.x = 100;
+	this->position.y = 100;
+	this->upgradeButton = new TouchableSprite();
+	this->sellButton = new TouchableSprite();
 	this->upgradeButton->sprite = CCSprite::create(FILE_NAME_UPGRADE_TOWER_BUTTON);
 	this->sellButton->sprite = CCSprite::create(FILE_NAME_SELL_TOWER_BUTTON);
 	this->upgradeButton->sprite->setPosition(ccp(-100,-100));
@@ -18,15 +18,15 @@ TowerMenu::TowerMenu(CCNode *scene)
 	this->sellButton->sprite->setScale(0.8f);
 	scene->addChild(this->upgradeButton->sprite);
 	scene->addChild(this->sellButton->sprite);
-	this->upgradeButton->towerPlace = TOWER_MENU_ITEM;
-	this->upgradeButton->towerPlace = TOWER_MENU_ITEM;
+	this->upgradeButton->spriteType = MENU_BUTTON;
+	this->sellButton->spriteType = MENU_BUTTON;
 }
 
 TowerMenu::~TowerMenu(void)
 {
 }
 
-CCSprite * TowerMenu::AddMenuItem(TowerMenuItem item, TouchableTowerSprite *tower, cocos2d::CCPoint position)
+CCSprite * TowerMenu::AddMenuItem(TowerMenuItem item, TouchableSprite *tower, cocos2d::CCPoint position)
 {
 	char text[15] = {0};
 	switch(item){
@@ -78,4 +78,14 @@ void TowerMenu::chooseButtonsPositions(){
 	this->upgradeButton->sprite->setPositionY(this->position.y + 25);
 	this->sellButton->sprite->setPositionX(this->position.x);
 	this->sellButton->sprite->setPositionY(this->position.y - 25);
+}
+
+void TowerMenu::buttonPressed(TouchableSprite *sprite){
+	if (sprite == upgradeButton){
+		this->tower->Upgrade();
+		CCLog("Upgrade button pressed");
+	}
+	else if (sprite == sellButton){
+		//this->tower->Sell();
+	}
 }

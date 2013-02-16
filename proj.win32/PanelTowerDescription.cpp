@@ -15,7 +15,7 @@ PanelTowerDescription::~PanelTowerDescription(void)
 {
 }
 
-void PanelTowerDescription::Show(TouchableTowerSprite *tower)
+void PanelTowerDescription::Show(TouchableSprite *tower)
 {
 	this->panelSprite->setPositionX(tower->sprite->getPositionX() - 2 * this->size.width);
 	this->panelSprite->setPositionY(tower->sprite->getPositionY());

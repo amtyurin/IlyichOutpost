@@ -161,7 +161,7 @@ void PassingMap::InitCells(){
 		for (int y = 0; y < MAP_HEIGHT_MAX; ++y){
 			map[x][y].x = x*MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
 			map[x][y].y = y*MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
-			CCLog ("%d %d", map[x][y].x, map[x][y].y);
+			//CCLog ("%d %d", map[x][y].x, map[x][y].y);
 		}
 	}
 }

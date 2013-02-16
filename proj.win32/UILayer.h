@@ -17,13 +17,13 @@ private:
 	PanelGeneral *panelGeneral;
 	PanelTowers *panelTowers;
 
-	UILayer(void);
+	UILayer(void){};
 
 	cocos2d::CCSize size;
 
-	TouchableTowerSprite *touchedTowerSprite;
-	TouchableTowerSprite *movingTowerSprite;
-	std::vector<TouchableTowerSprite *> touchableSprites;
+	TouchableSprite *touchedTowerSprite;
+	TouchableSprite *movingTowerSprite;
+	std::vector<TouchableSprite *> touchableSprites;
 
 	PanelTowerDescription *towerDescription;
 	TowerMenu *towerMenu;
@@ -33,7 +33,7 @@ private:
 
 	void addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position);
 	void addTowerToPanel(TowerTypes towerType, const int cellX, const int cellY);
-	void addTouchableTowerMenuItem(TowerMenuItem item, TouchableTowerSprite *tower);
+	void addTouchableTowerMenuItem(TowerMenuItem item, TouchableSprite *tower);
 
 	struct cocos2d::cc_timeval touchStartTime;
 
@@ -46,7 +46,7 @@ public:
 	const PanelGeneral * getPanelGeneralPointer()const{ return panelGeneral;};
 	void displayText(const int tag, const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY);
 
-	void addTouchableSprite(TouchableTowerSprite *sprite);
+	void addTouchableSprite(TouchableSprite *sprite);
 
 	void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
     void ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);

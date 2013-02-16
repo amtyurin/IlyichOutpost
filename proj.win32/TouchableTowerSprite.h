@@ -2,26 +2,32 @@
 #include "cocos2d.h"
 #include "Tower.h"
 
-#define TOWER_SCENE	1
+/*#define TOWER_SCENE	1
 #define TOWER_MENU	2
-#define TOWER_MENU_ITEM 3
+#define TOWER_MENU_ITEM 3*/
 
-class TouchableTowerSprite
+enum SPRITE_TYPES{
+	TOWER_ON_SCENE = 1,
+	TOWER_ON_PANEL,
+	MENU_BUTTON
+};
+
+class TouchableSprite
 {
-	//TOWER_SCENE
+	//TOWER_ON_SCENE
 	cocos2d::CCPoint origPos;
 
 public:
-	TouchableTowerSprite(void);
-	~TouchableTowerSprite(void);	
+	TouchableSprite(void);
+	~TouchableSprite(void);	
 	
-	//TOWER_SCENE
+	//TOWER_ON_SCENE
 	Tower *tower;
 
 	// COMMON
 	cocos2d::CCSprite *sprite;
 	TowerTypes towerType;
-	int towerPlace;
+	int spriteType;
 
 	// TOWER_MENU
 	int cellX;

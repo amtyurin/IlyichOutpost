@@ -10,7 +10,7 @@ public:
 	PanelTowerDescription(cocos2d::CCNode * node, const cocos2d::CCSize size);
 	~PanelTowerDescription(void);
 
-	void Show(TouchableTowerSprite *tower);
+	void Show(TouchableSprite *tower);
 	void Hide();
 };
 

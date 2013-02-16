@@ -2,20 +2,20 @@
 #include "PassingMap.h"
 
 
-TouchableTowerSprite::TouchableTowerSprite(void)
+TouchableSprite::TouchableSprite(void)
 {
 	origPos = ccp(0,0);
 }
 
 
-TouchableTowerSprite::~TouchableTowerSprite(void)
+TouchableSprite::~TouchableSprite(void)
 {
 }
 
-void TouchableTowerSprite::ReturnToOriginalPosition(){
+void TouchableSprite::ReturnToOriginalPosition(){
 	this->sprite->setPosition(origPos);
 }
 
-void TouchableTowerSprite::SaveInitialPosition(){
+void TouchableSprite::SaveInitialPosition(){
 	origPos = this->sprite->getPosition();
 }

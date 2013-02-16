@@ -17,18 +17,19 @@ private:
 	Tower *tower;
 	cocos2d::CCPoint position;
 	void chooseButtonsPositions();
-	TouchableTowerSprite *upgradeButton;
-	TouchableTowerSprite *sellButton;
+	TouchableSprite *upgradeButton;
+	TouchableSprite *sellButton;
 
 public:
-	TouchableTowerSprite *getUpgradeButton() const { return upgradeButton;};
-	TouchableTowerSprite *getSellButton() const { return sellButton;};
+	TouchableSprite *getUpgradeButton() const { return upgradeButton;};
+	TouchableSprite *getSellButton() const { return sellButton;};
 	TowerMenu(cocos2d::CCNode *scene);
-	TowerMenu(cocos2d::CCNode *scene, TouchableTowerSprite *tTowerSprite);
+	TowerMenu(cocos2d::CCNode *scene, TouchableSprite *tTowerSprite);
 	~TowerMenu(void);
 	void attachToTower(Tower *tower);
 	void detachFromTower();
-	cocos2d::CCSprite * AddMenuItem(TowerMenuItem item, TouchableTowerSprite *tower, cocos2d::CCPoint position);
+	cocos2d::CCSprite * AddMenuItem(TowerMenuItem item, TouchableSprite *tower, cocos2d::CCPoint position);
+	void buttonPressed(TouchableSprite *sprite);
 
 	void Hide();
 };

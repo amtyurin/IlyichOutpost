@@ -161,7 +161,7 @@ void MainFieldScene::GameLogic(float dt)
 		if (this->wave == NULL){
 			this->wave = new Wave((CCScene *)this, &way, moneyManager);
 
-			CCLog("New wave started");
+			//CCLog("New wave started");
 		
 			{ // display wave number
 				char waveNum[TEXT_SIZE];
@@ -176,7 +176,7 @@ void MainFieldScene::GameLogic(float dt)
 		}
 	}
 	else {
-		CCLog("New wave in %f", waveTimout - passedTimeTillNewWave);
+		//CCLog("New wave in %f", waveTimout - passedTimeTillNewWave);
 		{ // display wave number
 			char text[TEXT_SIZE];
 			sprintf(text,"New wave in\n  %d sec\n\n", (int)(waveTimout - passedTimeTillNewWave));
@@ -198,7 +198,7 @@ void MainFieldScene::GameLogic(float dt)
 		if (this->wave->GetEnemyCount() <= 0 && this->wave->AllEnemiesCreated()){
 			if (this->wave->GetCurrentWaveNumber() < this->wavesCount)	{	
 				//start new wave after some timout
-				CCLog("STart new wave in %d secs", this->waveTimout);
+				//CCLog("STart new wave in %d secs", this->waveTimout);
 				passedTimeTillNewWave = 0;
 
 				delete this->wave;
