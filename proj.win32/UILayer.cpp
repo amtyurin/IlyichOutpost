@@ -13,8 +13,8 @@ UILayer::UILayer(CCScene *_scene, TowerArray *towers):scene(_scene){
 	this->panelTowers = new PanelTowers(this, cellsCount, ccp(size.width - TOWER_PANEL_POSITION, size.height/2), CCSize(2 * TOWER_PANEL_POSITION, size.height * 3 / 4));
 	this->towerDescription = new PanelTowerDescription(this, CCSize(TOWER_PANEL_POSITION, size.height * 3 / 4 / cellsCount));
 	this->towerMenu = new TowerMenu(this);
-	this->touchableSprites.push_back(towerMenu->getUpgradeButton());
-	this->touchableSprites.push_back(towerMenu->getSellButton());
+	addTouchableSprite(towerMenu->getUpgradeButton());
+	addTouchableSprite(towerMenu->getSellButton());
 	
 	this->touchedTowerSprite = NULL;
 	this->movingTowerSprite = NULL;	
@@ -62,7 +62,6 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 	if (this->touchedTowerSprite){		
 		if(this->touchedTowerSprite->tower){
 			this->touchedTowerSprite->tower->HideRange();
-			this->towerMenu->detachFromTower();
 		}		
 		this->touchedTowerSprite = NULL;
 	}
@@ -74,7 +73,7 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 				touchableSprites[i]->sprite->boundingBox().getMinY(), touchableSprites[i]->sprite->boundingBox().getMaxY(), touchableSprites[i]->spriteType);
 		if (rect.containsPoint(location)){			
 			sprite = touchableSprites[i];
-			//break;
+			break;
 		}
 	}
 	
@@ -93,18 +92,6 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 			if(this->touchedTowerSprite->tower){
 				this->touchedTowerSprite->tower->ShowRange();
 				this->towerMenu->attachToTower(this->touchedTowerSprite->tower);
-			}
-		} else if (sprite->spriteType == MENU_BUTTON){
-			CCLog("Tower Menu Item Pressed");			
-			if (this->towerMenu->getUpgradeButton() == sprite){
-				sprite->tower->Upgrade();
-				sprite->tower->ShowRange();	
-				this->touchedTowerSprite = sprite;
-				CCLog("Upgrade button pressed");
-			}
-			else if (this->towerMenu->getSellButton() == sprite){
-				removeTouchableTower(sprite);
-				CCLog("Sell button pressed");
 			}
 		}
 	}
@@ -148,8 +135,35 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 		this->towerDescription->Hide();
 	}
 
-	if (this->touchedTowerSprite){ //maybe we should delete it
-		//do_nothing
+	TouchableSprite *sprite = NULL;
+	for (unsigned int i = 0; i < this->touchableSprites.size(); i++){
+		CCRect rect = touchableSprites[i]->sprite->boundingBox();
+		CCLog("%f %f %f %f %d", touchableSprites[i]->sprite->boundingBox().getMinX(), touchableSprites[i]->sprite->boundingBox().getMaxX(),
+				touchableSprites[i]->sprite->boundingBox().getMinY(), touchableSprites[i]->sprite->boundingBox().getMaxY(), touchableSprites[i]->spriteType);
+		if (rect.containsPoint(location)){			
+			sprite = touchableSprites[i];
+			break;
+		}
+	}
+
+	if (this->touchedTowerSprite){ 
+		this->towerMenu->detachFromTower();
+		if (sprite && sprite->spriteType == MENU_BUTTON){
+			CCLog("Tower Menu Item Pressed");			
+			if (this->towerMenu->getUpgradeButton() == sprite){
+				sprite->tower->Upgrade();
+				sprite->tower->HideRange();
+				sprite->tower->ShowRange();	
+				this->touchedTowerSprite = sprite;
+				CCLog("Upgrade button pressed");
+			}
+			else if (this->towerMenu->getSellButton() == sprite){
+				sprite->tower->HideRange();
+				removeTouchableTower(sprite);
+				this->touchedTowerSprite = sprite;
+				CCLog("Sell button pressed");
+			}
+		}
 	}
 	else{
 		//do_nothing either

@@ -73,7 +73,7 @@ bool TowerArray::Buy(TowerTypes type)
 
 void TowerArray::Sell(Tower *tower)
 {
-	moneyManager->AddMoney(Tower::GetPrice(tower->GetType()) / 2);
+	moneyManager->AddMoney(tower->GetCurrentUpgLevel() * Tower::GetPrice(tower->GetType()) / 2);
 	removeTower(tower);
 }
 

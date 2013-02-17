@@ -16,10 +16,13 @@ TowerMenu::TowerMenu(CCNode *scene)
 	this->sellButton->sprite->setPosition(ccp(-100, -100));
 	this->upgradeButton->sprite->setScale(0.8f);
 	this->sellButton->sprite->setScale(0.8f);
-	scene->addChild(this->upgradeButton->sprite);
-	scene->addChild(this->sellButton->sprite);
+	scene->addChild(this->upgradeButton->sprite, 200);
+	scene->addChild(this->sellButton->sprite, 200);
 	this->upgradeButton->spriteType = MENU_BUTTON;
 	this->sellButton->spriteType = MENU_BUTTON;
+
+	this->upgradeButton->tower = NULL;
+	this->sellButton->tower = NULL;
 }
 
 TowerMenu::~TowerMenu(void)
@@ -32,6 +35,11 @@ void TowerMenu::attachToTower(Tower *tower){
 	this->position.x = tower->getX();
 	this->position.y = tower->getY();
 	this->chooseButtonsPositions();
+
+	this->sellButton->tower = tower;
+	this->upgradeButton->tower = tower;
+	this->sellButton->towerType = tower->GetType();
+	this->upgradeButton->towerType = tower->GetType();
 }
 
 void TowerMenu::detachFromTower(){
