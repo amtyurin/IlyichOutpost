@@ -42,6 +42,10 @@ void UILayer::displayText(const int tag, const char *text, const char *font, con
 	this->panelGeneral->DisplayText(tag, text, font, ccc3(0,0,0), size, cellX, cellY, locX, locY);
 }
 
+void UILayer::removeTouchableSprite(TouchableSprite *sprite){
+	this->touchableSprites.erase(std::remove(this->touchableSprites.begin(), this->touchableSprites.end(), sprite), this->touchableSprites.end());
+}
+
 void UILayer::addTouchableSprite(TouchableSprite *sprite){
 	//CCLog("%f %f", sprite->sprite->getPositionX(), sprite->sprite->getPositionY());
 	if (std::find(this->touchableSprites.begin(), this->touchableSprites.end(), sprite) == this->touchableSprites.end()){
@@ -91,11 +95,17 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 				this->towerMenu->attachToTower(this->touchedTowerSprite->tower);
 			}
 		} else if (sprite->spriteType == MENU_BUTTON){
-			CCLog("Tower Menu Item Pressed");
-			this->towerMenu->buttonPressed(sprite);
-			sprite->tower->Upgrade();
-			sprite->tower->ShowRange();	
-			this->touchedTowerSprite = sprite;
+			CCLog("Tower Menu Item Pressed");			
+			if (this->towerMenu->getUpgradeButton() == sprite){
+				sprite->tower->Upgrade();
+				sprite->tower->ShowRange();	
+				this->touchedTowerSprite = sprite;
+				CCLog("Upgrade button pressed");
+			}
+			else if (this->towerMenu->getSellButton() == sprite){
+				removeTouchableTower(sprite);
+				CCLog("Sell button pressed");
+			}
 		}
 	}
 }
@@ -146,20 +156,11 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 	}
 
 }
+void UILayer::removeTouchableTower(TouchableSprite *tSprite){
+	this->towers->Sell(tSprite->tower);
+	this->removeChild(tSprite->tower->getSprite());
 
-void UILayer::addTouchableTowerMenuItem(TowerMenuItem item, TouchableSprite *tower){	
-	CCSprite *sprite = this->towerMenu->AddMenuItem(item, this->touchedTowerSprite, tower->sprite->getPosition());
-
-	TouchableSprite *tSprite = new TouchableSprite();
-	tSprite->towerType = tower->towerType;
-	tSprite->tower = tower->tower;
-	tSprite->spriteType = MENU_BUTTON;
-	tSprite->sprite = sprite;
-	tSprite->cellX = tower->cellX;
-	tSprite->cellY = tower->cellY;
-
-
-	addTouchableSprite(tSprite);
+	removeTouchableSprite(tSprite);
 }
 
 void UILayer::addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position){

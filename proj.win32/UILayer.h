@@ -32,8 +32,8 @@ private:
 	TowerArray *towers;
 
 	void addTouchableTower(TowerTypes towerType, cocos2d::CCPoint position);
+	void removeTouchableTower(TouchableSprite *sprite);
 	void addTowerToPanel(TowerTypes towerType, const int cellX, const int cellY);
-	void addTouchableTowerMenuItem(TowerMenuItem item, TouchableSprite *tower);
 
 	struct cocos2d::cc_timeval touchStartTime;
 
@@ -47,6 +47,7 @@ public:
 	void displayText(const int tag, const char *text, const char *font, const int size, const int cellX, const int cellY, const int locX, const int locY);
 
 	void addTouchableSprite(TouchableSprite *sprite);
+	void removeTouchableSprite(TouchableSprite *sprite);
 
 	void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
     void ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);

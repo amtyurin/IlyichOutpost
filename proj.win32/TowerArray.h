@@ -26,4 +26,5 @@ public:
 	Tower *GetTower(size_t index);
 
 	bool Buy(TowerTypes type);
+	void Sell(Tower *tower);
 };

@@ -71,3 +71,9 @@ bool TowerArray::Buy(TowerTypes type)
 	return moneyManager->SpendMoney(Tower::GetPrice(type));
 }
 
+void TowerArray::Sell(Tower *tower)
+{
+	moneyManager->AddMoney(Tower::GetPrice(tower->GetType()) / 2);
+	removeTower(tower);
+}
+

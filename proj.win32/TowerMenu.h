@@ -28,8 +28,6 @@ public:
 	~TowerMenu(void);
 	void attachToTower(Tower *tower);
 	void detachFromTower();
-	cocos2d::CCSprite * AddMenuItem(TowerMenuItem item, TouchableSprite *tower, cocos2d::CCPoint position);
-	void buttonPressed(TouchableSprite *sprite);
 
 	void Hide();
 };

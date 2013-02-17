@@ -38,6 +38,7 @@ private:
 	int reloadTime;
 	float normRotateX;
 	float normRotateY;
+	TowerTypes type;
 
 	int index;
 	
@@ -65,6 +66,7 @@ public:
 	const bool isTargetInRange(cocos2d::CCPoint target) const;
 	void processEnemies(Wave *wave);
 	const bool isAbleToFire() const;
+	TowerTypes GetType() const;
 
 	void SetIndex(const int i);
 	

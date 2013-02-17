@@ -16,6 +16,7 @@ Tower::Tower(MoneyManager *moneyManager, TowerTypes type, CCPoint _position) :
 	this->position=_position;
 	this->spritePtr->setPosition(_position);
 	this->reloadTime = 0;	
+	this->type = type;
 
 	//CCLog("FireRadius: %d\n", this->fireRadius);
 }
@@ -307,4 +308,9 @@ void Tower::startFireAnimation(const CCPoint startPosition, const CCPoint endPos
 void Tower::deleteShell(CCNode *sender){
 	CCSprite *shellSprite = (CCSprite*) sender;
 	shellSprite->removeFromParent();
+}
+
+TowerTypes Tower::GetType() const
+{
+	return type;
 }
