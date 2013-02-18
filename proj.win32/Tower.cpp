@@ -314,3 +314,8 @@ TowerTypes Tower::GetType() const
 {
 	return type;
 }
+
+int Tower::GetSellPrice() const
+{
+	return GetCurrentUpgLevel() * Tower::GetPrice(GetType()) / 2;
+}

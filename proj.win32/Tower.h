@@ -67,6 +67,7 @@ public:
 	void processEnemies(Wave *wave);
 	const bool isAbleToFire() const;
 	TowerTypes GetType() const;
+	int GetSellPrice() const;
 
 	void SetIndex(const int i);
 	
