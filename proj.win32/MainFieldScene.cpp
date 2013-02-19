@@ -103,7 +103,8 @@ bool MainFieldScene::init()
 		way.AddPoint(PassingMap::GetCell(17,5));
 		way.AddPoint(PassingMap::GetCell(15,7));
 		way.AddPoint(PassingMap::GetCell(12,9));
-		PassingMap::ShowWaypoint(&way,(CCScene*)this);
+		//PassingMap::ShowWaypoint(&way,(CCScene*)this);
+		PassingMap::ShowRoad(&way,(CCScene*)this);
 		
 		wave = NULL;		
 		wavesCount = 50;

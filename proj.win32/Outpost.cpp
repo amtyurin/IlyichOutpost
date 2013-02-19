@@ -50,7 +50,7 @@ Outpost::Outpost(CCScene *scene, OutpostType outpostType, CCRect rect)
 	this->originalHealthScale = rect.size.width / this->spriteHealth->getContentSize().width;
 	this->spriteHealth->setScaleX(this->originalHealthScale);
 
-	this->sprite->addChild(this->spriteHealth, 2);
+	this->sprite->addChild(this->spriteHealth, 3);
 
 	this->scene->addChild(this->sprite);
 }

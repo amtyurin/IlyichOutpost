@@ -33,15 +33,6 @@ PanelBase::~PanelBase(void)
 	this->panelSprite->removeAllChildrenWithCleanup(true);
 }
 
-CCSprite *PanelBase::GetSprite(const int cellX, const int cellY)
-{
-	if (cellX >= 0 && cellX < this->cellsX &&
-		cellY >= 0 && cellY < this->cellsY){
-
-		return cells[cellX][cellY].spriteCell;
-	}
-}
-
 void PanelBase::SetCellBorderImage(const char* image)
 {
 	int sizeX = this->panelSprite->getContentSize().width / this->cellsX;

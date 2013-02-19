@@ -26,7 +26,6 @@ protected:
 
 	void SetSpriteCoords(cocos2d::CCSprite *sprite, const int cellX, const int cellY, const int locX, const int locY);
 
-	cocos2d::CCSprite *GetSprite(const int cellX, const int cellY);
 public:
 	PanelBase(const int cellsX, const int cellsY, const cocos2d::CCPoint ccp, const cocos2d::CCSize size);
 	~PanelBase(void);

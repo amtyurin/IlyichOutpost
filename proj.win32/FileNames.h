@@ -6,9 +6,10 @@
 #define FILE_NAME_AUDIO_MAIN_SCENE_BG "\\Audio\\toska.mp3"
 #define FILE_NAME_AUDIO_MAIN_MENU_BG "\\Audio\\MainMenu.mp3"
 
-#define FILE_NAME_IMAGE_BACKGROUND "background.png"
-#define FILE_NAME_IMAGE_OUTPOST_ENEMY "wire.png"
-#define FILE_NAME_IMAGE_OUTPOST_OUR "wire.png"
+#define FILE_NAME_IMAGE_BACKGROUND "\\Background\\background.png"
+#define FILE_NAME_IMAGE_BACKGROUND_ROAD "\\Background\\road.png"
+#define FILE_NAME_IMAGE_OUTPOST_ENEMY "\\Background\\wire.png"
+#define FILE_NAME_IMAGE_OUTPOST_OUR "\\Background\\wire.png"
 
 #define FILE_NAME_IMAGE_TOWER_RANGE "\\Tower\\TowerRange.png"
 #define FILE_NAME_IMAGE_TOWER_MACHINE_GUN "\\Tower\\machineGun.png"

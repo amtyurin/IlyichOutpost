@@ -21,6 +21,8 @@ private:
 	static Cell map[MAP_WIDTH_MAX][MAP_HEIGHT_MAX];	
 
 	static cocos2d::CCSprite *spriteAll;	
+
+	static void AddIntermediateParts(cocos2d::CCSprite *spriteAll, cocos2d::CCPoint prevPos, cocos2d::CCPoint nextPos);
 public:
 
 	static void ClearMap();
@@ -32,6 +34,8 @@ public:
 
 	static void ShowDebugGrid(cocos2d::CCScene *scene, CellState type);	
 	static void HideDebugGrid(cocos2d::CCScene *scene);
+
+	static void ShowRoad(Waypoint *way, cocos2d::CCScene *scene);
 
 	static void ShowWaypoint(Waypoint *way, cocos2d::CCScene *scene);
 	static void InitCells();

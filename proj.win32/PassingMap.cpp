@@ -149,6 +149,46 @@ void PassingMap::ShowWaypoint(Waypoint *way, CCScene *scene)
 	scene->addChild(spriteAll, 20);
 }
 
+void PassingMap::ShowRoad(Waypoint *way, CCScene *scene)
+{
+	CCSprite *spriteAll = CCSprite::create();
+	int i = 0;
+	Cell *cell = way->GetPoint(i);
+	CCPoint prevPos = ccp(-100,-100);
+	CCPoint nextPos = ccp(-100,-100);
+
+	if (cell) prevPos = ccp(cell->x, cell->y);
+	while(cell)
+	{			
+		nextPos = ccp(cell->x, cell->y);
+
+		AddIntermediateParts(spriteAll, prevPos, nextPos);
+
+		prevPos = nextPos;
+
+		i++;
+		cell = way->GetPoint(i);
+	}
+
+	scene->addChild(spriteAll, 0);
+}
+
+void PassingMap::AddIntermediateParts(CCSprite *spriteAll, CCPoint prevPos, CCPoint nextPos)
+{
+	CCSprite *cellSprite = CCSprite::create(FILE_NAME_IMAGE_BACKGROUND_ROAD);	
+
+	int partsCount = ccpDistance(prevPos, nextPos) / ( cellSprite->getContentSize().width / 2);
+	
+	int shiftX = partsCount == 0 ? 0 : (nextPos.x - prevPos.x) / partsCount;
+	int shiftY = partsCount == 0 ? 0 : (nextPos.y - prevPos.y) / partsCount;
+	for(int i = 0; i <= partsCount; i++){
+		CCPoint nextPoint = ccp(prevPos.x + i * shiftX, prevPos.y + i * shiftY);
+		cellSprite->setPosition(nextPoint);
+		spriteAll->addChild(cellSprite, 1);
+		cellSprite = CCSprite::create(FILE_NAME_IMAGE_BACKGROUND_ROAD);
+	}
+}
+
 Cell* PassingMap::GetCellByScreenCoords(const float x, const float y){
 	int cellX = x / MAP_CELL_SIZE;
 	int cellY = y / MAP_CELL_SIZE;
