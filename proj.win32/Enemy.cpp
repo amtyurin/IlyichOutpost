@@ -18,47 +18,47 @@ Enemy::Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, 
 	switch(eType)
 	{
 		case ENEMY_SOLDIER:
-			this->healthCurrent = this->healthTotal = 50;
+			this->healthCurrent = this->healthTotal = 100;
 			this->speed = 10;
 			image = FILE_NAME_IMAGE_ENEMY_SOLDIER;
 			break;
 		case ENEMY_HEAVY_SOLDIER:
-			this->healthCurrent = this->healthTotal = 100;
+			this->healthCurrent = this->healthTotal = 150;
 			this->speed = 10;
 			image = FILE_NAME_IMAGE_ENEMY_HEAVY_SOLDIER;
 			break;
 		case ENEMY_HORSEMAN:
-			this->healthCurrent = this->healthTotal = 150;
+			this->healthCurrent = this->healthTotal = 250;
 			this->speed = 25;
 			image = FILE_NAME_IMAGE_ENEMY_HORSEMAN;
 			break;
 		case ENEMY_HEAVY_HORSEMAN:
-			this->healthCurrent = this->healthTotal = 300;
+			this->healthCurrent = this->healthTotal = 400;
 			this->speed = 20;
 			image = FILE_NAME_IMAGE_ENEMY_HEAVY_HORSEMAN;
 			break;
 		case ENEMY_MACHINEGUN_CART:
-			this->healthCurrent = this->healthTotal = 500;
+			this->healthCurrent = this->healthTotal = 700;
 			this->speed = 20;
 			image = FILE_NAME_IMAGE_ENEMY_MACHINEGUN_CART;
 			break;
 		case ENEMY_HEAVY_MACHINEGUN_CART:
-			this->healthCurrent = this->healthTotal = 750;
+			this->healthCurrent = this->healthTotal = 950;
 			this->speed = 15;
 			image = FILE_NAME_IMAGE_ENEMY_HEAVY_MACHINEGUN_CART;
 			break;
 		case ENEMY_ARMORED_CAR:
-			this->healthCurrent = this->healthTotal = 1000;
+			this->healthCurrent = this->healthTotal = 1300;
 			this->speed = 15;
 			image = FILE_NAME_IMAGE_ENEMY_ARMORED_CAR;
 			break;
 		case ENEMY_TANK:
-			this->healthCurrent = this->healthTotal = 1500;
+			this->healthCurrent = this->healthTotal = 1900;
 			this->speed = 10;
 			image = FILE_NAME_IMAGE_ENEMY_TANK;
 			break;
 		case ENEMY_HEAVY_TANK:
-			this->healthCurrent = this->healthTotal = 2000;
+			this->healthCurrent = this->healthTotal = 2500;
 			this->speed = 7;
 			image = FILE_NAME_IMAGE_ENEMY_HEAVY_TANK;
 			break;

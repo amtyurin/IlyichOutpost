@@ -177,7 +177,7 @@ void PassingMap::AddIntermediateParts(CCSprite *spriteAll, CCPoint prevPos, CCPo
 {
 	CCSprite *cellSprite = CCSprite::create(FILE_NAME_IMAGE_BACKGROUND_ROAD);	
 
-	int partsCount = ccpDistance(prevPos, nextPos) / ( cellSprite->getContentSize().width / 2);
+	int partsCount = ccpDistance(prevPos, nextPos) / ( cellSprite->getContentSize().width / 2.5);
 	
 	int shiftX = partsCount == 0 ? 0 : (nextPos.x - prevPos.x) / partsCount;
 	int shiftY = partsCount == 0 ? 0 : (nextPos.y - prevPos.y) / partsCount;
