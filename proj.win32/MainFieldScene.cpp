@@ -262,7 +262,7 @@ void MainFieldScene::DisplayText(const int tag, const char *text, const char *fo
 
 void MainFieldScene::StopGame(char *text)
 {
-	CCLog(text);
+	//CCLog(text);
 
 	this->unschedule( schedule_selector(MainFieldScene::GameLogic));
 

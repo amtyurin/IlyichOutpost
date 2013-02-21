@@ -69,8 +69,8 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 	TouchableSprite *sprite = NULL;
 	for (unsigned int i = 0; i < this->touchableSprites.size(); i++){
 		CCRect rect = touchableSprites[i]->sprite->boundingBox();
-		CCLog("%f %f %f %f %d", touchableSprites[i]->sprite->boundingBox().getMinX(), touchableSprites[i]->sprite->boundingBox().getMaxX(),
-				touchableSprites[i]->sprite->boundingBox().getMinY(), touchableSprites[i]->sprite->boundingBox().getMaxY(), touchableSprites[i]->spriteType);
+		//CCLog("%f %f %f %f %d", touchableSprites[i]->sprite->boundingBox().getMinX(), touchableSprites[i]->sprite->boundingBox().getMaxX(),
+//				touchableSprites[i]->sprite->boundingBox().getMinY(), touchableSprites[i]->sprite->boundingBox().getMaxY(), touchableSprites[i]->spriteType);
 		if (rect.containsPoint(location)){			
 			sprite = touchableSprites[i];
 			break;
@@ -138,8 +138,8 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 	TouchableSprite *sprite = NULL;
 	for (unsigned int i = 0; i < this->touchableSprites.size(); i++){
 		CCRect rect = touchableSprites[i]->sprite->boundingBox();
-		CCLog("%f %f %f %f %d", touchableSprites[i]->sprite->boundingBox().getMinX(), touchableSprites[i]->sprite->boundingBox().getMaxX(),
-				touchableSprites[i]->sprite->boundingBox().getMinY(), touchableSprites[i]->sprite->boundingBox().getMaxY(), touchableSprites[i]->spriteType);
+		//CCLog("%f %f %f %f %d", touchableSprites[i]->sprite->boundingBox().getMinX(), touchableSprites[i]->sprite->boundingBox().getMaxX(),
+		//		touchableSprites[i]->sprite->boundingBox().getMinY(), touchableSprites[i]->sprite->boundingBox().getMaxY(), touchableSprites[i]->spriteType);
 		if (rect.containsPoint(location)){			
 			sprite = touchableSprites[i];
 			break;

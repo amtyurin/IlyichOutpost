@@ -46,3 +46,5 @@
 
 #define FILE_NAME_UPGRADE_TOWER_BUTTON "\\Buttons\\UpgradeTowerButton.png"
 #define FILE_NAME_SELL_TOWER_BUTTON "\\Buttons\\SellTowerButton.png"
+
+#define FILE_NAME_IMAGE_FIRING_MACHINE_GUN "\\Tower\\machineGunFiring.png"

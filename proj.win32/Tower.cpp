@@ -4,9 +4,8 @@ using namespace cocos2d;
 
 Tower::Tower(MoneyManager *moneyManager, TowerTypes type, CCPoint _position) : 
 		UpgradeBase(moneyManager, UPGRADES_COUNT_TOWER){
-	//CCLog("Type: %d\n", type);
+	CCLog("Type: %d\n", type);
 	this->index = 0;
-
 	this->damage = GetDamage(type);
 	this->fireSpeed = GetFireSpeed(type);
 	this->fireRadius = GetRadius(type);
@@ -18,6 +17,7 @@ Tower::Tower(MoneyManager *moneyManager, TowerTypes type, CCPoint _position) :
 	this->reloadTime = 0;	
 	this->type = type;
 
+	//this->firingSprite->setPosition(ccp(-100, 100));
 	//CCLog("FireRadius: %d\n", this->fireRadius);
 }
 
@@ -294,6 +294,41 @@ char* Tower::GetImage(TowerTypes type)
 	return image;
 }
 
+char * Tower::GetFiringSprite(TowerTypes type){
+		char *image = NULL;
+	switch (type){
+		case MACHINE_GUN:
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
+			break;
+		case HEAVY_GUN:
+			//image = FILE_NAME_IMAGE_TOWER_HEAVY_GUN;
+			break;
+		case SNIPER_GUN:
+			//image = FILE_NAME_IMAGE_TOWER_SNIPER_GUN;
+			break;
+		case ANTITANK_GUN:
+			//image = FILE_NAME_IMAGE_TOWER_ANTITANK_GUN;
+			break;
+		case LASER_GUN:
+			//image = FILE_NAME_IMAGE_TOWER_LASER_GUN;
+			break;
+		case ROCKET_GUN:
+			//image = FILE_NAME_IMAGE_TOWER_ROCKET_GUN;
+			break;
+		case ELECTROMAGNETIC_GUN:
+			//image = FILE_NAME_IMAGE_TOWER_ELECTROMAGNETIC_GUN;
+			break;
+		case FLAME_GUN:
+			//image = FILE_NAME_IMAGE_TOWER_FLAME_GUN;
+			break;
+		case NAPALM_GUN:
+			//image = FILE_NAME_IMAGE_TOWER_NAPALM_GUN;
+			break;
+	}
+	//CCLog("%s", image);
+	return image;
+}
+
 void Tower::startFireAnimation(const CCPoint startPosition, const CCPoint endPosition){
 	CCSprite *shellSprite = CCSprite::create(FILE_NAME_MACHINEGUN_BULLET);
 	CCNode *parent = this->spritePtr->getParent();
@@ -303,11 +338,25 @@ void Tower::startFireAnimation(const CCPoint startPosition, const CCPoint endPos
 	CCFiniteTimeAction* actionMoveDone = CCCallFuncN::create(parent, callfuncN_selector(Tower::deleteShell));
 	parent->addChild(shellSprite);
 	shellSprite->runAction(CCSequence::create(actionMove, actionMoveDone, NULL));
+
+	this->firingSprite = CCSprite::create(GetFiringSprite(this->type));
+	this->firingSprite->setPosition(this->position);
+	this->firingSprite->setRotation(this->spritePtr->getRotation());
+	parent->addChild(this->firingSprite);
+
+	CCFiniteTimeAction *pause = CCDelayTime::create(0.1);
+	CCFiniteTimeAction *getAway = CCCallFuncN::create(parent, callfuncN_selector(Tower::endFireAnimation));
+	this->firingSprite->runAction(CCSequence::create(pause, getAway, NULL));
 }
 
 void Tower::deleteShell(CCNode *sender){
 	CCSprite *shellSprite = (CCSprite*) sender;
 	shellSprite->removeFromParent();
+}
+
+void Tower::endFireAnimation(CCNode *sender){
+	CCSprite *fireSprite = (CCSprite*) sender;
+	fireSprite->removeFromParent();
 }
 
 TowerTypes Tower::GetType() const

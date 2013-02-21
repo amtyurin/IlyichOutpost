@@ -29,7 +29,7 @@ enum CircleHalf{  //for turns processing
 	LOWER_HALF
 };
 
-class Tower : public UpgradeBase
+class Tower : public UpgradeBase, public cocos2d::CCObject
 {
 private:
 	int fireSpeed;
@@ -45,10 +45,12 @@ private:
 	cocos2d::CCPoint position;
 	cocos2d::CCSprite *spritePtr;
 	cocos2d::CCSprite *spriteRangePtr;
+	cocos2d::CCSprite *firingSprite;
 
 	void fire(Wave *wave, int index);
 	void startFireAnimation(const cocos2d::CCPoint startPosition, const cocos2d::CCPoint endPosistion);
 	void deleteShell(cocos2d::CCNode *sender);
+	void endFireAnimation(cocos2d::CCNode *sender);
 	Wave *targets;
 
 public:
@@ -81,5 +83,6 @@ public:
 	static int GetFireSpeed(TowerTypes type);
 	static int GetRadius(TowerTypes type);
 	static char* GetImage(TowerTypes type);
+	static char* GetFiringSprite(TowerTypes type);
 };
 
