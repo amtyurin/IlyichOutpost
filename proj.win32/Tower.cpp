@@ -151,7 +151,7 @@ void Tower::HideRange()
 
 int Tower::GetPrice(TowerTypes type)
 {
-	return (GetDamage(type) + GetFireSpeed(type) + GetRadius(type)) / 2;
+	return (GetDamage(type) + GetFireSpeed(type) + GetRadius(type) * 0.8);
 }
 
 int Tower::GetDamage(TowerTypes type)

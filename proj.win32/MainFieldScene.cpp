@@ -93,15 +93,20 @@ bool MainFieldScene::init()
 		PassingMap::SetCellState(3,20,STATE_CELL_BUILD);
 		PassingMap::SetCellState(7,17,STATE_CELL_BUILD);
 		PassingMap::SetCellState(9,8,STATE_CELL_BUILD);
-		//PassingMap::ShowDebugGrid((CCScene*)this);
+		//PassingMap::ShowDebugGrid((CCScene*)this, STATE_CELL_FREE);
 
-		way.AddPoint(PassingMap::GetCell(1,1));
+		way.AddPoint(PassingMap::GetCell(0,1));
 		way.AddPoint(PassingMap::GetCell(2,2));
-		way.AddPoint(PassingMap::GetCell(4,4));
-		way.AddPoint(PassingMap::GetCell(7,13));
-		way.AddPoint(PassingMap::GetCell(15,10));
-		way.AddPoint(PassingMap::GetCell(17,5));
-		way.AddPoint(PassingMap::GetCell(15,7));
+		way.AddPoint(PassingMap::GetCell(3,4));
+		way.AddPoint(PassingMap::GetCell(4,8));
+		way.AddPoint(PassingMap::GetCell(5,12));
+		way.AddPoint(PassingMap::GetCell(5,14));
+		way.AddPoint(PassingMap::GetCell(6,15));
+		way.AddPoint(PassingMap::GetCell(10,15));
+		way.AddPoint(PassingMap::GetCell(18,13));
+		way.AddPoint(PassingMap::GetCell(18,11));
+		way.AddPoint(PassingMap::GetCell(16,10));
+		way.AddPoint(PassingMap::GetCell(14,8));
 		way.AddPoint(PassingMap::GetCell(12,9));
 		//PassingMap::ShowWaypoint(&way,(CCScene*)this);
 		PassingMap::ShowRoad(&way,(CCScene*)this);
