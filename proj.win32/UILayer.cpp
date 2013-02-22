@@ -129,6 +129,7 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 		//CCLog("%f %f %d %d", x, y, touchedCell->x, touchedCell->y);
 		if (touchedCell !=NULL && touchedCell->type == STATE_CELL_BUILD){
 			this->addTouchableTower(movingTowerSprite->towerType, ccp(touchedCell->x, touchedCell->y));
+			touchedCell->type = STATE_CELL_BUSY;
 		}
 	}
 	else{	
@@ -159,8 +160,9 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 			}
 			else if (this->towerMenu->getSellButton() == sprite){
 				sprite->tower->HideRange();
-				removeTouchableTower(sprite);
-				this->touchedTowerSprite = sprite;
+				PassingMap::GetCellByScreenCoords(sprite->tower->getX(), sprite->tower->getY())->type = STATE_CELL_BUILD;
+				removeTouchableTower(this->touchedTowerSprite);
+				this->touchedTowerSprite = NULL;				
 				CCLog("Sell button pressed");
 			}
 		}

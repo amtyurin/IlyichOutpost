@@ -46,7 +46,6 @@ const bool Tower::operator < (const Tower &tower) const{
 }
 
 void Tower::turnTo(const CCPoint point) const{
-	//CCLog ("TurnTo called");
 	double dx = this->position.x - point.x;
 	double dy = this->position.y - point.y;
 	int circleHalf;
@@ -61,9 +60,7 @@ void Tower::turnTo(const CCPoint point) const{
 	if (circleHalf == UPPER_HALF){
 		angle+=180;
 	}
-	if (angle >= 0 && angle <= 360){
 		this->spritePtr->setRotation(angle);
-	}
 }
 
 const bool Tower::operator> (const Tower &tower) const{
@@ -301,28 +298,28 @@ char * Tower::GetFiringSprite(TowerTypes type){
 			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 		case HEAVY_GUN:
-			//image = FILE_NAME_IMAGE_TOWER_HEAVY_GUN;
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 		case SNIPER_GUN:
-			//image = FILE_NAME_IMAGE_TOWER_SNIPER_GUN;
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 		case ANTITANK_GUN:
-			//image = FILE_NAME_IMAGE_TOWER_ANTITANK_GUN;
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 		case LASER_GUN:
-			//image = FILE_NAME_IMAGE_TOWER_LASER_GUN;
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 		case ROCKET_GUN:
-			//image = FILE_NAME_IMAGE_TOWER_ROCKET_GUN;
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 		case ELECTROMAGNETIC_GUN:
-			//image = FILE_NAME_IMAGE_TOWER_ELECTROMAGNETIC_GUN;
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 		case FLAME_GUN:
-			//image = FILE_NAME_IMAGE_TOWER_FLAME_GUN;
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 		case NAPALM_GUN:
-			//image = FILE_NAME_IMAGE_TOWER_NAPALM_GUN;
+			image = FILE_NAME_IMAGE_FIRING_MACHINE_GUN;
 			break;
 	}
 	//CCLog("%s", image);

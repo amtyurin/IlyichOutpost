@@ -117,7 +117,7 @@ bool MainFieldScene::init()
 		enemyRespawnTime = 2;
 
 		moneyManager = new MoneyManager();
-		moneyManager->AddMoney(100);
+		moneyManager->AddMoney(1000);
 		towers = new TowerArray(moneyManager);
 		Outpost *outpost = new Outpost((CCScene*)this, OUTPOST_TYPE_OUR, CCRect(350, 250, 80, 80));
 		outposts.AddOutpost(outpost);
