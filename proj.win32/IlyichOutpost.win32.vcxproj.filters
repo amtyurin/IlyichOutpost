@@ -28,6 +28,9 @@
     <Filter Include="Outpost">
       <UniqueIdentifier>{2f389b8d-15ab-40e7-b362-d2418fa55a4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tower\Towers">
+      <UniqueIdentifier>{e41ccdff-dcb8-485b-9493-fae032ffe3ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\IlyichOutpost.ico">
@@ -127,6 +130,9 @@
     <ClInclude Include="TouchableTowerSprite.h">
       <Filter>Tower</Filter>
     </ClInclude>
+    <ClInclude Include="ElectromagneticTower.h">
+      <Filter>Tower\Towers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -191,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="TouchableTowerSprite.cpp">
       <Filter>Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectromagneticTower.cpp">
+      <Filter>Tower\Towers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

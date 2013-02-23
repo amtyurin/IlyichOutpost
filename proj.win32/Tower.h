@@ -31,7 +31,7 @@ enum CircleHalf{  //for turns processing
 
 class Tower : public UpgradeBase, public cocos2d::CCObject
 {
-private:
+protected:
 	int fireSpeed;
 	int fireRadius;
 	int damage;
@@ -66,7 +66,7 @@ public:
 	const bool operator < (const Tower &tower) const;
 	const bool operator > (const Tower &tower) const;
 	const bool isTargetInRange(cocos2d::CCPoint target) const;
-	void processEnemies(Wave *wave);
+	virtual void processEnemies(Wave *wave);
 	const bool isAbleToFire() const;
 	TowerTypes GetType() const;
 	int GetSellPrice() const;

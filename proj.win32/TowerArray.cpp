@@ -1,5 +1,6 @@
 #include "TowerArray.h"
 #include "cocos2d.h"
+#include "ElectromagneticTower.h"
 
 using namespace std;
 using std::set;
@@ -25,7 +26,14 @@ void TowerArray::removeTower(Tower *tower)
 }
 
 Tower *TowerArray::createTower(TowerTypes type, CCPoint position){
-	Tower *newTower = new Tower(moneyManager, type, position);	
+	Tower *newTower = NULL;	
+	switch(type){
+		case ELECTROMAGNETIC_GUN:
+			newTower = new ElectromagneticTower(moneyManager, type, position);	
+			break;
+		default:
+			newTower = new Tower(moneyManager, type, position);	
+	}
 
 	addTower(newTower);
 
