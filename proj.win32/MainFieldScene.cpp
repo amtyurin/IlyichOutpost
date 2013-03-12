@@ -4,6 +4,7 @@
 
 #include "PassingMap.h"
 #include "Wave.h"
+#include "GameAI.h"
 
 using namespace cocos2d;
 
@@ -82,48 +83,37 @@ bool MainFieldScene::init()
 
 		this->setTouchEnabled(true);
 
+		this->UI = new UILayer((CCScene*)this, we->towers);
+		this->addChild(UI, 100);
+		
 		PassingMap::ClearMap();
 		PassingMap::InitCells();
-		PassingMap::SetCellState(15,5,STATE_CELL_BUILD);
-		PassingMap::SetCellState(5,3,STATE_CELL_BUILD);
-		PassingMap::SetCellState(3,8,STATE_CELL_BUILD);
-		PassingMap::SetCellState(7,15,STATE_CELL_BUILD);
-		PassingMap::SetCellState(9,10,STATE_CELL_BUILD);
-		PassingMap::SetCellState(16,5,STATE_CELL_BUILD);
-		PassingMap::SetCellState(3,20,STATE_CELL_BUILD);
-		PassingMap::SetCellState(7,17,STATE_CELL_BUILD);
-		PassingMap::SetCellState(9,8,STATE_CELL_BUILD);
 		//PassingMap::ShowDebugGrid((CCScene*)this, STATE_CELL_FREE);
 
-		way.AddPoint(PassingMap::GetCell(0,1));
-		way.AddPoint(PassingMap::GetCell(2,2));
-		way.AddPoint(PassingMap::GetCell(3,4));
-		way.AddPoint(PassingMap::GetCell(4,8));
-		way.AddPoint(PassingMap::GetCell(5,12));
-		way.AddPoint(PassingMap::GetCell(5,14));
-		way.AddPoint(PassingMap::GetCell(6,15));
-		way.AddPoint(PassingMap::GetCell(10,15));
-		way.AddPoint(PassingMap::GetCell(18,13));
-		way.AddPoint(PassingMap::GetCell(18,11));
-		way.AddPoint(PassingMap::GetCell(16,10));
-		way.AddPoint(PassingMap::GetCell(14,8));
-		way.AddPoint(PassingMap::GetCell(12,9));
-		//PassingMap::ShowWaypoint(&way,(CCScene*)this);
-		PassingMap::ShowRoad(&way,(CCScene*)this);
+		we = new Player(PassingMap::GenerateWaypoint(), PassingMap::GenerateBuildCells());
+		//PassingMap::ShowWaypoint(we->way,(CCScene*)this);
+		PassingMap::ShowRoad(we->way,(CCScene*)this);
+
+		if (GameSettings::vsAI){
+			ai = new GameAI((CCLayer *)this->UI, PassingMap::GenerateSymmetricWaypoint(12, 0, 12, 25, we->way), PassingMap::GenerateSymmetricBuildCellsForAI(12, 0, 12, 25, we->buildCells));
+			//PassingMap::ShowWaypoint(ai->way,(CCScene*)this);
+			PassingMap::ShowRoad(ai->way,(CCScene*)this);
+		}
+		else
+			ai = NULL;		
 		
-		wave = NULL;		
-		wavesCount = 50;
+		wavesCount = 500;
 		waveTimout = 5;
 		enemyRespawnTime = 2;
 
-		moneyManager = new MoneyManager();
-		moneyManager->AddMoney(1000);
-		towers = new TowerArray(moneyManager);
-		Outpost *outpost = new Outpost((CCScene*)this, OUTPOST_TYPE_OUR, CCRect(350, 250, 80, 80));
-		outposts.AddOutpost(outpost);
-
-		this->UI = new UILayer((CCScene*)this, towers);
-		this->addChild(UI, 100);
+		we->moneyManager.AddMoney(1000);		
+		Outpost *outpost = new Outpost((CCScene*)this, true, CCRect(350, 250, 80, 80));		
+		we->outposts.AddOutpost(outpost);
+		if (ai){
+			ai->moneyManager.AddMoney(1000);
+			outpost = new Outpost((CCScene*)this, false, CCRect(300, 200, 30, 30));
+			ai->outposts.AddOutpost(outpost);
+		}
 
 		// sound
 		//CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(FILE_NAME_AUDIO_MAIN_SCENE_BG, true);  
@@ -164,20 +154,22 @@ void MainFieldScene::GameLogic(float dt)
 
 		DisplayText(1,NULL,"Arial",50,0,0);
 
-		if (this->wave == NULL){
-			this->wave = new Wave((CCScene *)this, &way, moneyManager);
+		if (we->wave == NULL && (ai == NULL || (ai != NULL && ai->wave == NULL))){
+			we->wave = new Wave((CCScene *)this, we->way, &we->moneyManager);
+			if (ai) ai->wave = new Wave((CCScene *)this, ai->way, &ai->moneyManager);
 
 			//CCLog("New wave started");
 		
 			{ // display wave number
 				char waveNum[TEXT_SIZE];
-				sprintf(waveNum, "Wave %d", this->wave->GetCurrentWaveNumber());
+				sprintf(waveNum, "Wave %d", we->wave->GetCurrentWaveNumber());
 				UI->displayText(3, waveNum, "Arial", 18, 1, 0, 0,0);
 			}
 		}		
 
 		if (passedTimeStartEnemy >= enemyRespawnTime){
-			this->wave->StartEnemy();
+			if (we->wave != NULL) we->wave->StartEnemy();
+			if (ai && ai->wave != NULL) ai->wave->StartEnemy();
 			passedTimeStartEnemy = 0;
 		}
 	}
@@ -192,53 +184,54 @@ void MainFieldScene::GameLogic(float dt)
 
 	{ // display money
 		char text[TEXT_SIZE];
-		sprintf(text,"%d", moneyManager->GetMoneyBalance());
+		sprintf(text,"%d", we->moneyManager.GetMoneyBalance());
 		UI->displayText(1, text,"Arial",20,0,0,5,0);
 	}
 
-	if (this->wave != NULL){	
-		for (towerArrayIterator it = this->towers->begin(); it != this->towers->end(); it++){
-			(*it)->processEnemies(this->wave);
-		}
+	we->ProcessStepLogic();
+	if (ai) ai->ProcessStepLogic();
 
-		if (this->wave->GetEnemyCount() <= 0 && this->wave->AllEnemiesCreated()){
-			if (this->wave->GetCurrentWaveNumber() < this->wavesCount)	{	
+
+	if (we->outposts.OutpostDestroyed() && ai && ai->outposts.OutpostDestroyed()){
+		StopGame("Draw!");
+		return;
+	} else if (ai && ai->outposts.OutpostDestroyed()){
+		StopGame("You won!");
+		return;
+	} else if (we->outposts.OutpostDestroyed()){
+		StopGame("You lost!");
+		return;
+	}
+
+	if (we->wave != NULL){
+		if (we->wave->GetEnemyCount() <= 0 && we->wave->AllEnemiesCreated()){
+			if (we->wave->GetCurrentWaveNumber() < this->wavesCount){	
 				//start new wave after some timout
 				//CCLog("STart new wave in %d secs", this->waveTimout);
-				passedTimeTillNewWave = 0;
+				
+				if (!ai){
+					passedTimeTillNewWave = 0;
+				}
+				else if (ai->wave){
+					if (ai->wave->GetEnemyCount() <= 0 && ai->wave->AllEnemiesCreated()){
+						if (ai->wave->GetCurrentWaveNumber() < this->wavesCount){	
+							passedTimeTillNewWave = 0;
+							delete ai->wave;
+							ai->wave = NULL;
+						}
+					}
+				}
 
-				delete this->wave;
-				this->wave = NULL;
-				return;
+				delete we->wave;
+				we->wave = NULL;
 			}
 			else{				
 				StopGame("You won!");
 				
 				// Next Scene();
 				//this->scheduleOnce( schedule_selector(MainMenu::CreateScene), 2 );
-
-				delete this->wave;
-				this->wave = NULL;
-				return;
 			}
 		}	
-		else{
-			// check if enemy reached base and make some damage to base
-			// base can be our and/or enemy
-			// bool
-			this->outposts.ProcessEnemies(this->wave);
-			
-			if (this->outposts.OutpostEnemyDestroyed() && this->outposts.OutpostOurDestroyed()){
-				StopGame("Draw!");
-				return;
-			} else if (this->outposts.OutpostEnemyDestroyed()){
-				StopGame("You won!");
-				return;
-			} else if (this->outposts.OutpostOurDestroyed()){
-				StopGame("You lost!");
-				return;
-			}
-		}
 	}
 }
 
@@ -273,7 +266,14 @@ void MainFieldScene::StopGame(char *text)
 
 	DisplayText(4, text, "Arial", 70, 0, 0);
 
-	delete this->wave;
-	this->wave = NULL;
+	if (we->wave){
+		delete we->wave;
+		we->wave = NULL;
+	}
+	
+	if (ai && ai->wave){
+		delete ai->wave;
+		ai->wave = NULL;
+	}
 }
 

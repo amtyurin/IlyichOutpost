@@ -133,6 +133,18 @@
     <ClInclude Include="ElectromagneticTower.h">
       <Filter>Tower\Towers</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSettings.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildCells.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="GameAI.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -200,6 +212,18 @@
     </ClCompile>
     <ClCompile Include="ElectromagneticTower.cpp">
       <Filter>Tower\Towers</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSettings.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildCells.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameAI.cpp">
+      <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

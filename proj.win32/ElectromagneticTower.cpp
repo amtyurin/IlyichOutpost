@@ -52,7 +52,7 @@ void ElectromagneticTower::startFireAnimation(const CCPoint startPosition, const
 	this->firingSprite->setRotation(this->spritePtr->getRotation());
 	parent->addChild(this->firingSprite);
 
-	CCFiniteTimeAction *pause = CCDelayTime::create(0.1);
+	CCFiniteTimeAction *pause = CCDelayTime::create(0.1f);
 	CCFiniteTimeAction *getAway = CCCallFuncN::create(parent, callfuncN_selector(ElectromagneticTower::endFireAnimation));
 	this->firingSprite->runAction(CCSequence::create(pause, getAway, NULL));
 }

@@ -11,7 +11,7 @@ PassingMap::~PassingMap(void)
 {
 }
 
-Cell PassingMap::map[MAP_WIDTH_MAX][MAP_HEIGHT_MAX];
+Cell PassingMap::map[GameSettings::MAP_WIDTH_MAX][GameSettings::MAP_HEIGHT_MAX];
 CCSprite *PassingMap::spriteAll;
 
 void PassingMap::ClearMap()
@@ -19,19 +19,21 @@ void PassingMap::ClearMap()
 	int posX = 0;
 	int posY = 0;
 
-	for (int ax = 0; ax < MAP_WIDTH_MAX; ax++)
+	for (int ax = 0; ax < GameSettings::MAP_WIDTH_MAX; ax++)
 	{
-		for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
+		for (int ay = 0; ay < GameSettings::MAP_HEIGHT_MAX; ay++)
 		{
 			map[ax][ay].type = STATE_CELL_FREE;
-			map[ax][ay].x = posX + MAP_CELL_SIZE / 2;
-			map[ax][ay].y = posY + MAP_CELL_SIZE / 2;
+			map[ax][ay].x = posX + GameSettings::MAP_CELL_SIZE / 2;
+			map[ax][ay].y = posY + GameSettings::MAP_CELL_SIZE / 2;
 			map[ax][ay].sprite= NULL;
+			map[ax][ay].indX = ax;
+			map[ax][ay].indY = ay;
 
-			posY += MAP_CELL_SIZE;
+			posY += GameSettings::MAP_CELL_SIZE;
 		}
 		
-		posX += MAP_CELL_SIZE;
+		posX += GameSettings::MAP_CELL_SIZE;
  	    posY = 0;
 	}	
 	spriteAll = NULL;
@@ -40,16 +42,12 @@ void PassingMap::ClearMap()
 
 void PassingMap::ShowDebugGrid(CCScene *scene, CellState type)
 {	
-	if (spriteAll != NULL){
-		spriteAll->removeFromParent();
-		spriteAll->removeAllChildren();
-		spriteAll = NULL;
-	}
-	spriteAll = CCSprite::create();
+	if (spriteAll == NULL)
+		spriteAll = CCSprite::create();
 
-	for (int ax = 0; ax < MAP_WIDTH_MAX; ax++)
+	for (int ax = 0; ax < GameSettings::MAP_WIDTH_MAX; ax++)
 	{
-		for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
+		for (int ay = 0; ay < GameSettings::MAP_HEIGHT_MAX; ay++)
 		{
 			if (PassingMap::map[ax][ay].type == type){
 				char *cell_filename = NULL;
@@ -61,8 +59,11 @@ void PassingMap::ShowDebugGrid(CCScene *scene, CellState type)
 					case STATE_CELL_BUSY:
 						cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUSY;
 						break;
-					case STATE_CELL_BUILD:
+					case STATE_CELL_BUILD_FOR_US:
 						cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUILD;
+						break;
+					case STATE_CELL_BUILD_FOR_ENEMY:
+						cell_filename = FILE_NAME_IMAGE_STATE_CELL_BUILD_ENEMY;
 						break;
 					default:
 						CCLOG("ERROR: Cell type is not right");
@@ -76,6 +77,15 @@ void PassingMap::ShowDebugGrid(CCScene *scene, CellState type)
 				cellSprite->setPositionX(map[ax][ay].x);
 				cellSprite->setPositionY(map[ax][ay].y);
 
+				// display indexes
+				char text[10];
+				snprintf(text, 10, "%d,%d", ax, ay);
+				CCLabelTTF* pLabel = CCLabelTTF::create(text, "Arial", 16);
+				pLabel->setPositionX(16);
+				pLabel->setPositionY(10);	
+				cellSprite->addChild(pLabel, 2);
+				//
+
 				spriteAll->addChild(cellSprite, 1);		
 				map[ax][ay].sprite = cellSprite;
 			}
@@ -88,16 +98,16 @@ void PassingMap::ShowDebugGrid(CCScene *scene, CellState type)
 void PassingMap::HideDebugGrid(CCScene *scene)
 {
 	if (spriteAll != NULL){
-		spriteAll->removeFromParent();
-		//spriteAll->removeAllChildren();
+		spriteAll->removeAllChildren();
+		spriteAll->removeFromParent();		
 		spriteAll = NULL;
 	}
 }
 
 CellState PassingMap::GetCellSTate(const int x,const int y)
 {
-	if (x >= 0 && x < MAP_WIDTH_MAX &&
-		y >= 0 && y < MAP_HEIGHT_MAX)
+	if (x >= 0 && x < GameSettings::MAP_WIDTH_MAX &&
+		y >= 0 && y < GameSettings::MAP_HEIGHT_MAX)
 	{
 		return PassingMap::map[x][y].type;
 	}
@@ -107,8 +117,8 @@ CellState PassingMap::GetCellSTate(const int x,const int y)
 
 Cell* PassingMap::GetCell(const int x, const int y)
 {
-	if (x >= 0 && x < MAP_WIDTH_MAX &&
-		y >= 0 && y < MAP_HEIGHT_MAX)
+	if (x >= 0 && x < GameSettings::MAP_WIDTH_MAX &&
+		y >= 0 && y < GameSettings::MAP_HEIGHT_MAX)
 	{
 		return &PassingMap::map[x][y];
 	}
@@ -118,8 +128,8 @@ Cell* PassingMap::GetCell(const int x, const int y)
 
 void PassingMap::SetCellState(const int x, const int y, const CellState cState)
 {
-	if (x >= 0 && x < MAP_WIDTH_MAX &&
-		y >= 0 && y < MAP_HEIGHT_MAX)
+	if (x >= 0 && x < GameSettings::MAP_WIDTH_MAX &&
+		y >= 0 && y < GameSettings::MAP_HEIGHT_MAX)
 	{
 		PassingMap::map[x][y].type = cState;
 	}
@@ -190,18 +200,65 @@ void PassingMap::AddIntermediateParts(CCSprite *spriteAll, CCPoint prevPos, CCPo
 }
 
 Cell* PassingMap::GetCellByScreenCoords(const float x, const float y){
-	int cellX = x / MAP_CELL_SIZE;
-	int cellY = y / MAP_CELL_SIZE;
+	int cellX = x / GameSettings::MAP_CELL_SIZE;
+	int cellY = y / GameSettings::MAP_CELL_SIZE;
 	return &PassingMap::map[cellX][cellY];
 }
 
 
 void PassingMap::InitCells(){
-	for (int x = 0; x < MAP_WIDTH_MAX; ++x){
-		for (int y = 0; y < MAP_HEIGHT_MAX; ++y){
-			map[x][y].x = x*MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
-			map[x][y].y = y*MAP_CELL_SIZE + MAP_CELL_SIZE / 2;
+	for (int x = 0; x < GameSettings::MAP_WIDTH_MAX; ++x){
+		for (int y = 0; y < GameSettings::MAP_HEIGHT_MAX; ++y){
+			map[x][y].x = x*GameSettings::MAP_CELL_SIZE + GameSettings::MAP_CELL_SIZE / 2;
+			map[x][y].y = y*GameSettings::MAP_CELL_SIZE + GameSettings::MAP_CELL_SIZE / 2;
 			//CCLog ("%d %d", map[x][y].x, map[x][y].y);
 		}
 	}
+}
+
+Waypoint* PassingMap::GenerateWaypoint(){
+	Waypoint *way = new Waypoint();
+	way->AddPoint(PassingMap::GetCell(0,1));
+	way->AddPoint(PassingMap::GetCell(2,2));
+	way->AddPoint(PassingMap::GetCell(3,4));
+	way->AddPoint(PassingMap::GetCell(4,8));
+	way->AddPoint(PassingMap::GetCell(5,12));
+	way->AddPoint(PassingMap::GetCell(5,14));
+	way->AddPoint(PassingMap::GetCell(6,15));
+	way->AddPoint(PassingMap::GetCell(10,15));
+	way->AddPoint(PassingMap::GetCell(18,13));
+	way->AddPoint(PassingMap::GetCell(18,11));
+	way->AddPoint(PassingMap::GetCell(16,10));
+	way->AddPoint(PassingMap::GetCell(14,8));
+	way->AddPoint(PassingMap::GetCell(12,9));
+
+	return way;
+}
+
+BuildCells* PassingMap::GenerateBuildCells(){
+	BuildCells *buildCells = new BuildCells();
+	buildCells->cells.push_back(PassingMap::GetCell(15,5));
+	buildCells->cells.push_back(PassingMap::GetCell(5,3));
+	buildCells->cells.push_back(PassingMap::GetCell(3,8));
+	buildCells->cells.push_back(PassingMap::GetCell(7,15));
+	buildCells->cells.push_back(PassingMap::GetCell(9,10));
+	buildCells->cells.push_back(PassingMap::GetCell(16,5));	
+	buildCells->cells.push_back(PassingMap::GetCell(7,17));
+	buildCells->cells.push_back(PassingMap::GetCell(9,8));
+
+	for(unsigned int i = 0; i < buildCells->cells.size(); i++){
+		PassingMap::SetCellState(buildCells->cells[i]->indX, buildCells->cells[i]->indY, STATE_CELL_BUILD_FOR_US);
+	}
+
+	return buildCells;
+}
+
+Waypoint* PassingMap::GenerateSymmetricWaypoint(int startX, int startY, int finishX, int finishY, Waypoint *way)
+{
+	return NULL;
+}
+
+BuildCells* PassingMap::GenerateSymmetricBuildCellsForAI(int startX, int startY, int finishX, int finishY, BuildCells *cells)
+{
+	return NULL;
 }

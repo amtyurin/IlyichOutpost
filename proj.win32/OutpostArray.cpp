@@ -4,8 +4,7 @@
 OutpostArray::OutpostArray(void)
 {
 	outpostSet.resize(0);
-	enemyOutpostDestroyed = false;
-	ourOutpostDestroyed = false;
+	outpostDestroyed = false;
 }
 
 
@@ -25,15 +24,8 @@ void OutpostArray::ProcessEnemies(Wave *enemyWave){
 				enemyWave->MakeDamage(i, 1000000);
 				if (outpostSet[o]->MakeDamage())
 				{
-					switch(outpostSet[o]->GetOutpostType()){
-						case OUTPOST_TYPE_ENEMY:
-							enemyOutpostDestroyed = true;
-							break;
-						case OUTPOST_TYPE_OUR:
-							ourOutpostDestroyed = true;
-							break;
-					}
-					continue;
+					outpostDestroyed = true;
+					break;
 				}
 			}
 							
@@ -41,12 +33,7 @@ void OutpostArray::ProcessEnemies(Wave *enemyWave){
 	}
 }
 
-bool OutpostArray::OutpostEnemyDestroyed()
+bool OutpostArray::OutpostDestroyed()
 {
-	return enemyOutpostDestroyed;
-}
-
-bool OutpostArray::OutpostOurDestroyed()
-{
-	return ourOutpostDestroyed;
+	return outpostDestroyed;
 }

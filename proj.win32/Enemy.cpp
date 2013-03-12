@@ -73,15 +73,15 @@ Enemy::Enemy(MoneyManager *moneyManager, const EnemyType eType, CCScene *scene, 
 	this->SetUpgPriceForNextLevel(this->healthCurrent);
 
 	CCSprite *spriteEnemyLocal = CCSprite::create(image);
-	float scaleX = PassingMap::MAP_CELL_SIZE / spriteEnemyLocal->getContentSize().width;
-	float scaleY = PassingMap::MAP_CELL_SIZE / spriteEnemyLocal->getContentSize().height;
+	float scaleX = GameSettings::MAP_CELL_SIZE / spriteEnemyLocal->getContentSize().width;
+	float scaleY = GameSettings::MAP_CELL_SIZE / spriteEnemyLocal->getContentSize().height;
 	spriteEnemyLocal->setScaleX(scaleX);
 	spriteEnemyLocal->setScaleY(scaleY);
-	spriteEnemyLocal->setPosition(ccp(PassingMap::MAP_CELL_SIZE / 2, PassingMap::MAP_CELL_SIZE / 2));
+	spriteEnemyLocal->setPosition(ccp(GameSettings::MAP_CELL_SIZE / 2, GameSettings::MAP_CELL_SIZE / 2));
 
 	this->sprite = CCSprite::create();
 	this->sprite->addChild(spriteEnemyLocal, 1);
-	this->sprite->setContentSize(CCSize(PassingMap::MAP_CELL_SIZE, PassingMap::MAP_CELL_SIZE));
+	this->sprite->setContentSize(CCSize(GameSettings::MAP_CELL_SIZE, GameSettings::MAP_CELL_SIZE));
 	this->sprite->setPosition(ccp(-100, -100));
 
 	// add health line

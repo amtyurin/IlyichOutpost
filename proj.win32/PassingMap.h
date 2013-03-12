@@ -5,20 +5,17 @@
 #include "SimpleAudioEngine.h"
 
 #include "Waypoint.h"
+#include "GameSettings.h"
+#include "BuildCells.h"
 
 class PassingMap
 {
-public:
-	static int const MAP_CELL_SIZE = 32;
-	static int const MAP_WIDTH_MAX = 800 / MAP_CELL_SIZE; // 800
-	static int const MAP_HEIGHT_MAX = 600 / MAP_CELL_SIZE; // 600	
-
 private:
 	PassingMap(void);
 	PassingMap(PassingMap const&);              // Don't Implement
     void operator=(PassingMap const&); // Don't implement	
 
-	static Cell map[MAP_WIDTH_MAX][MAP_HEIGHT_MAX];	
+	static Cell map[GameSettings::MAP_WIDTH_MAX][GameSettings::MAP_HEIGHT_MAX];	
 
 	static cocos2d::CCSprite *spriteAll;	
 
@@ -36,9 +33,16 @@ public:
 	static void HideDebugGrid(cocos2d::CCScene *scene);
 
 	static void ShowRoad(Waypoint *way, cocos2d::CCScene *scene);
-
 	static void ShowWaypoint(Waypoint *way, cocos2d::CCScene *scene);
+
+	static void ShowBuildCells(BuildCells *cells);
+
 	static void InitCells();
+
+	static Waypoint* GenerateWaypoint();
+	static BuildCells* GenerateBuildCells();
+	static Waypoint* GenerateSymmetricWaypoint(int startX, int startY, int finishX, int finishY, Waypoint *way);
+	static BuildCells* GenerateSymmetricBuildCellsForAI(int startX, int startY, int finishX, int finishY, BuildCells *cells);
 	
 	~PassingMap(void);
 };

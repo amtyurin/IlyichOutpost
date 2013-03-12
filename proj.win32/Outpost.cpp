@@ -2,27 +2,21 @@
 
 using namespace cocos2d;
 
-Outpost::Outpost(CCScene *scene, OutpostType outpostType, CCRect rect)
+Outpost::Outpost(CCScene *scene, bool our, CCRect rect)
 {
 	this->scene = scene;
-	this->outpostType = outpostType;
 	this->rect = rect;
 
 	char *image = NULL;
-	switch(outpostType)
-	{
-		case OUTPOST_TYPE_ENEMY:
-			image = FILE_NAME_IMAGE_OUTPOST_ENEMY;
-			this->healthTotal = 100;
-			break;
-		case OUTPOST_TYPE_OUR:
-			image = FILE_NAME_IMAGE_OUTPOST_OUR;
-			this->healthTotal = 100;
-			break;
-		default:
-			CCLog("Wrong outpost type!");
-			break;
+	if (our){
+		image = FILE_NAME_IMAGE_OUTPOST_OUR;
+		this->healthTotal = 100;
 	}
+	else{
+		image = FILE_NAME_IMAGE_OUTPOST_ENEMY;
+		this->healthTotal = 100;
+	}
+
 	this->healthCurrent = healthTotal;
 
 	//upgradeble?
@@ -74,11 +68,6 @@ bool Outpost::MakeDamage()
 		this->spriteHealth->setScaleX(this->originalHealthScale * (float)this->healthCurrent / this->healthTotal);
 		return false;
 	}
-}
-
-OutpostType Outpost::GetOutpostType()
-{
-	return this->outpostType;
 }
 
 bool Outpost::isTargetInRange(CCPoint ccp)

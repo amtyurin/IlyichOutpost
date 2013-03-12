@@ -84,7 +84,8 @@ void UILayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent){
 			this->movingTowerSprite = sprite;
 			this->movingTowerSprite->SaveInitialPosition();
 
-			PassingMap::ShowDebugGrid(this->scene, STATE_CELL_BUILD);
+			PassingMap::ShowDebugGrid(this->scene, STATE_CELL_BUILD_FOR_US);
+			//PassingMap::ShowDebugGrid(this->scene, STATE_CELL_BUILD_FOR_ENEMY);
 
 			this->towerDescription->Show(sprite);
 		} else if (sprite->spriteType == TOWER_ON_SCENE){
@@ -103,7 +104,7 @@ void UILayer::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent){
 		CCPoint touchLocation = touch->getLocation();
 		CCPoint position;
 		Cell *cell = PassingMap::GetCellByScreenCoords(touchLocation.x, touchLocation.y);
-		if (cell->type == STATE_CELL_BUILD){
+		if (cell->type == STATE_CELL_BUILD_FOR_US){
 			position.x = cell->x;
 			position.y = cell->y;
 		}else{
@@ -127,7 +128,7 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 		const float y = touch->getLocation().y;
 		Cell *touchedCell = PassingMap::GetCellByScreenCoords(x, y);
 		//CCLog("%f %f %d %d", x, y, touchedCell->x, touchedCell->y);
-		if (touchedCell !=NULL && touchedCell->type == STATE_CELL_BUILD){
+		if (touchedCell != NULL && touchedCell->type == STATE_CELL_BUILD_FOR_US){
 			this->addTouchableTower(movingTowerSprite->towerType, ccp(touchedCell->x, touchedCell->y));
 			touchedCell->type = STATE_CELL_BUSY;
 		}
@@ -159,8 +160,8 @@ void UILayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent){
 				CCLog("Upgrade button pressed");
 			}
 			else if (this->towerMenu->getSellButton() == sprite){
-				sprite->tower->HideRange();
-				PassingMap::GetCellByScreenCoords(sprite->tower->getX(), sprite->tower->getY())->type = STATE_CELL_BUILD;
+				sprite->tower->HideRange();				
+				PassingMap::GetCellByScreenCoords(sprite->tower->getX(), sprite->tower->getY())->type = STATE_CELL_BUILD_FOR_US;
 				removeTouchableTower(this->touchedTowerSprite);
 				this->touchedTowerSprite = NULL;				
 				CCLog("Sell button pressed");

@@ -341,7 +341,7 @@ void Tower::startFireAnimation(const CCPoint startPosition, const CCPoint endPos
 	this->firingSprite->setRotation(this->spritePtr->getRotation());
 	parent->addChild(this->firingSprite);
 
-	CCFiniteTimeAction *pause = CCDelayTime::create(0.1);
+	CCFiniteTimeAction *pause = CCDelayTime::create(0.1f);
 	CCFiniteTimeAction *getAway = CCCallFuncN::create(parent, callfuncN_selector(Tower::endFireAnimation));
 	this->firingSprite->runAction(CCSequence::create(pause, getAway, NULL));
 }

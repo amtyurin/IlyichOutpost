@@ -3,41 +3,29 @@
 
 #include "SimpleAudioEngine.h"
 
-#include "Waypoint.h"
-#include "Wave.h"
-#include "Tower.h"
-#include "TowerArray.h"
-#include "OutpostArray.h"
-
 #include "PanelGeneral.h"
 #include "PanelTowers.h"
+#include "Player.h"
 
-#include "MoneyManager.h"
 #include "UILayer.h"
 
 #include <set>
-
-typedef std::vector<Tower*>::iterator towerArrayIterator;
 
 using namespace cocos2d;
 
 class MainFieldScene : public cocos2d::CCLayer
 {
-	Waypoint way;
-	Wave *wave;
-
 	int wavesCount;
 	int waveTimout;
-	int enemyRespawnTime;
-	TowerArray *towers;
-	OutpostArray outposts;
+	int enemyRespawnTime;	
 
 	UILayer *UI;
 
 	PanelGeneral *panelGeneral;
-	PanelTowers *panelTower;
+	PanelTowers *panelTower;	
 
-	MoneyManager *moneyManager;	
+	Player *we;
+	Player *ai;
 
 	void DisplayText(const int tag, const char *text, const char *font, const int size, const int locX, const int locY);
 	void StopGame(char *text);

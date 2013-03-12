@@ -7,15 +7,13 @@ class OutpostArray
 {
 	std::vector<Outpost *> outpostSet;
 
-	bool enemyOutpostDestroyed;
-	bool ourOutpostDestroyed;
+	bool outpostDestroyed;
 public:
 	OutpostArray(void);
 	~OutpostArray(void);
 
 	void AddOutpost(Outpost *outpost);
 	void ProcessEnemies(Wave *enemyWave);
-	bool OutpostEnemyDestroyed();
-	bool OutpostOurDestroyed();
+	bool OutpostDestroyed();
 };
 
